@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Ads Code App Zone Infotech/AppZoneSimpleCode/app/src/main/res/drawable/app_btn.xml" value="0.266" />
+        <entry key="..\:/Ads Code App Zone Infotech/AppZoneSimpleCode/app/src/main/res/drawable/close.xml" value="0.266" />
+        <entry key="..\:/Ads Code App Zone Infotech/AppZoneSimpleCode/app/src/main/res/drawable/close_bg.xml" value="0.266" />
+        <entry key="..\:/Ads Code App Zone Infotech/AppZoneSimpleCode/app/src/main/res/drawable/exit_btn.xml" value="0.266" />
+        <entry key="..\:/Ads Code App Zone Infotech/AppZoneSimpleCode/app/src/main/res/drawable/gnt_outline_shape.xml" value="0.266" />
+        <entry key="..\:/Ads Code App Zone Infotech/AppZoneSimpleCode/app/src/main/res/drawable/roundads.xml" value="0.266" />
+        <entry key="..\:/Ads Code App Zone Infotech/AppZoneSimpleCode/app/src/main/res/layout/activity_update_app.xml" value="0.3359375" />
+        <entry key="..\:/Ads Code App Zone Infotech/AppZoneSimpleCode/app/src/main/res/layout/ad_fb_native_layout.xml" value="0.3359375" />
+        <entry key="..\:/Ads Code App Zone Infotech/AppZoneSimpleCode/app/src/main/res/layout/ad_google_big_native.xml" value="0.3359375" />
+        <entry key="..\:/Ads Code App Zone Infotech/AppZoneSimpleCode/app/src/main/res/layout/ad_google_native_small_banner.xml" value="0.3359375" />
+        <entry key="..\:/Ads Code App Zone Infotech/AppZoneSimpleCode/app/src/main/res/layout/custom_banner.xml" value="0.3359375" />
+        <entry key="..\:/Ads Code App Zone Infotech/AppZoneSimpleCode/app/src/main/res/layout/custom_inter.xml" value="0.3359375" />
+        <entry key="..\:/Ads Code App Zone Infotech/AppZoneSimpleCode/app/src/main/res/layout/custom_native.xml" value="0.3359375" />
+        <entry key="..\:/Ads Code App Zone Infotech/AppZoneSimpleCode/app/src/main/res/layout/splash.xml" value="0.3359375" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
