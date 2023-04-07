@@ -241,8 +241,10 @@ public class BannerClass {
     }
 
     public static void RegularGoogleBannerPopulateShow(com.google.android.gms.ads.nativead.NativeAd nativeAd) {
+
         View layout_ad_view = LayoutInflater.from(main_context).inflate(R.layout.ad_google_native_small_banner, null);
         com.google.android.gms.ads.nativead.NativeAdView native_ad_view = layout_ad_view.findViewById(R.id.ad_view_small_banner);
+
         native_ad_view.setHeadlineView(native_ad_view.findViewById(R.id.ad_headline_small_banner));
         native_ad_view.setBodyView(native_ad_view.findViewById(R.id.ad_body_small_banner));
         native_ad_view.setCallToActionView(native_ad_view.findViewById(R.id.ad_call_to_action_small_banner));
@@ -354,7 +356,7 @@ public class BannerClass {
         }
 
         int ads_number = MyHelpers.getRandomNumber(0, SplashHelp.adsModals.size() - 1);
-        LinearLayout banner_view = (LinearLayout) ((Activity) main_context).getLayoutInflater().inflate(R.layout.custom_banner, (ViewGroup) null);
+        RelativeLayout banner_view = (RelativeLayout) ((Activity) main_context).getLayoutInflater().inflate(R.layout.custom_banner, (ViewGroup) null);
         TextView btn_install = (TextView) banner_view.findViewById(R.id.btn_install_banner);
         RelativeLayout full_click = banner_view.findViewById(R.id.full_click_banner);
         TextView app_name = banner_view.findViewById(R.id.app_name_banner);

@@ -295,7 +295,7 @@ public class NativeClass {
     public static void FacebookNativePopulateShow() {
 
         LayoutInflater inflater = (LayoutInflater) main_context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout adView = (LinearLayout) inflater.inflate(R.layout.ad_fb_native_layout, main_native, false);
+        RelativeLayout adView = (RelativeLayout) inflater.inflate(R.layout.ad_fb_native_layout, main_native, false);
 
         facebook_native_ads.unregisterView();
 
@@ -356,7 +356,7 @@ public class NativeClass {
             return;
         }
         int ads_number = MyHelpers.getRandomNumber(0, SplashHelp.adsModals.size() - 1);
-        LinearLayout native_view = (LinearLayout) main_context.getLayoutInflater().inflate(R.layout.custom_native, (ViewGroup) null);
+        RelativeLayout native_view = (RelativeLayout) main_context.getLayoutInflater().inflate(R.layout.custom_native, (ViewGroup) null);
         AppCompatButton btn_install = native_view.findViewById(R.id.btn_install);
         RelativeLayout full_click = native_view.findViewById(R.id.full_click);
         TextView app_name = native_view.findViewById(R.id.app_name);
@@ -403,7 +403,7 @@ public class NativeClass {
                 Mix1AdsNative(MyHelpers.getmix_ad_native());  // 1 ads
             } else if (MyHelpers.getmix_ad_native().length() == 2) {
                 Mix2AdsNative(MyHelpers.getmix_ad_native());  // 2 ads
-            } else{
+            } else {
                 MixUnlimitedAdsNative(MyHelpers.getmix_ad_native()); // Unlimited
             }
         }

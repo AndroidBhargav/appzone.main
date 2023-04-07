@@ -16,6 +16,7 @@ import com.applovin.mediation.MaxAdListener;
 import com.applovin.mediation.MaxError;
 import com.applovin.mediation.ads.MaxInterstitialAd;
 import com.facebook.ads.Ad;
+import com.facebook.ads.AdSettings;
 import com.facebook.ads.InterstitialAdListener;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -323,6 +324,7 @@ public class SplashHelp extends AppCompatActivity {
 
                     if (PackName.equals("Test")) {
                         MyHelpers.setlive_status("1");
+                        AdSettings.setTestMode(true);
                     } else {
                         MyHelpers.setlive_status(response.getString("live"));
                     }
