@@ -112,6 +112,8 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_margin="15dp"
+        android:layout_alignParentEnd="true"
+
         android:background="@drawable/close_bg"
         android:backgroundTint="#2B2A2A"
         android:elevation="10dp"
@@ -122,13 +124,13 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="5dp"
+        android:layout_alignParentStart="true"
+        android:layout_margin="10dp"
         android:background="#2B2A2A"
         android:padding="3dp"
         android:text="AD"
         android:textColor="#fff"
-        android:textSize="7dp" />
+        android:textSize="8dp" />
 
 
 </RelativeLayout>

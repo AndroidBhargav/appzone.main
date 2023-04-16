@@ -519,7 +519,6 @@ public class InterClass {
     /*Custom Inter Show*/
     private static void CustomADSInter() {
         if (SplashHelp.adsModals.size() != 0) {
-
             main_context.startActivity(new Intent(main_context, CustomAdsInterActivity.class));
         }
     }
