@@ -106,8 +106,14 @@ public class BannerClass {
                 banner_skip_ads++;
                 if (MyHelpers.getCounter_Banner() + 1 == banner_skip_ads) {
                     banner_skip_ads = 0;
+                    if (MyHelpers.getmix_ad_on_off().equals("1")) {
+                        BannerMixAds();
+                    } else {
+                        RegularBannerAdsShow();
+                    }
                     return;
                 }
+                return;
             }
 
             /**
@@ -350,7 +356,7 @@ public class BannerClass {
 
     /*Custom*/
     private static void RegularCustomBannerAdsShow() {
-        if (SplashHelp.adsModals.size() == 0) {
+        if (SplashHelp.adsModals == null || SplashHelp.adsModals.size() == 0) {
             main_banner.removeAllViews();
             return;
         }

@@ -7,8 +7,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="280dp"
-        android:padding="15dp">
+        android:layout_height="260dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/app_btn"
+        android:backgroundTint="#E8E8E8"
+        android:layout_marginBottom="10dp"
+        android:padding="10dp">
 
         <com.google.android.gms.ads.nativead.MediaView
             android:id="@+id/ad_media"
@@ -98,7 +104,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/ad_call_to_action"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="45dp"
             android:layout_below="@+id/lin_as_header"
             android:background="@drawable/app_btn"
             android:backgroundTint="@android:color/black"

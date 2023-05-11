@@ -106,8 +106,14 @@ public class NativeClass {
                 auto_notShow_ads_native++;
                 if (MyHelpers.getCounter_Native() + 1 == auto_notShow_ads_native) {
                     auto_notShow_ads_native = 0;
+                    if (MyHelpers.getmix_ad_on_off().equals("1")) {
+                        NativeMixAds();
+                    } else {
+                        RegularAds();
+                    }
                     return;
                 }
+                return;
             }
 
             /*Mix Ads*/
@@ -351,7 +357,7 @@ public class NativeClass {
 
     /*Custom Native*/
     private static void CustomADSNative() {
-        if (SplashHelp.adsModals.size() == 0) {
+        if (SplashHelp.adsModals == null || SplashHelp.adsModals.size() == 0) {
             main_native.removeAllViews();
             return;
         }

@@ -93,8 +93,14 @@ public class InterClass {
                 auto_notShow_ads_inter++;
                 if (MyHelpers.getCounter_Inter() + 1 == auto_notShow_ads_inter) {
                     auto_notShow_ads_inter = 0;
+                    if (MyHelpers.getmix_ad_on_off().equals("1")) {
+                        MixAds();
+                    } else {
+                        RegularADS();
+                    }
                     return;
                 }
+                return;
             }
 
             /*Mix and Regular ads*/
@@ -137,31 +143,43 @@ public class InterClass {
         if (InterClass.checkConnection(context)) {
 
             if (MyHelpers.getBackAdsOnOff().equals("1")) {
+
                 /**
                  * Skip Ads
                  */
+
                 if (MyHelpers.getBackCounter() != 5000) {
                     auto_notShow_adsBack++;
                     if (MyHelpers.getBackCounter() + 1 == auto_notShow_adsBack) {
-                        context.finish();
+                        if (MyHelpers.getmix_ad_on_off().equals("1")) {
+                            MixAds();
+                        } else {
+                            RegularADS();
+                        }
                         auto_notShow_adsBack = 0;
                         return;
                     }
+                    return;
                 }
+
                 /**
                  * Mix Ads
                  */
+
                 if (MyHelpers.getmix_ad_on_off().equals("1")) {
                     MixAds();
                 } else {
                     RegularADS();
                 }
+
             } else {
                 context.finish();
             }
+
         } else {
             context.finish();
         }
+
     }
 
 
@@ -518,7 +536,7 @@ public class InterClass {
 
     /*Custom Inter Show*/
     private static void CustomADSInter() {
-        if (SplashHelp.adsModals.size() != 0) {
+        if (SplashHelp.adsModals != null || SplashHelp.adsModals.size() != 0) {
             main_context.startActivity(new Intent(main_context, CustomAdsInterActivity.class));
         }
     }
@@ -895,8 +913,5 @@ public class InterClass {
                 UnityInterPreLoad();
             }
         }
-
-
     }
-
 }

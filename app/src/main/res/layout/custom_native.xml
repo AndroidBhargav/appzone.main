@@ -7,8 +7,14 @@
     <RelativeLayout
         android:id="@+id/full_click"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
-        android:padding="15dp">
+        android:layout_height="260dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/app_btn"
+        android:backgroundTint="#E8E8E8"
+        android:layout_marginBottom="10dp"
+        android:padding="10dp">
 
         <ImageView
             android:id="@+id/ads_banner"
@@ -43,8 +49,8 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -100,7 +106,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_install"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="45dp"
             android:layout_below="@+id/lin_as_header"
             android:background="@drawable/app_btn"
             android:backgroundTint="@android:color/black"

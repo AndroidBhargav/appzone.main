@@ -7,8 +7,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:padding="10dp">
+        android:layout_height="65dp"
+        android:background="#E8E8E8"
+        android:padding="5dp">
 
         <ImageView
             android:id="@+id/ad_app_icon_small_banner"
