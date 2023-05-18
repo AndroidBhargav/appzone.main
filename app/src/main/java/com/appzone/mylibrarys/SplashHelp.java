@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.TelephonyManager;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -55,8 +56,11 @@ public class SplashHelp extends AppCompatActivity {
     public static String PackName = "";
 
     public static ArrayList<AdsModal> adsModals = new ArrayList<>();
+
+
     public static boolean customads_status = false;
     public static boolean OpenAdsStatus = false;
+
     public static boolean checkAppOpen = true;
 
     @Override
@@ -147,7 +151,6 @@ public class SplashHelp extends AppCompatActivity {
                     }
                     //google Interstitial
                     if (response.getString("google_admob_interstitial_id") != null && !response.getString("google_admob_interstitial_id").isEmpty()) {
-                        InterClass.AutoGoogleInterID = 1;
                         MyHelpers.SetGoogleInter(response.getString("google_admob_interstitial_id"));
                     } else {
                         MyHelpers.SetGoogleInter(null);
@@ -264,7 +267,7 @@ public class SplashHelp extends AppCompatActivity {
                     MyHelpers.setUnityEnable(response.getString("enable_unity_id"));  //on_off Unity
                     if (response.getString("unity_game_id") != null && !response.getString("unity_game_id").isEmpty()) {   //Unity ID
                         MyHelpers.setUnityAppID(response.getString("unity_game_id"));
-                        UnityAds.initialize(MyHelpers.instance, MyHelpers.getUnityAppID(), false);
+                        UnityAds.initialize(MyHelpers.instance, MyHelpers.getUnityAppID(), true);
                     } else {
                         MyHelpers.setUnityAppID(null);
                     }
@@ -325,6 +328,7 @@ public class SplashHelp extends AppCompatActivity {
                     if (PackName.equals("Test")) {
                         MyHelpers.setlive_status("1");
                         AdSettings.setTestMode(true);
+                        //UnityAds.initialize(MyHelpers.instance, MyHelpers.getUnityAppID(), true);
                     } else {
                         MyHelpers.setlive_status(response.getString("live"));
                     }
@@ -370,7 +374,6 @@ public class SplashHelp extends AppCompatActivity {
                     } else {
                         MyHelpers.setmix_ad_inter(null);
                     }
-
 
                     /**
                      * Skip Country
@@ -464,7 +467,11 @@ public class SplashHelp extends AppCompatActivity {
     private static void ShowADS() {
 
         if (MyHelpers.getmix_ad_on_off().equals("1")) {
-            MixOpenAds(String.valueOf(MyHelpers.getmix_ad_inter().charAt(0)));
+            if (MyHelpers.getmix_ad_inter() != null && !MyHelpers.getmix_ad_inter().isEmpty()) {
+                MixOpenAds(String.valueOf(MyHelpers.getmix_ad_inter().charAt(0)));
+            } else{
+                NextIntent(contextx, intentx);
+            }
             return;
         }
 
@@ -683,6 +690,8 @@ public class SplashHelp extends AppCompatActivity {
                         if (isShowOpen) {
                             isShowOpen = false;
                         }
+
+                        //   NextIntent(contextx, intentx);
 
                         if (!OpenAdsStatus) {
                             OpenAdsStatus = true;
@@ -1308,7 +1317,6 @@ public class SplashHelp extends AppCompatActivity {
 
             if (MyHelpers.getGoogleBanner().equals(MyHelpers.getGoogleBanner1()) && MyHelpers.getGoogleBanner().equals(MyHelpers.getGoogleBanner2()) && MyHelpers.getGoogleBanner1().equals(MyHelpers.getGoogleBanner2())) {
                 MyHelpers.Google_banner_number = 1;
-                BannerClass.AutoGoogleBannerID = 1;
                 BannerClass.GoogleBannerPreload();
 
             } else {
@@ -1329,8 +1337,24 @@ public class SplashHelp extends AppCompatActivity {
 
         /*Facebook Banner*/
         if (MyHelpers.getFacebookBanner() != null && !MyHelpers.getFacebookBanner().isEmpty() && MyHelpers.getlive_status().equals("1")) {
-            BannerClass.AutoLoadFBBannerID = 1;
-            BannerClass.FacebookBannerPreLoad();
+
+            if (MyHelpers.getFacebookBanner().equals(MyHelpers.getFacebookBanner1()) && MyHelpers.getFacebookBanner().equals(MyHelpers.getFacebookBanner2()) && MyHelpers.getFacebookBanner1().equals(MyHelpers.getFacebookBanner2())) {
+                MyHelpers.fb_banner_number = 1;
+                BannerClass.FacebookBannerPreLoad();
+
+            } else {
+                if (MyHelpers.getFacebookBanner2() == null) {
+                    MyHelpers.fb_banner_number = 2;
+                    BannerClass.FacebookBannerPreLoad1();
+                    BannerClass.FacebookBannerPreLoad2();
+
+                } else {
+                    MyHelpers.fb_banner_number = 3;
+                    BannerClass.FacebookBannerPreLoad1();
+                    BannerClass.FacebookBannerPreLoad2();
+                    BannerClass.FacebookBannerPreLoad3();
+                }
+            }
         }
 
         /*AppLoving Banner*/
@@ -1352,7 +1376,6 @@ public class SplashHelp extends AppCompatActivity {
         if (MyHelpers.getGoogleNative() != null && !MyHelpers.getGoogleNative().isEmpty() && MyHelpers.getlive_status().equals("1")) {
             if (MyHelpers.getGoogleNative().equals(MyHelpers.getGoogleNative1()) && MyHelpers.getGoogleNative().equals(MyHelpers.getGoogleNative2()) && MyHelpers.getGoogleNative1().equals(MyHelpers.getGoogleNative2())) {
                 MyHelpers.Google_native_number = 1;
-                NativeClass.AutoGoogleNativeID = 1;
                 NativeClass.GoogleNativePreload();
             } else {
                 if (MyHelpers.getGoogleNative2() == null) {
@@ -1370,15 +1393,27 @@ public class SplashHelp extends AppCompatActivity {
 
         /*Facebook Native*/
         if (MyHelpers.getFacebookNative() != null && !MyHelpers.getFacebookNative().isEmpty() && MyHelpers.getlive_status().equals("1")) {
-            NativeClass.AutoLoadFBNativeID = 1;
-            NativeClass.FacebookNativePreLoad();
+            if (MyHelpers.getFacebookNative().equals(MyHelpers.getFacebookNative1()) && MyHelpers.getFacebookNative().equals(MyHelpers.getFacebookNative2()) && MyHelpers.getFacebookNative1().equals(MyHelpers.getFacebookNative2())) {
+                MyHelpers.fb_native_number = 1;
+                NativeClass.FacebookNativePreLoad();
+            } else {
+                if (MyHelpers.getFacebookNative2() == null) {
+                    MyHelpers.fb_native_number = 2;
+                    NativeClass.FacebookNativePreLoad1();
+                    NativeClass.FacebookNativePreLoad2();
+                } else {
+                    MyHelpers.fb_native_number = 3;
+                    NativeClass.FacebookNativePreLoad1();
+                    NativeClass.FacebookNativePreLoad2();
+                    NativeClass.FacebookNativePreLoad3();
+                }
+            }
         }
 
         /*AppLoving Native*/
         if (MyHelpers.getAppLovinNative() != null && !MyHelpers.getAppLovinNative().isEmpty()) {
             NativeClass.AppLovingNativePreLoad();
         }
-
     }
 
     private static void MixAdOnInter() {
@@ -1391,7 +1426,6 @@ public class SplashHelp extends AppCompatActivity {
             //Inter
             if (MyHelpers.getGoogleInter().equals(MyHelpers.getGoogleInter1()) && MyHelpers.getGoogleInter().equals(MyHelpers.getGoogleInter2()) && MyHelpers.getGoogleInter1().equals(MyHelpers.getGoogleInter2())) {
                 MyHelpers.Google_inter_number = 1;
-                InterClass.AutoGoogleInterID = 1;
                 InterClass.GoogleInterPreload();
             } else {
                 if (MyHelpers.getGoogleInter2() == null) {
@@ -1407,11 +1441,27 @@ public class SplashHelp extends AppCompatActivity {
             }
         }
 
-        /*Facebook Mix Auto Load Inter*/
+        /*Facebook Inter*/
         if (MyHelpers.getFacebookInter() != null && !MyHelpers.getFacebookInter().isEmpty() && MyHelpers.getlive_status().equals("1")) {
-            InterClass.AutoLoadFBInterID = 1;
-            InterClass.FacebookInterPreLoad();
+
+            //Inter
+            if (MyHelpers.getFacebookInter().equals(MyHelpers.getFacebookInter1()) && MyHelpers.getFacebookInter().equals(MyHelpers.getFacebookInter2()) && MyHelpers.getFacebookInter1().equals(MyHelpers.getFacebookInter2())) {
+                MyHelpers.fb_inter_number = 1;
+                InterClass.FacebookInterPreLoad();
+            } else {
+                if (MyHelpers.getFacebookInter2() == null) {
+                    MyHelpers.fb_inter_number = 2;
+                    InterClass.FacebookInterPreLoad1();
+                    InterClass.FacebookInterPreLoad2();
+                } else {
+                    MyHelpers.fb_inter_number = 3;
+                    InterClass.FacebookInterPreLoad1();
+                    InterClass.FacebookInterPreLoad2();
+                    InterClass.FacebookInterPreLoad3();
+                }
+            }
         }
+
 
     }
 
@@ -1436,7 +1486,7 @@ public class SplashHelp extends AppCompatActivity {
         } else if (valueOf.equals("c")) {
             CustomOpenAds();
         } else {
-            CustomOpenAds();
+            NextIntent(contextx, intentx);
         }
     }
 

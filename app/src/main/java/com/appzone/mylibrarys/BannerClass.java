@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -44,11 +43,12 @@ public class BannerClass {
     public static com.google.android.gms.ads.nativead.NativeAd regular_google_native_banner_1 = null;
     public static com.google.android.gms.ads.nativead.NativeAd regular_google_native_banner_2 = null;
     public static com.google.android.gms.ads.nativead.NativeAd regular_google_native_banner_3 = null;
-    public static int AutoGoogleBannerID;
 
     /*Facebook*/
     public static com.facebook.ads.AdView regular_facebook_banner_adView = null;
-    public static int AutoLoadFBBannerID;
+    public static com.facebook.ads.AdView regular_facebook_banner_adView_1 = null;
+    public static com.facebook.ads.AdView regular_facebook_banner_adView_2 = null;
+    public static com.facebook.ads.AdView regular_facebook_banner_adView_3 = null;
 
     /*AppLovin*/
     public static MaxAdView regular_applovin_banner_adView = null;
@@ -60,6 +60,7 @@ public class BannerClass {
     public static int banner_skip_ads = 0;
     public static int mix_ads_banner = 0;
     public static int auto_banner_show_id = 0;
+    public static int fb_auto_banner_show_id = 0;
 
     /*Helper*/
     public static RelativeLayout main_banner;
@@ -116,6 +117,7 @@ public class BannerClass {
                 return;
             }
 
+
             /**
              * Mix Ads
              */
@@ -140,7 +142,7 @@ public class BannerClass {
         if (MyHelpers.getGoogleEnable().equals("1") && MyHelpers.getlive_status().equals("1")) {
             RegularGoogleADSBannerShow("r");
         } else if (MyHelpers.getFacebookEnable().equals("1") && MyHelpers.getlive_status().equals("1")) {
-            RegularFacebookBannerShow();
+            RegularFacebookADSBannerShow("f");
         } else if (MyHelpers.getAppLovinEnable().equals("1")) {
             RegularAppLovingBannerShow();
         } else if (MyHelpers.getUnityEnable().equals("1")) {
@@ -216,26 +218,6 @@ public class BannerClass {
         AllAdsPreLoadsBanner("g3");
     }
 
-    private static void Google_Fails_Facebook_Banner_Show() {
-        if (regular_facebook_banner_adView != null) {
-            main_banner.removeAllViews();
-            main_banner.addView(regular_facebook_banner_adView);
-        } else {
-            Google_Facebook_Fails_AppLovin_Unity_Banner_Show();
-        }
-        AllAdsPreLoadsBanner("f");
-    }
-
-    private static void Google_Facebook_Fails_AppLovin_Unity_Banner_Show() {
-        if (regular_applovin_banner_adView != null) {
-            main_banner.removeAllViews();
-            main_banner.addView(regular_applovin_banner_adView);
-        } else {
-            Google_Facebook_AppLovin_Fails_Unity_Banner_Show();
-        }
-        AllAdsPreLoadsBanner("a");
-    }
-
     private static void Google_Facebook_AppLovin_Fails_Unity_Banner_Show() {
         if (regular_unity_banner_adView != null) {
             main_banner.removeAllViews();
@@ -246,11 +228,21 @@ public class BannerClass {
         AllAdsPreLoadsBanner("u");
     }
 
-    public static void RegularGoogleBannerPopulateShow(com.google.android.gms.ads.nativead.NativeAd nativeAd) {
+    private static void AllGoogleBannerFails_OtherAdsShow(String checker) {
+        if (checker.equals("r")) {
+            RegularFacebookADSBannerShow(checker);
+        } else if (checker.equals("f")) {
+            Facebook_Google_Fails_Applovin_Unity_Banner_Show();
+        } else if (checker.equals("a")) {
+            RegularFacebookADSBannerShow(checker);
+        } else if (checker.equals("u")) {
+            RegularFacebookADSBannerShow(checker);
+        }
+    }
 
+    public static void RegularGoogleBannerPopulateShow(com.google.android.gms.ads.nativead.NativeAd nativeAd) {
         View layout_ad_view = LayoutInflater.from(main_context).inflate(R.layout.ad_google_native_small_banner, null);
         com.google.android.gms.ads.nativead.NativeAdView native_ad_view = layout_ad_view.findViewById(R.id.ad_view_small_banner);
-
         native_ad_view.setHeadlineView(native_ad_view.findViewById(R.id.ad_headline_small_banner));
         native_ad_view.setBodyView(native_ad_view.findViewById(R.id.ad_body_small_banner));
         native_ad_view.setCallToActionView(native_ad_view.findViewById(R.id.ad_call_to_action_small_banner));
@@ -269,27 +261,77 @@ public class BannerClass {
         main_banner.addView(layout_ad_view);
     }
 
-    private static void AllGoogleBannerFails_OtherAdsShow(String checker) {
-        if (checker.equals("r")) {
-            Google_Fails_Facebook_Banner_Show();
-        } else if (checker.equals("f")) {
-            Facebook_Google_Fails_Applovin_Unity_Banner_Show();
-        } else if (checker.equals("a")) {
-            Applovin_Google_Fails_Facebook_Unity_Banner_Show();
-        } else if (checker.equals("u")) {
-            Unity_Google_Fails_Facebook_Applovin_Banner_Show();
+
+
+    /*Facebook*/
+
+    private static void RegularFacebookADSBannerShow(String checker) {
+        if (MyHelpers.fb_banner_number == 1) {
+            RegularFacebookBannerShow(checker);
+        } else if (MyHelpers.fb_banner_number == 2) {
+            if (fb_auto_banner_show_id == 0) {
+                fb_auto_banner_show_id = 1;
+                RegularFacebookBannerShow_1(checker);
+            } else {
+                fb_auto_banner_show_id = 0;
+                RegularFacebookBannerShow_2(checker);
+            }
+        } else if (MyHelpers.fb_banner_number == 3) {
+            if (fb_auto_banner_show_id == 0) {
+                fb_auto_banner_show_id = 1;
+                RegularFacebookBannerShow_1(checker);
+            } else if (auto_banner_show_id == 1) {
+                fb_auto_banner_show_id = 2;
+                RegularFacebookBannerShow_2(checker);
+            } else {
+                fb_auto_banner_show_id = 0;
+                RegularFacebookBannerShow_3(checker);
+            }
         }
     }
 
-    /*Facebook*/
-    public static void RegularFacebookBannerShow() {
-        if (regular_facebook_banner_adView != null) {
+    public static void RegularFacebookBannerShow(String checker) {
+
+        if (regular_facebook_banner_adView != null && !regular_facebook_banner_adView.isAdInvalidated()) {
             main_banner.removeAllViews();
             main_banner.addView(regular_facebook_banner_adView);
         } else {
-            RegularGoogleADSBannerShow("f");
+            AllFacebookBannerFails_OtherAdsShow(checker);
         }
+
         AllAdsPreLoadsBanner("f");
+
+    }
+
+    public static void RegularFacebookBannerShow_1(String checker) {
+
+        if (regular_facebook_banner_adView_1 != null && !regular_facebook_banner_adView_1.isAdInvalidated()) {
+            main_banner.removeAllViews();
+            main_banner.addView(regular_facebook_banner_adView_1);
+        } else {
+            AllFacebookBannerFails_OtherAdsShow(checker);
+        }
+        AllAdsPreLoadsBanner("f1");
+    }
+
+    public static void RegularFacebookBannerShow_2(String checker) {
+        if (regular_facebook_banner_adView_2 != null && !regular_facebook_banner_adView_2.isAdInvalidated()) {
+            main_banner.removeAllViews();
+            main_banner.addView(regular_facebook_banner_adView_2);
+        } else {
+            AllFacebookBannerFails_OtherAdsShow(checker);
+        }
+        AllAdsPreLoadsBanner("f2");
+    }
+
+    public static void RegularFacebookBannerShow_3(String checker) {
+        if (regular_facebook_banner_adView_3 != null && !regular_facebook_banner_adView_3.isAdInvalidated()) {
+            main_banner.removeAllViews();
+            main_banner.addView(regular_facebook_banner_adView_3);
+        } else {
+            AllFacebookBannerFails_OtherAdsShow(checker);
+        }
+        AllAdsPreLoadsBanner("f3");
     }
 
     private static void Facebook_Google_Fails_Applovin_Unity_Banner_Show() {
@@ -300,6 +342,18 @@ public class BannerClass {
             Google_Facebook_AppLovin_Fails_Unity_Banner_Show();
         }
         AllAdsPreLoadsBanner("a");
+    }
+
+    private static void AllFacebookBannerFails_OtherAdsShow(String checker) {
+        if (checker.equals("r")) {
+            Facebook_Google_Fails_Applovin_Unity_Banner_Show();
+        } else if (checker.equals("f")) {
+            RegularGoogleADSBannerShow("f");
+        } else if (checker.equals("a")) {
+            Google_Facebook_AppLovin_Fails_Unity_Banner_Show();
+        } else {
+            Unity_Google_Facebook_Fails_Applovin_Banner_Show();
+        }
     }
 
     /*AppLoving*/
@@ -313,16 +367,6 @@ public class BannerClass {
         AllAdsPreLoadsBanner("a");
     }
 
-    private static void Applovin_Google_Fails_Facebook_Unity_Banner_Show() {
-        if (regular_facebook_banner_adView != null) {
-            main_banner.removeAllViews();
-            main_banner.addView(regular_facebook_banner_adView);
-        } else {
-            Google_Facebook_AppLovin_Fails_Unity_Banner_Show();
-        }
-        AllAdsPreLoadsBanner("f");
-    }
-
     /*Unity*/
     public static void RegularUnityBannerShow() {
         if (regular_unity_banner_adView != null) {
@@ -332,16 +376,6 @@ public class BannerClass {
             RegularGoogleADSBannerShow("u");
         }
         AllAdsPreLoadsBanner("u");
-    }
-
-    private static void Unity_Google_Fails_Facebook_Applovin_Banner_Show() {
-        if (regular_facebook_banner_adView != null) {
-            main_banner.removeAllViews();
-            main_banner.addView(regular_facebook_banner_adView);
-        } else {
-            Unity_Google_Facebook_Fails_Applovin_Banner_Show();
-        }
-        AllAdsPreLoadsBanner("f");
     }
 
     private static void Unity_Google_Facebook_Fails_Applovin_Banner_Show() {
@@ -401,16 +435,16 @@ public class BannerClass {
 
     /*Mix Ads Helper*/
     private static void BannerMixAds() {
-        if (MyHelpers.getmix_ad_banner().length() == 0) {
-            main_banner.removeAllViews();
-        } else {
+        if (MyHelpers.getmix_ad_banner() != null && !MyHelpers.getmix_ad_banner().isEmpty()) {
             if (MyHelpers.getmix_ad_banner().length() == 1) {
                 Mix1AdsBanner(MyHelpers.getmix_ad_banner());  // 1 ads
             } else if (MyHelpers.getmix_ad_banner().length() == 2) {
                 Mix2AdsBanner(MyHelpers.getmix_ad_banner());  // 2 ads
-            } else{
+            } else {
                 MixUnlimitedAdsBanner(MyHelpers.getmix_ad_banner()); // Unlimited
             }
+        } else {
+            main_banner.removeAllViews();
         }
     }
 
@@ -451,7 +485,7 @@ public class BannerClass {
         if (value.equals("g") && MyHelpers.getlive_status().equals("1")) {
             RegularGoogleADSBannerShow("r");
         } else if (value.equals("f") && MyHelpers.getlive_status().equals("1")) {
-            RegularFacebookBannerShow();
+            RegularFacebookADSBannerShow("f");
         } else if (value.equals("a")) {
             RegularAppLovingBannerShow();
         } else if (value.equals("u")) {
@@ -468,28 +502,12 @@ public class BannerClass {
      */
     /*Google*/
     public static void GoogleBannerPreload() {
-        String google_load_id = null;
-        if (AutoGoogleBannerID == 1) {
-            google_load_id = MyHelpers.getGoogleBanner();
-        } else if (AutoGoogleBannerID == 2) {
-            google_load_id = MyHelpers.getGoogleBanner1();
-        } else if (AutoGoogleBannerID == 3) {
-            google_load_id = MyHelpers.getGoogleBanner2();
-        }
-        regular_google_banner_ad_loader = new AdLoader.Builder(main_context, google_load_id).forNativeAd(nativeAds -> {
+        regular_google_banner_ad_loader = new AdLoader.Builder(main_context, MyHelpers.getGoogleBanner()).forNativeAd(nativeAds -> {
             regular_google_native_banner = nativeAds;
         }).withAdListener(new AdListener() {
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError adError) {
-                if (AutoGoogleBannerID == 1) {
-                    AutoGoogleBannerID = 2;
-                    GoogleBannerPreload();
-                } else if (AutoGoogleBannerID == 2) {
-                    AutoGoogleBannerID = 3;
-                    GoogleBannerPreload();
-                } else {
-                    regular_google_native_banner = null;
-                }
+                regular_google_native_banner = null;
             }
 
             @Override
@@ -500,7 +518,6 @@ public class BannerClass {
             @Override
             public void onAdLoaded() {
                 super.onAdLoaded();
-                AutoGoogleBannerID = 1;
             }
 
             @Override
@@ -536,7 +553,6 @@ public class BannerClass {
             @Override
             public void onAdLoaded() {
                 super.onAdLoaded();
-
             }
 
             @Override
@@ -628,34 +644,15 @@ public class BannerClass {
     /*Facebook*/
     public static void FacebookBannerPreLoad() {
 
-        String fb_load_id = null;
-        if (AutoLoadFBBannerID == 1) {
-            fb_load_id = MyHelpers.getFacebookBanner();
-        } else if (AutoLoadFBBannerID == 2) {
-            fb_load_id = MyHelpers.getFacebookBanner1();
-        } else if (AutoLoadFBBannerID == 3) {
-            fb_load_id = MyHelpers.getFacebookBanner2();
-        }
-        regular_facebook_banner_adView = new com.facebook.ads.AdView(main_context, fb_load_id, com.facebook.ads.AdSize.BANNER_HEIGHT_50);
+        regular_facebook_banner_adView = new com.facebook.ads.AdView(main_context, MyHelpers.getFacebookBanner(), com.facebook.ads.AdSize.BANNER_HEIGHT_50);
         com.facebook.ads.AdListener adListener = new com.facebook.ads.AdListener() {
             @Override
             public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                if (AutoLoadFBBannerID == 1) {
-                    AutoLoadFBBannerID = 2;
-                    FacebookBannerPreLoad();
-                } else if (AutoLoadFBBannerID == 2) {
-                    AutoLoadFBBannerID = 3;
-                    FacebookBannerPreLoad();
-                } else {
-                    regular_facebook_banner_adView = null;
-                }
-
-
+                regular_facebook_banner_adView = null;
             }
 
             @Override
             public void onAdLoaded(Ad ad) {
-                AutoLoadFBBannerID = 1;
             }
 
             @Override
@@ -670,6 +667,92 @@ public class BannerClass {
         };
         com.facebook.ads.AdView.AdViewLoadConfig loadAdConfig = regular_facebook_banner_adView.buildLoadAdConfig().withAdListener(adListener).build();
         regular_facebook_banner_adView.loadAd(loadAdConfig);
+
+    }
+
+    public static void FacebookBannerPreLoad1() {
+
+        regular_facebook_banner_adView_1 = new com.facebook.ads.AdView(main_context, MyHelpers.getFacebookBanner(), com.facebook.ads.AdSize.BANNER_HEIGHT_50);
+        com.facebook.ads.AdListener adListener = new com.facebook.ads.AdListener() {
+            @Override
+            public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                regular_facebook_banner_adView_1 = null;
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+
+            }
+
+            @Override
+            public void onLoggingImpression(Ad ad) {
+
+            }
+        };
+        com.facebook.ads.AdView.AdViewLoadConfig loadAdConfig = regular_facebook_banner_adView_1.buildLoadAdConfig().withAdListener(adListener).build();
+        regular_facebook_banner_adView_1.loadAd(loadAdConfig);
+
+    }
+
+    public static void FacebookBannerPreLoad2() {
+
+        regular_facebook_banner_adView_2 = new com.facebook.ads.AdView(main_context, MyHelpers.getFacebookBanner1(), com.facebook.ads.AdSize.BANNER_HEIGHT_50);
+        com.facebook.ads.AdListener adListener = new com.facebook.ads.AdListener() {
+            @Override
+            public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                regular_facebook_banner_adView_2 = null;
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+
+            }
+
+            @Override
+            public void onLoggingImpression(Ad ad) {
+
+            }
+        };
+        com.facebook.ads.AdView.AdViewLoadConfig loadAdConfig = regular_facebook_banner_adView_2.buildLoadAdConfig().withAdListener(adListener).build();
+        regular_facebook_banner_adView_2.loadAd(loadAdConfig);
+
+    }
+
+    public static void FacebookBannerPreLoad3() {
+        regular_facebook_banner_adView_3 = new com.facebook.ads.AdView(main_context, MyHelpers.getFacebookBanner2(), com.facebook.ads.AdSize.BANNER_HEIGHT_50);
+        com.facebook.ads.AdListener adListener = new com.facebook.ads.AdListener() {
+            @Override
+            public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                regular_facebook_banner_adView_3 = null;
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+
+            }
+
+            @Override
+            public void onLoggingImpression(Ad ad) {
+
+            }
+        };
+        com.facebook.ads.AdView.AdViewLoadConfig loadAdConfig = regular_facebook_banner_adView_3.buildLoadAdConfig().withAdListener(adListener).build();
+        regular_facebook_banner_adView_3.loadAd(loadAdConfig);
 
     }
 
@@ -770,15 +853,22 @@ public class BannerClass {
             regular_google_native_banner_3 = null;
         } else if (refresh.equals("f")) {
             regular_facebook_banner_adView = null;
+        } else if (refresh.equals("f1")) {
+            regular_facebook_banner_adView_1 = null;
+        } else if (refresh.equals("f2")) {
+            regular_facebook_banner_adView_2 = null;
+        } else if (refresh.equals("f3")) {
+            regular_facebook_banner_adView_3 = null;
         } else if (refresh.equals("a")) {
             regular_applovin_banner_adView = null;
         } else if (refresh.equals("u")) {
             regular_unity_banner_adView = null;
         }
 
+        //G
         if (MyHelpers.Google_banner_number == 1) {
 
-            if (MyHelpers.getGoogleBanner() != null && !MyHelpers.getGoogleBanner().isEmpty() && MyHelpers.getlive_status().equals("1")) {
+            if (MyHelpers.getGoogleBanner() != null && !MyHelpers.getGoogleBanner().isEmpty()) {
                 if (regular_google_native_banner == null) {
                     GoogleBannerPreload();
                 }
@@ -786,12 +876,12 @@ public class BannerClass {
 
         } else if (MyHelpers.Google_banner_number == 2) {
 
-            if (MyHelpers.getGoogleBanner() != null && !MyHelpers.getGoogleBanner().isEmpty() && MyHelpers.getlive_status().equals("1")) {
+            if (MyHelpers.getGoogleBanner() != null && !MyHelpers.getGoogleBanner().isEmpty()) {
                 if (regular_google_native_banner_1 == null) {
                     GoogleBannerPreload1();
                 }
             }
-            if (MyHelpers.getGoogleBanner1() != null && !MyHelpers.getGoogleBanner1().isEmpty() && MyHelpers.getlive_status().equals("1")) {
+            if (MyHelpers.getGoogleBanner1() != null && !MyHelpers.getGoogleBanner1().isEmpty()) {
                 if (regular_google_native_banner_2 == null) {
                     GoogleBannerPreload2();
                 }
@@ -799,39 +889,75 @@ public class BannerClass {
 
         } else if (MyHelpers.Google_banner_number == 3) {
 
-            if (MyHelpers.getGoogleBanner() != null && !MyHelpers.getGoogleBanner().isEmpty() && MyHelpers.getlive_status().equals("1")) {
+            if (MyHelpers.getGoogleBanner() != null && !MyHelpers.getGoogleBanner().isEmpty()) {
                 if (regular_google_native_banner_1 == null) {
                     GoogleBannerPreload1();
                 }
             }
-            if (MyHelpers.getGoogleBanner1() != null && !MyHelpers.getGoogleBanner1().isEmpty() && MyHelpers.getlive_status().equals("1")) {
+            if (MyHelpers.getGoogleBanner1() != null && !MyHelpers.getGoogleBanner1().isEmpty()) {
                 if (regular_google_native_banner_2 == null) {
                     GoogleBannerPreload2();
                 }
             }
 
-            if (MyHelpers.getGoogleBanner2() != null && !MyHelpers.getGoogleBanner2().isEmpty() && MyHelpers.getlive_status().equals("1")) {
+            if (MyHelpers.getGoogleBanner2() != null && !MyHelpers.getGoogleBanner2().isEmpty()) {
                 if (regular_google_native_banner_3 == null) {
                     GoogleBannerPreload3();
                 }
             }
         }
 
+        //F
+        if (MyHelpers.fb_banner_number == 1) {
 
-        if (MyHelpers.getFacebookBanner() != null && !MyHelpers.getFacebookBanner().isEmpty() && MyHelpers.getlive_status().equals("1")) {
-            if (regular_facebook_banner_adView == null) {
-                FacebookBannerPreLoad();
+            if (MyHelpers.getFacebookBanner() != null && !MyHelpers.getFacebookBanner().isEmpty()) {
+                if (regular_facebook_banner_adView == null) {
+                    FacebookBannerPreLoad();
+                }
+            }
+
+        } else if (MyHelpers.fb_banner_number == 2) {
+
+            if (MyHelpers.getFacebookBanner() != null && !MyHelpers.getFacebookBanner().isEmpty()) {
+                if (regular_facebook_banner_adView_1 == null) {
+                    FacebookBannerPreLoad1();
+                }
+            }
+            if (MyHelpers.getFacebookBanner1() != null && !MyHelpers.getFacebookBanner1().isEmpty()) {
+                if (regular_facebook_banner_adView_2 == null) {
+                    FacebookBannerPreLoad2();
+                }
+            }
+
+        } else if (MyHelpers.fb_banner_number == 3) {
+
+            if (MyHelpers.getFacebookBanner() != null && !MyHelpers.getFacebookBanner().isEmpty()) {
+                if (regular_facebook_banner_adView_1 == null) {
+                    FacebookBannerPreLoad1();
+                }
+            }
+            if (MyHelpers.getFacebookBanner1() != null && !MyHelpers.getFacebookBanner1().isEmpty()) {
+                if (regular_facebook_banner_adView_2 == null) {
+                    FacebookBannerPreLoad2();
+                }
+            }
+
+            if (MyHelpers.getFacebookBanner2() != null && !MyHelpers.getFacebookBanner2().isEmpty()) {
+                if (regular_facebook_banner_adView_3 == null) {
+                    FacebookBannerPreLoad3();
+                }
             }
         }
 
-
-        if (MyHelpers.getAppLovinBanner() != null && !MyHelpers.getAppLovinBanner().isEmpty() && MyHelpers.getlive_status().equals("1")) {
+        //A
+        if (MyHelpers.getAppLovinBanner() != null && !MyHelpers.getAppLovinBanner().isEmpty()) {
             if (regular_applovin_banner_adView == null) {
                 AppLovingBannerPreLoad();
             }
         }
 
-        if (MyHelpers.getUnityBannerID() != null && !MyHelpers.getUnityBannerID().isEmpty() && MyHelpers.getlive_status().equals("1")) {
+        //U
+        if (MyHelpers.getUnityBannerID() != null && !MyHelpers.getUnityBannerID().isEmpty()) {
             if (regular_unity_banner_adView == null) {
                 UnityBannerPreLoad();
             }

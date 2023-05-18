@@ -35,6 +35,10 @@ public class MyHelpers extends Application {
     public static int Google_native_number;
     public static int Google_banner_number;
 
+    public static int fb_inter_number;
+    public static int fb_native_number;
+    public static int fb_banner_number;
+
 
     public static synchronized MyHelpers getInstanceHelp() {
         MyHelpers application;
@@ -59,7 +63,7 @@ public class MyHelpers extends Application {
         });
         /*Facebook*/
         AudienceNetworkAds.initialize(this);
-       // AdSettings.setTestMode(true);
+        // AdSettings.setTestMode(true);
 
         /*App Lovin*/
         AppLovinSdk.getInstance(this).setMediationProvider("max");
