@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/white">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:id="@+id/full_click"
         android:layout_width="match_parent"
-        android:layout_height="260dp"
+        android:layout_height="250dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/app_btn"
         android:backgroundTint="#E8E8E8"
-        android:layout_marginBottom="10dp"
         android:padding="10dp">
 
         <ImageView
             android:id="@+id/ads_banner"
             android:layout_width="match_parent"
-            android:layout_height="124dp"
+            android:layout_height="114dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/updateapp" />
 
