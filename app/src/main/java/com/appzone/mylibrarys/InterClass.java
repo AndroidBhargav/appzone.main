@@ -1,10 +1,14 @@
 package com.appzone.mylibrarys;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
+import android.view.Window;
 
 import androidx.annotation.NonNull;
 
@@ -42,6 +46,9 @@ public class InterClass {
     public static com.facebook.ads.InterstitialAd facebook_interstitialAd2;
     public static com.facebook.ads.InterstitialAd facebook_interstitialAd3;
 
+    public static com.facebook.ads.InterstitialAd facebook_interstitial_loading;
+    public static com.facebook.ads.InterstitialAd facebook_interstitial_loading_main;
+
     //App Loving
     public static MaxInterstitialAd applovin_interstitialAd;
 
@@ -52,6 +59,7 @@ public class InterClass {
     public static Activity main_context;
     public static int auto_notShow_adsBack = 0;
 
+    public static Dialog on_loading_dialog;
 
     /**
      * INTERNET CHECK CODE
@@ -161,18 +169,241 @@ public class InterClass {
      * Regular Ads
      */
     private static void RegularADS() {
-        if (MyHelpers.getGoogleEnable().equals("1") && MyHelpers.getlive_status().equals("1")) {
-            GoogleADSShow("r");
-        } else if (MyHelpers.getFacebookEnable().equals("1") && MyHelpers.getlive_status().equals("1")) {
-            FacebookADSShow("f");
-        } else if (MyHelpers.getAppLovinEnable().equals("1")) {
-            RegularAppLovingShow();
-        } else if (MyHelpers.getUnityEnable().equals("1")) {
-            UnityADSShow();
-        } else if (MyHelpers.get_q_link_btn_on_off().equals("1")) {
-            MyHelpers.BtnAutolink();
-        } else if (MyHelpers.getCustomEnable().equals("1")) {
-            CustomADSInter();
+
+        if (MyHelpers.getExtraBtn_1().equals("1")) {
+
+            if (MyHelpers.getGoogleEnable().equals("1") && MyHelpers.getlive_status().equals("1")) {
+                GoogleADSShowONDemand();
+            } else if (MyHelpers.getFacebookEnable().equals("1") && MyHelpers.getlive_status().equals("1")) {
+                FacebookADSShowONDemand();
+            }
+
+        } else {
+            if (MyHelpers.getGoogleEnable().equals("1") && MyHelpers.getlive_status().equals("1")) {
+                GoogleADSShow("r");
+            } else if (MyHelpers.getFacebookEnable().equals("1") && MyHelpers.getlive_status().equals("1")) {
+                FacebookADSShow("f");
+            } else if (MyHelpers.getAppLovinEnable().equals("1")) {
+                RegularAppLovingShow();
+            } else if (MyHelpers.getUnityEnable().equals("1")) {
+                UnityADSShow();
+            } else if (MyHelpers.get_q_link_btn_on_off().equals("1")) {
+                MyHelpers.BtnAutolink();
+            } else if (MyHelpers.getCustomEnable().equals("1")) {
+                CustomADSInter();
+            }
+        }
+    }
+
+
+    private static void GoogleADSShowONDemand() {
+
+        try {
+
+            if (MyHelpers.getGoogleInter() != null && !MyHelpers.getGoogleInter().isEmpty()) {
+
+                showLoading(main_context, false);
+                AdRequest adRequest = new AdRequest.Builder().build();
+                com.google.android.gms.ads.interstitial.InterstitialAd.load(main_context, MyHelpers.getGoogleInter(), adRequest, new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull com.google.android.gms.ads.interstitial.InterstitialAd interstitialAd) {
+                        super.onAdLoaded(interstitialAd);
+
+                        hideLoading();
+                        interstitialAd.show(main_context);
+                        interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                super.onAdFailedToShowFullScreenContent(adError);
+                                GoogleAdsShowOnDemandFail_showFB();
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                super.onAdShowedFullScreenContent();
+
+                            }
+
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                super.onAdDismissedFullScreenContent();
+                            }
+
+                        });
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        super.onAdFailedToLoad(loadAdError);
+                        GoogleAdsShowOnDemandFail_showFB();
+                    }
+                });
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            hideLoading();
+        }
+    }
+
+    private static void GoogleAdsShowOnDemandFail_showFB() {
+
+        if (MyHelpers.getFacebookInter() != null && !MyHelpers.getFacebookInter().isEmpty()) {
+
+            facebook_interstitial_loading = new com.facebook.ads.InterstitialAd(main_context, MyHelpers.getFacebookInter());
+            InterstitialAdListener adListener = new InterstitialAdListener() {
+                @Override
+                public void onInterstitialDisplayed(Ad ad) {
+
+                }
+
+                @Override
+                public void onInterstitialDismissed(Ad ad) {
+
+                }
+
+                @Override
+                public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                    hideLoading();
+                    facebook_interstitial_loading = null;
+                }
+
+                @Override
+                public void onAdLoaded(Ad ad) {
+                    hideLoading();
+                    if (facebook_interstitial_loading != null && facebook_interstitial_loading.isAdLoaded()) {
+                        facebook_interstitial_loading.show();
+                    }
+                }
+
+                @Override
+                public void onAdClicked(Ad ad) {
+
+                }
+
+                @Override
+                public void onLoggingImpression(Ad ad) {
+
+                }
+            };
+            facebook_interstitial_loading.loadAd(facebook_interstitial_loading.buildLoadAdConfig().withAdListener(adListener).build());
+        }
+    }
+
+    private static void FacebookADSShowONDemand() {
+
+        try {
+
+            showLoading(main_context, false);
+            if (MyHelpers.getFacebookInter() != null && !MyHelpers.getFacebookInter().isEmpty()) {
+
+                facebook_interstitial_loading_main = new com.facebook.ads.InterstitialAd(main_context, MyHelpers.getFacebookInter());
+                InterstitialAdListener adListener = new InterstitialAdListener() {
+                    @Override
+                    public void onInterstitialDisplayed(Ad ad) {
+
+                    }
+
+                    @Override
+                    public void onInterstitialDismissed(Ad ad) {
+
+                    }
+
+                    @Override
+                    public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                        hideLoading();
+                        facebook_interstitial_loading_main = null;
+                        FacebookAdsShowOnDemandFail_showG();
+                    }
+
+                    @Override
+                    public void onAdLoaded(Ad ad) {
+                        hideLoading();
+                        if (facebook_interstitial_loading_main != null && facebook_interstitial_loading_main.isAdLoaded()) {
+                            facebook_interstitial_loading_main.show();
+                        }
+                    }
+
+                    @Override
+                    public void onAdClicked(Ad ad) {
+
+                    }
+
+                    @Override
+                    public void onLoggingImpression(Ad ad) {
+
+                    }
+                };
+                facebook_interstitial_loading_main.loadAd(facebook_interstitial_loading_main.buildLoadAdConfig().withAdListener(adListener).build());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            hideLoading();
+        }
+    }
+
+    private static void FacebookAdsShowOnDemandFail_showG() {
+
+        if (MyHelpers.getGoogleInter() != null && !MyHelpers.getGoogleInter().isEmpty()) {
+
+            AdRequest adRequest = new AdRequest.Builder().build();
+            com.google.android.gms.ads.interstitial.InterstitialAd.load(main_context, MyHelpers.getGoogleInter(), adRequest, new InterstitialAdLoadCallback() {
+                @Override
+                public void onAdLoaded(@NonNull com.google.android.gms.ads.interstitial.InterstitialAd interstitialAd) {
+                    super.onAdLoaded(interstitialAd);
+
+                    hideLoading();
+                    interstitialAd.show(main_context);
+                    interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                        @Override
+                        public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                            super.onAdFailedToShowFullScreenContent(adError);
+
+                        }
+
+                        @Override
+                        public void onAdShowedFullScreenContent() {
+                            super.onAdShowedFullScreenContent();
+
+                        }
+
+                        @Override
+                        public void onAdDismissedFullScreenContent() {
+                            super.onAdDismissedFullScreenContent();
+                        }
+
+                    });
+                }
+
+                @Override
+                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                    super.onAdFailedToLoad(loadAdError);
+                    hideLoading();
+                }
+            });
+
+        }
+
+    }
+
+    public static void showLoading(Activity activity, boolean cancelable) {
+
+        on_loading_dialog = new Dialog(activity);
+        on_loading_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        on_loading_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        on_loading_dialog.setContentView(R.layout.loading_dialog);
+        on_loading_dialog.setCancelable(cancelable);
+
+        if (!on_loading_dialog.isShowing() && !activity.isFinishing()) {
+            on_loading_dialog.show();
+        }
+    }
+
+    public static void hideLoading() {
+        if (on_loading_dialog != null && on_loading_dialog.isShowing()) {
+            on_loading_dialog.cancel();
         }
     }
 
@@ -539,7 +770,7 @@ public class InterClass {
 
     /*Custom Inter Show*/
     private static void CustomADSInter() {
-        if (SplashHelp.adsModals != null || SplashHelp.adsModals.size() != 0) {
+        if (SplashHelp.adsModals != null && !SplashHelp.adsModals.isEmpty()) {
             main_context.startActivity(new Intent(main_context, CustomAdsInterActivity.class));
         }
     }

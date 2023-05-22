@@ -414,45 +414,44 @@ public class NativeClass {
     /*Custom Native*/
     private static void CustomADSNative() {
 
-        if (SplashHelp.adsModals == null || SplashHelp.adsModals.size() == 0) {
+        if (SplashHelp.adsModals != null && !SplashHelp.adsModals.isEmpty()) {
+            int ads_number = MyHelpers.getRandomNumber(0, SplashHelp.adsModals.size() - 1);
+            RelativeLayout native_view = (RelativeLayout) main_context.getLayoutInflater().inflate(R.layout.custom_native, (ViewGroup) null);
+            AppCompatButton btn_install = native_view.findViewById(R.id.btn_install);
+            RelativeLayout full_click = native_view.findViewById(R.id.full_click);
+            TextView app_name = native_view.findViewById(R.id.app_name);
+            TextView app_shot = native_view.findViewById(R.id.app_shot);
+            ImageView app_icon = native_view.findViewById(R.id.app_icon);
+            ImageView ads_banner = native_view.findViewById(R.id.ads_banner);
+            Glide.with(main_context).load(SplashHelp.adsModals.get(ads_number).getApp_logo()).into(app_icon);
+            Glide.with(main_context).load(SplashHelp.adsModals.get(ads_number).getApp_banner()).into(ads_banner);
+            app_name.setText(SplashHelp.adsModals.get(ads_number).getAd_app_name());
+            app_shot.setText(SplashHelp.adsModals.get(ads_number).getApp_description());
+            btn_install.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
+                    }
+                }
+            });
+            full_click.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
+                    }
+                }
+            });
             main_native.removeAllViews();
-            return;
+            main_native.addView(native_view);
+        } else {
+            main_native.removeAllViews();
         }
-
-        int ads_number = MyHelpers.getRandomNumber(0, SplashHelp.adsModals.size() - 1);
-        RelativeLayout native_view = (RelativeLayout) main_context.getLayoutInflater().inflate(R.layout.custom_native, (ViewGroup) null);
-        AppCompatButton btn_install = native_view.findViewById(R.id.btn_install);
-        RelativeLayout full_click = native_view.findViewById(R.id.full_click);
-        TextView app_name = native_view.findViewById(R.id.app_name);
-        TextView app_shot = native_view.findViewById(R.id.app_shot);
-        ImageView app_icon = native_view.findViewById(R.id.app_icon);
-        ImageView ads_banner = native_view.findViewById(R.id.ads_banner);
-        Glide.with(main_context).load(SplashHelp.adsModals.get(ads_number).getApp_logo()).into(app_icon);
-        Glide.with(main_context).load(SplashHelp.adsModals.get(ads_number).getApp_banner()).into(ads_banner);
-        app_name.setText(SplashHelp.adsModals.get(ads_number).getAd_app_name());
-        app_shot.setText(SplashHelp.adsModals.get(ads_number).getApp_description());
-        btn_install.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
-                } catch (android.content.ActivityNotFoundException anfe) {
-                    main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
-                }
-            }
-        });
-        full_click.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
-                } catch (android.content.ActivityNotFoundException anfe) {
-                    main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
-                }
-            }
-        });
-        main_native.removeAllViews();
-        main_native.addView(native_view);
     }
 
     /**

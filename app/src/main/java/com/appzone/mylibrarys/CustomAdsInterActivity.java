@@ -36,13 +36,8 @@ public class CustomAdsInterActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.custom_inter);
 
-        ads_number_string = String.valueOf(MyHelpers.getRandomNumber(0, SplashHelp.adsModals.size() - 1));
-
-        if (ads_number_string != null && !ads_number_string.isEmpty()) {
-            ads_number = Integer.parseInt(ads_number_string);
-        }
-
         initView();
+
         btnInstall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,28 +69,38 @@ public class CustomAdsInterActivity extends AppCompatActivity {
         adBanner = (ImageView) findViewById(R.id.ad_banner);
         appName = (TextView) findViewById(R.id.app_name);
         appShot = (TextView) findViewById(R.id.app_shot);
-
-
-        appName.setText(SplashHelp.adsModals.get(ads_number).getAd_app_name());
-        appShot.setText(SplashHelp.adsModals.get(ads_number).getApp_description());
-        Glide.with(this)
-                .load(SplashHelp.adsModals.get(ads_number).getApp_logo())
-                .into(appIcon);
-        Glide.with(this)
-                .load(SplashHelp.adsModals.get(ads_number).getApp_banner())
-                .into(adBanner);
-
         close = (ImageView) findViewById(R.id.close);
         btnInstall = (AppCompatButton) findViewById(R.id.btn_install);
         btnCancel = (AppCompatButton) findViewById(R.id.btn_cancel);
         mainView = (RelativeLayout) findViewById(R.id.main_view);
+
+        if (SplashHelp.adsModals != null && !SplashHelp.adsModals.isEmpty()) {
+            ads_number_string = String.valueOf(MyHelpers.getRandomNumber(0, SplashHelp.adsModals.size() - 1));
+
+            if (!ads_number_string.isEmpty()) {
+                ads_number = Integer.parseInt(ads_number_string);
+            }
+
+            Glide.with(this)
+                    .load(SplashHelp.adsModals.get(ads_number).getApp_logo())
+                    .into(appIcon);
+            Glide.with(this)
+                    .load(SplashHelp.adsModals.get(ads_number).getApp_banner())
+                    .into(adBanner);
+            appName.setText(SplashHelp.adsModals.get(ads_number).getAd_app_name());
+            appShot.setText(SplashHelp.adsModals.get(ads_number).getApp_description());
+
+        }
     }
 
     private void InstallApps() {
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
-        } catch (ActivityNotFoundException anfe) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
+
+        if (SplashHelp.adsModals != null && !SplashHelp.adsModals.isEmpty()) {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
+            } catch (ActivityNotFoundException anfe) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
+            }
         }
     }
 }

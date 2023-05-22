@@ -558,6 +558,14 @@ public class MyHelpers extends Application {
     }
 
 
+    public static void setExtraBtn_1(String ExtraBtn_1) {
+        editor.putString("ExtraBtn_1", ExtraBtn_1).commit();
+    }
+
+    public static String getExtraBtn_1() {
+        return sharedPreferences.getString("ExtraBtn_1", null);
+    }
+
     public static void setExtraBtn_2(String ExtraBtn_2) {
         editor.putString("ExtraBtn_2", ExtraBtn_2).commit();
     }
@@ -582,14 +590,37 @@ public class MyHelpers extends Application {
         return sharedPreferences.getString("ExtraBtn_4", null);
     }
 
-    public static void setExtraBtn_5(String ExtraBtn_5) {
-        editor.putString("ExtraBtn_5", ExtraBtn_5).commit();
+    public static void setExtraText_1(String ExtraText_1) {
+        editor.putString("ExtraText_1", ExtraText_1).commit();
     }
 
-    public static String getExtraBtn_5() {
-        return sharedPreferences.getString("ExtraBtn_5", null);
+    public static String getExtraText_1() {
+        return sharedPreferences.getString("ExtraText_1", null);
     }
 
+    public static void setExtraText_2(String ExtraText_2) {
+        editor.putString("ExtraText_2", ExtraText_2).commit();
+    }
+
+    public static String getExtraText_2() {
+        return sharedPreferences.getString("ExtraText_2", null);
+    }
+
+    public static void setExtraText_3(String ExtraText_3) {
+        editor.putString("ExtraText_3", ExtraText_3).commit();
+    }
+
+    public static String getExtraText_3() {
+        return sharedPreferences.getString("ExtraText_3", null);
+    }
+
+    public static void setExtraText_4(String ExtraText_4) {
+        editor.putString("ExtraText_4", ExtraText_4).commit();
+    }
+
+    public static String getExtraText_4() {
+        return sharedPreferences.getString("ExtraText_4", null);
+    }
 
     public static void setUpdateApps(String UpdateApps) {
         editor.putString("UpdateApps", UpdateApps).commit();

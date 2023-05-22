@@ -390,43 +390,44 @@ public class BannerClass {
 
     /*Custom*/
     private static void RegularCustomBannerAdsShow() {
-        if (SplashHelp.adsModals == null || SplashHelp.adsModals.size() == 0) {
-            main_banner.removeAllViews();
-            return;
-        }
+        if (SplashHelp.adsModals != null && !SplashHelp.adsModals.isEmpty()) {
 
-        int ads_number = MyHelpers.getRandomNumber(0, SplashHelp.adsModals.size() - 1);
-        RelativeLayout banner_view = (RelativeLayout) ((Activity) main_context).getLayoutInflater().inflate(R.layout.custom_banner, (ViewGroup) null);
-        TextView btn_install = (TextView) banner_view.findViewById(R.id.btn_install_banner);
-        RelativeLayout full_click = banner_view.findViewById(R.id.full_click_banner);
-        TextView app_name = banner_view.findViewById(R.id.app_name_banner);
-        TextView app_shot = banner_view.findViewById(R.id.app_shot_banner);
-        ImageView app_icon = banner_view.findViewById(R.id.app_icon_banner);
-        Glide.with(main_context).load(SplashHelp.adsModals.get(ads_number).getApp_logo()).into(app_icon);
-        app_name.setText(SplashHelp.adsModals.get(ads_number).getAd_app_name());
-        app_shot.setText(SplashHelp.adsModals.get(ads_number).getApp_description());
-        btn_install.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
-                } catch (android.content.ActivityNotFoundException anfe) {
-                    main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
+            int ads_number = MyHelpers.getRandomNumber(0, SplashHelp.adsModals.size() - 1);
+            RelativeLayout banner_view = (RelativeLayout) ((Activity) main_context).getLayoutInflater().inflate(R.layout.custom_banner, (ViewGroup) null);
+            TextView btn_install = (TextView) banner_view.findViewById(R.id.btn_install_banner);
+            RelativeLayout full_click = banner_view.findViewById(R.id.full_click_banner);
+            TextView app_name = banner_view.findViewById(R.id.app_name_banner);
+            TextView app_shot = banner_view.findViewById(R.id.app_shot_banner);
+            ImageView app_icon = banner_view.findViewById(R.id.app_icon_banner);
+            Glide.with(main_context).load(SplashHelp.adsModals.get(ads_number).getApp_logo()).into(app_icon);
+            app_name.setText(SplashHelp.adsModals.get(ads_number).getAd_app_name());
+            app_shot.setText(SplashHelp.adsModals.get(ads_number).getApp_description());
+            btn_install.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
+                    }
                 }
-            }
-        });
-        full_click.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
-                } catch (android.content.ActivityNotFoundException anfe) {
-                    main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
+            });
+            full_click.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
+                    }
                 }
-            }
-        });
-        main_banner.removeAllViews();
-        main_banner.addView(banner_view);
+            });
+            main_banner.removeAllViews();
+            main_banner.addView(banner_view);
+
+        } else {
+            main_banner.removeAllViews();
+        }
     }
 
     /**

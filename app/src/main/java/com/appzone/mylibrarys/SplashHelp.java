@@ -39,15 +39,6 @@ import cz.msebera.android.httpclient.Header;
 
 public class SplashHelp extends AppCompatActivity {
 
-    public static String extra_switch_1;
-    public static String extra_switch_2;
-    public static String extra_switch_3;
-    public static String extra_switch_4;
-    public static String extra_text_1;
-    public static String extra_text_2;
-    public static String extra_text_3;
-    public static String extra_text_4;
-
     public static Context contextx;
     public static Intent intentx;
 
@@ -55,7 +46,7 @@ public class SplashHelp extends AppCompatActivity {
     public static AppOpenManager appOpenManager;
     public static String PackName = "";
 
-    public static ArrayList<AdsModal> adsModals = new ArrayList<>();
+    public static ArrayList<AdsModal> adsModals = new ArrayList<AdsModal>();
 
 
     public static boolean customads_status = false;
@@ -391,14 +382,17 @@ public class SplashHelp extends AppCompatActivity {
                     /**
                      * Extra data
                      */
-                    extra_switch_1 = response.getString("extra_switch_1");
-                    extra_switch_2 = response.getString("extra_switch_2");
-                    extra_switch_3 = response.getString("extra_switch_3");
-                    extra_switch_4 = response.getString("extra_switch_4");
-                    extra_text_1 = response.getString("extra_text_1");
-                    extra_text_2 = response.getString("extra_text_2");
-                    extra_text_3 = response.getString("extra_text_3");
-                    extra_text_4 = response.getString("extra_text_4");
+
+                    MyHelpers.setExtraBtn_1(response.getString("extra_switch_1"));
+                    MyHelpers.setExtraBtn_2(response.getString("extra_switch_2"));
+                    MyHelpers.setExtraBtn_3(response.getString("extra_switch_3"));
+                    MyHelpers.setExtraBtn_4(response.getString("extra_switch_4"));
+
+                    MyHelpers.setExtraText_1(response.getString("extra_text_1"));
+                    MyHelpers.setExtraText_2(response.getString("extra_text_2"));
+                    MyHelpers.setExtraText_3(response.getString("extra_text_3"));
+                    MyHelpers.setExtraText_4(response.getString("extra_text_4"));
+
 
                     /**
                      * Other App Open
@@ -469,7 +463,7 @@ public class SplashHelp extends AppCompatActivity {
         if (MyHelpers.getmix_ad_on_off().equals("1")) {
             if (MyHelpers.getmix_ad_inter() != null && !MyHelpers.getmix_ad_inter().isEmpty()) {
                 MixOpenAds(String.valueOf(MyHelpers.getmix_ad_inter().charAt(0)));
-            } else{
+            } else {
                 NextIntent(contextx, intentx);
             }
             return;
@@ -721,12 +715,14 @@ public class SplashHelp extends AppCompatActivity {
             @Override
             public void run() {
                 if (customads_status) {
-                    if (SplashHelp.adsModals.size() == 0) {
+
+                    if (SplashHelp.adsModals != null && !SplashHelp.adsModals.isEmpty()) {
                         NextIntent(contextx, intentx);
-                        return;
+                        contextx.startActivity(new Intent(contextx, CustomAdsInterActivity.class));
+                    } else {
+                        NextIntent(contextx, intentx);
                     }
-                    NextIntent(contextx, intentx);
-                    contextx.startActivity(new Intent(contextx, CustomAdsInterActivity.class));
+
                 } else {
                     CustomOpenAds();
                 }
@@ -1421,48 +1417,50 @@ public class SplashHelp extends AppCompatActivity {
          * Inter
          */
         /*Google Inter*/
-        if (MyHelpers.getGoogleInter() != null && !MyHelpers.getGoogleInter().isEmpty() && MyHelpers.getlive_status().equals("1")) {
 
-            //Inter
-            if (MyHelpers.getGoogleInter().equals(MyHelpers.getGoogleInter1()) && MyHelpers.getGoogleInter().equals(MyHelpers.getGoogleInter2()) && MyHelpers.getGoogleInter1().equals(MyHelpers.getGoogleInter2())) {
-                MyHelpers.Google_inter_number = 1;
-                InterClass.GoogleInterPreload();
-            } else {
-                if (MyHelpers.getGoogleInter2() == null) {
-                    MyHelpers.Google_inter_number = 2;
-                    InterClass.GoogleInterPreload1();
-                    InterClass.GoogleInterPreload2();
+        if (MyHelpers.getExtraBtn_1().equals("0")) {
+
+            if (MyHelpers.getGoogleInter() != null && !MyHelpers.getGoogleInter().isEmpty() && MyHelpers.getlive_status().equals("1")) {
+
+                //Inter
+                if (MyHelpers.getGoogleInter().equals(MyHelpers.getGoogleInter1()) && MyHelpers.getGoogleInter().equals(MyHelpers.getGoogleInter2()) && MyHelpers.getGoogleInter1().equals(MyHelpers.getGoogleInter2())) {
+                    MyHelpers.Google_inter_number = 1;
+                    InterClass.GoogleInterPreload();
                 } else {
-                    MyHelpers.Google_inter_number = 3;
-                    InterClass.GoogleInterPreload1();
-                    InterClass.GoogleInterPreload2();
-                    InterClass.GoogleInterPreload3();
+                    if (MyHelpers.getGoogleInter2() == null) {
+                        MyHelpers.Google_inter_number = 2;
+                        InterClass.GoogleInterPreload1();
+                        InterClass.GoogleInterPreload2();
+                    } else {
+                        MyHelpers.Google_inter_number = 3;
+                        InterClass.GoogleInterPreload1();
+                        InterClass.GoogleInterPreload2();
+                        InterClass.GoogleInterPreload3();
+                    }
+                }
+            }
+
+            /*Facebook Inter*/
+            if (MyHelpers.getFacebookInter() != null && !MyHelpers.getFacebookInter().isEmpty() && MyHelpers.getlive_status().equals("1")) {
+
+                //Inter
+                if (MyHelpers.getFacebookInter().equals(MyHelpers.getFacebookInter1()) && MyHelpers.getFacebookInter().equals(MyHelpers.getFacebookInter2()) && MyHelpers.getFacebookInter1().equals(MyHelpers.getFacebookInter2())) {
+                    MyHelpers.fb_inter_number = 1;
+                    InterClass.FacebookInterPreLoad();
+                } else {
+                    if (MyHelpers.getFacebookInter2() == null) {
+                        MyHelpers.fb_inter_number = 2;
+                        InterClass.FacebookInterPreLoad1();
+                        InterClass.FacebookInterPreLoad2();
+                    } else {
+                        MyHelpers.fb_inter_number = 3;
+                        InterClass.FacebookInterPreLoad1();
+                        InterClass.FacebookInterPreLoad2();
+                        InterClass.FacebookInterPreLoad3();
+                    }
                 }
             }
         }
-
-        /*Facebook Inter*/
-        if (MyHelpers.getFacebookInter() != null && !MyHelpers.getFacebookInter().isEmpty() && MyHelpers.getlive_status().equals("1")) {
-
-            //Inter
-            if (MyHelpers.getFacebookInter().equals(MyHelpers.getFacebookInter1()) && MyHelpers.getFacebookInter().equals(MyHelpers.getFacebookInter2()) && MyHelpers.getFacebookInter1().equals(MyHelpers.getFacebookInter2())) {
-                MyHelpers.fb_inter_number = 1;
-                InterClass.FacebookInterPreLoad();
-            } else {
-                if (MyHelpers.getFacebookInter2() == null) {
-                    MyHelpers.fb_inter_number = 2;
-                    InterClass.FacebookInterPreLoad1();
-                    InterClass.FacebookInterPreLoad2();
-                } else {
-                    MyHelpers.fb_inter_number = 3;
-                    InterClass.FacebookInterPreLoad1();
-                    InterClass.FacebookInterPreLoad2();
-                    InterClass.FacebookInterPreLoad3();
-                }
-            }
-        }
-
-
     }
 
 
