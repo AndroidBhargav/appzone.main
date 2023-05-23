@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 
@@ -209,7 +211,6 @@ public class InterClass {
                     public void onAdLoaded(@NonNull com.google.android.gms.ads.interstitial.InterstitialAd interstitialAd) {
                         super.onAdLoaded(interstitialAd);
 
-                        hideLoading();
                         interstitialAd.show(main_context);
                         interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                             @Override
@@ -230,6 +231,14 @@ public class InterClass {
                             }
 
                         });
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                hideLoading();
+                            }
+                        }, 1000);
+
                     }
 
                     @Override
@@ -265,16 +274,22 @@ public class InterClass {
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    hideLoading();
                     facebook_interstitial_loading = null;
+                    hideLoading();
                 }
 
                 @Override
                 public void onAdLoaded(Ad ad) {
-                    hideLoading();
                     if (facebook_interstitial_loading != null && facebook_interstitial_loading.isAdLoaded()) {
                         facebook_interstitial_loading.show();
                     }
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            hideLoading();
+                        }
+                    }, 1000);
+
                 }
 
                 @Override
@@ -295,9 +310,9 @@ public class InterClass {
 
         try {
 
-            showLoading(main_context, false);
             if (MyHelpers.getFacebookInter() != null && !MyHelpers.getFacebookInter().isEmpty()) {
 
+                showLoading(main_context, false);
                 facebook_interstitial_loading_main = new com.facebook.ads.InterstitialAd(main_context, MyHelpers.getFacebookInter());
                 InterstitialAdListener adListener = new InterstitialAdListener() {
                     @Override
@@ -312,17 +327,21 @@ public class InterClass {
 
                     @Override
                     public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                        hideLoading();
                         facebook_interstitial_loading_main = null;
                         FacebookAdsShowOnDemandFail_showG();
                     }
 
                     @Override
                     public void onAdLoaded(Ad ad) {
-                        hideLoading();
                         if (facebook_interstitial_loading_main != null && facebook_interstitial_loading_main.isAdLoaded()) {
                             facebook_interstitial_loading_main.show();
                         }
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                hideLoading();
+                            }
+                        }, 1000);
                     }
 
                     @Override
@@ -354,7 +373,6 @@ public class InterClass {
                 public void onAdLoaded(@NonNull com.google.android.gms.ads.interstitial.InterstitialAd interstitialAd) {
                     super.onAdLoaded(interstitialAd);
 
-                    hideLoading();
                     interstitialAd.show(main_context);
                     interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
@@ -375,6 +393,13 @@ public class InterClass {
                         }
 
                     });
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            hideLoading();
+                        }
+                    }, 1000);
                 }
 
                 @Override
@@ -394,6 +419,13 @@ public class InterClass {
         on_loading_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         on_loading_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         on_loading_dialog.setContentView(R.layout.loading_dialog);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(on_loading_dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        on_loading_dialog.getWindow().setAttributes(lp);
+
         on_loading_dialog.setCancelable(cancelable);
 
         if (!on_loading_dialog.isShowing() && !activity.isFinishing()) {

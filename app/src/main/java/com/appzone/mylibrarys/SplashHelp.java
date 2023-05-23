@@ -1308,49 +1308,64 @@ public class SplashHelp extends AppCompatActivity {
         /**
          * Banner
          */
-        /*Google Banner*/
-        if (MyHelpers.getGoogleBanner() != null && !MyHelpers.getGoogleBanner().isEmpty() && MyHelpers.getlive_status().equals("1")) {
 
-            if (MyHelpers.getGoogleBanner().equals(MyHelpers.getGoogleBanner1()) && MyHelpers.getGoogleBanner().equals(MyHelpers.getGoogleBanner2()) && MyHelpers.getGoogleBanner1().equals(MyHelpers.getGoogleBanner2())) {
+        if (MyHelpers.getlive_status().equals("1")) {
+
+            /*Google Banner*/
+            if (MyHelpers.getGoogleBanner() != null && !MyHelpers.getGoogleBanner().isEmpty() &&
+                    MyHelpers.getGoogleBanner1() == null &&
+                    MyHelpers.getGoogleBanner2() == null ) {
+
                 MyHelpers.Google_banner_number = 1;
                 BannerClass.GoogleBannerPreload();
 
-            } else {
-                if (MyHelpers.getGoogleBanner2() == null) {
-                    MyHelpers.Google_banner_number = 2;
-                    BannerClass.GoogleBannerPreload1();
-                    BannerClass.GoogleBannerPreload2();
+            } else if (MyHelpers.getGoogleBanner() != null && !MyHelpers.getGoogleBanner().isEmpty() &&
+                    MyHelpers.getGoogleBanner1() != null && !MyHelpers.getGoogleBanner1().isEmpty() &&
+                    MyHelpers.getGoogleBanner2() == null ) {
 
-                } else {
-                    MyHelpers.Google_banner_number = 3;
-                    BannerClass.GoogleBannerPreload1();
-                    BannerClass.GoogleBannerPreload2();
-                    BannerClass.GoogleBannerPreload3();
+                MyHelpers.Google_banner_number = 2;
+                BannerClass.GoogleBannerPreload1();
+                BannerClass.GoogleBannerPreload2();
 
-                }
+            } else if (MyHelpers.getGoogleBanner() != null && !MyHelpers.getGoogleBanner().isEmpty() &&
+                    MyHelpers.getGoogleBanner1() != null && !MyHelpers.getGoogleBanner1().isEmpty() &&
+                    MyHelpers.getGoogleBanner2() != null && !MyHelpers.getGoogleBanner2().isEmpty()) {
+
+                MyHelpers.Google_banner_number = 3;
+                BannerClass.GoogleBannerPreload1();
+                BannerClass.GoogleBannerPreload2();
+                BannerClass.GoogleBannerPreload3();
+
             }
-        }
 
-        /*Facebook Banner*/
-        if (MyHelpers.getFacebookBanner() != null && !MyHelpers.getFacebookBanner().isEmpty() && MyHelpers.getlive_status().equals("1")) {
+            /*Facebook Banner*/
+            if (MyHelpers.getFacebookBanner() != null && !MyHelpers.getFacebookBanner().isEmpty() &&
+                    MyHelpers.getFacebookBanner1() == null &&
+                    MyHelpers.getFacebookBanner2() == null ) {
 
-            if (MyHelpers.getFacebookBanner().equals(MyHelpers.getFacebookBanner1()) && MyHelpers.getFacebookBanner().equals(MyHelpers.getFacebookBanner2()) && MyHelpers.getFacebookBanner1().equals(MyHelpers.getFacebookBanner2())) {
                 MyHelpers.fb_banner_number = 1;
                 BannerClass.FacebookBannerPreLoad();
 
-            } else {
-                if (MyHelpers.getFacebookBanner2() == null) {
-                    MyHelpers.fb_banner_number = 2;
-                    BannerClass.FacebookBannerPreLoad1();
-                    BannerClass.FacebookBannerPreLoad2();
+            } else if (MyHelpers.getFacebookBanner() != null && !MyHelpers.getFacebookBanner().isEmpty() &&
+                    MyHelpers.getFacebookBanner1() != null && !MyHelpers.getFacebookBanner1().isEmpty() &&
+                    MyHelpers.getFacebookBanner2() == null ) {
 
-                } else {
-                    MyHelpers.fb_banner_number = 3;
-                    BannerClass.FacebookBannerPreLoad1();
-                    BannerClass.FacebookBannerPreLoad2();
-                    BannerClass.FacebookBannerPreLoad3();
-                }
+                MyHelpers.fb_banner_number = 2;
+                BannerClass.FacebookBannerPreLoad1();
+                BannerClass.FacebookBannerPreLoad2();
+
+            } else if (MyHelpers.getFacebookBanner() != null && !MyHelpers.getFacebookBanner().isEmpty() &&
+                    MyHelpers.getFacebookBanner1() != null && !MyHelpers.getFacebookBanner1().isEmpty() &&
+                    MyHelpers.getFacebookBanner2() != null && !MyHelpers.getFacebookBanner2().isEmpty()) {
+
+                MyHelpers.fb_banner_number = 3;
+                BannerClass.FacebookBannerPreLoad1();
+                BannerClass.FacebookBannerPreLoad2();
+                BannerClass.FacebookBannerPreLoad3();
+
             }
+
+
         }
 
         /*AppLoving Banner*/
@@ -1368,43 +1383,65 @@ public class SplashHelp extends AppCompatActivity {
         /**
          * Native
          */
-        /*Google Native*/
-        if (MyHelpers.getGoogleNative() != null && !MyHelpers.getGoogleNative().isEmpty() && MyHelpers.getlive_status().equals("1")) {
-            if (MyHelpers.getGoogleNative().equals(MyHelpers.getGoogleNative1()) && MyHelpers.getGoogleNative().equals(MyHelpers.getGoogleNative2()) && MyHelpers.getGoogleNative1().equals(MyHelpers.getGoogleNative2())) {
+
+        if (MyHelpers.getlive_status().equals("1")) {
+
+            /*Google Native*/
+            if (MyHelpers.getGoogleNative() != null && !MyHelpers.getGoogleNative().isEmpty() &&
+                    MyHelpers.getGoogleNative1() == null &&
+                    MyHelpers.getGoogleNative2() == null ) {
+
                 MyHelpers.Google_native_number = 1;
                 NativeClass.GoogleNativePreload();
-            } else {
-                if (MyHelpers.getGoogleNative2() == null) {
-                    MyHelpers.Google_native_number = 2;
-                    NativeClass.GoogleNativePreload1();
-                    NativeClass.GoogleNativePreload2();
-                } else {
-                    MyHelpers.Google_native_number = 3;
-                    NativeClass.GoogleNativePreload1();
-                    NativeClass.GoogleNativePreload2();
-                    NativeClass.GoogleNativePreload3();
-                }
-            }
-        }
 
-        /*Facebook Native*/
-        if (MyHelpers.getFacebookNative() != null && !MyHelpers.getFacebookNative().isEmpty() && MyHelpers.getlive_status().equals("1")) {
-            if (MyHelpers.getFacebookNative().equals(MyHelpers.getFacebookNative1()) && MyHelpers.getFacebookNative().equals(MyHelpers.getFacebookNative2()) && MyHelpers.getFacebookNative1().equals(MyHelpers.getFacebookNative2())) {
+            } else if (MyHelpers.getGoogleNative() != null && !MyHelpers.getGoogleNative().isEmpty() &&
+                    MyHelpers.getGoogleNative1() != null && !MyHelpers.getGoogleNative1().isEmpty() &&
+                    MyHelpers.getGoogleNative2() == null) {
+
+                MyHelpers.Google_native_number = 2;
+                NativeClass.GoogleNativePreload1();
+                NativeClass.GoogleNativePreload2();
+
+            } else if (MyHelpers.getGoogleNative() != null && !MyHelpers.getGoogleNative().isEmpty() &&
+                    MyHelpers.getGoogleNative1() != null && !MyHelpers.getGoogleNative1().isEmpty() &&
+                    MyHelpers.getGoogleNative2() != null && !MyHelpers.getGoogleNative2().isEmpty()) {
+
+                MyHelpers.Google_native_number = 3;
+                NativeClass.GoogleNativePreload1();
+                NativeClass.GoogleNativePreload2();
+                NativeClass.GoogleNativePreload3();
+
+            }
+
+            /*Facebook Native*/
+            if (MyHelpers.getFacebookNative() != null && !MyHelpers.getFacebookNative().isEmpty() &&
+                    MyHelpers.getFacebookNative1() == null &&
+                    MyHelpers.getFacebookNative2() == null ) {
+
                 MyHelpers.fb_native_number = 1;
                 NativeClass.FacebookNativePreLoad();
-            } else {
-                if (MyHelpers.getFacebookNative2() == null) {
-                    MyHelpers.fb_native_number = 2;
-                    NativeClass.FacebookNativePreLoad1();
-                    NativeClass.FacebookNativePreLoad2();
-                } else {
-                    MyHelpers.fb_native_number = 3;
-                    NativeClass.FacebookNativePreLoad1();
-                    NativeClass.FacebookNativePreLoad2();
-                    NativeClass.FacebookNativePreLoad3();
-                }
+
+            } else if (MyHelpers.getFacebookNative() != null && !MyHelpers.getFacebookNative().isEmpty() &&
+                    MyHelpers.getFacebookNative1() != null && !MyHelpers.getFacebookNative1().isEmpty() &&
+                    MyHelpers.getFacebookNative2() == null ) {
+
+                MyHelpers.fb_native_number = 2;
+                NativeClass.FacebookNativePreLoad1();
+                NativeClass.FacebookNativePreLoad2();
+
+            } else if (MyHelpers.getFacebookNative() != null && !MyHelpers.getFacebookNative().isEmpty() &&
+                    MyHelpers.getFacebookNative1() != null && !MyHelpers.getFacebookNative1().isEmpty() &&
+                    MyHelpers.getFacebookNative2() != null && !MyHelpers.getFacebookNative2().isEmpty()) {
+
+                MyHelpers.fb_native_number = 3;
+                NativeClass.FacebookNativePreLoad1();
+                NativeClass.FacebookNativePreLoad2();
+                NativeClass.FacebookNativePreLoad3();
+
             }
+
         }
+
 
         /*AppLoving Native*/
         if (MyHelpers.getAppLovinNative() != null && !MyHelpers.getAppLovinNative().isEmpty()) {
@@ -1420,45 +1457,62 @@ public class SplashHelp extends AppCompatActivity {
 
         if (MyHelpers.getExtraBtn_1().equals("0")) {
 
-            if (MyHelpers.getGoogleInter() != null && !MyHelpers.getGoogleInter().isEmpty() && MyHelpers.getlive_status().equals("1")) {
+            if (MyHelpers.getlive_status().equals("1")) {
 
-                //Inter
-                if (MyHelpers.getGoogleInter().equals(MyHelpers.getGoogleInter1()) && MyHelpers.getGoogleInter().equals(MyHelpers.getGoogleInter2()) && MyHelpers.getGoogleInter1().equals(MyHelpers.getGoogleInter2())) {
+                /*Google Inter*/
+                if (MyHelpers.getGoogleInter() != null && !MyHelpers.getGoogleInter().isEmpty() &&
+                        MyHelpers.getGoogleInter1() == null &&
+                        MyHelpers.getGoogleInter2() == null ) {
+
                     MyHelpers.Google_inter_number = 1;
                     InterClass.GoogleInterPreload();
-                } else {
-                    if (MyHelpers.getGoogleInter2() == null) {
-                        MyHelpers.Google_inter_number = 2;
-                        InterClass.GoogleInterPreload1();
-                        InterClass.GoogleInterPreload2();
-                    } else {
-                        MyHelpers.Google_inter_number = 3;
-                        InterClass.GoogleInterPreload1();
-                        InterClass.GoogleInterPreload2();
-                        InterClass.GoogleInterPreload3();
-                    }
+
+                } else if (MyHelpers.getGoogleInter() != null && !MyHelpers.getGoogleInter().isEmpty() &&
+                        MyHelpers.getGoogleInter1() != null && !MyHelpers.getGoogleInter1().isEmpty() &&
+                        MyHelpers.getGoogleInter2() == null ) {
+
+                    MyHelpers.Google_inter_number = 2;
+                    InterClass.GoogleInterPreload1();
+                    InterClass.GoogleInterPreload2();
+
+                } else if (MyHelpers.getGoogleInter() != null && !MyHelpers.getGoogleInter().isEmpty() &&
+                        MyHelpers.getGoogleInter1() != null && !MyHelpers.getGoogleInter1().isEmpty() &&
+                        MyHelpers.getGoogleInter2() != null && !MyHelpers.getGoogleInter2().isEmpty()) {
+
+                    MyHelpers.Google_inter_number = 3;
+                    InterClass.GoogleInterPreload1();
+                    InterClass.GoogleInterPreload2();
+                    InterClass.GoogleInterPreload3();
+
                 }
-            }
 
-            /*Facebook Inter*/
-            if (MyHelpers.getFacebookInter() != null && !MyHelpers.getFacebookInter().isEmpty() && MyHelpers.getlive_status().equals("1")) {
+                /*Facebook Inter*/
+                if (MyHelpers.getFacebookInter() != null && !MyHelpers.getFacebookInter().isEmpty() &&
+                        MyHelpers.getFacebookInter1() == null &&
+                        MyHelpers.getFacebookInter2() == null ) {
 
-                //Inter
-                if (MyHelpers.getFacebookInter().equals(MyHelpers.getFacebookInter1()) && MyHelpers.getFacebookInter().equals(MyHelpers.getFacebookInter2()) && MyHelpers.getFacebookInter1().equals(MyHelpers.getFacebookInter2())) {
                     MyHelpers.fb_inter_number = 1;
                     InterClass.FacebookInterPreLoad();
-                } else {
-                    if (MyHelpers.getFacebookInter2() == null) {
-                        MyHelpers.fb_inter_number = 2;
-                        InterClass.FacebookInterPreLoad1();
-                        InterClass.FacebookInterPreLoad2();
-                    } else {
-                        MyHelpers.fb_inter_number = 3;
-                        InterClass.FacebookInterPreLoad1();
-                        InterClass.FacebookInterPreLoad2();
-                        InterClass.FacebookInterPreLoad3();
-                    }
+
+                } else if (MyHelpers.getFacebookInter() != null && !MyHelpers.getFacebookInter().isEmpty() &&
+                        MyHelpers.getFacebookInter1() != null && !MyHelpers.getFacebookInter1().isEmpty() &&
+                        MyHelpers.getFacebookInter2() == null ) {
+
+                    MyHelpers.fb_inter_number = 2;
+                    InterClass.FacebookInterPreLoad1();
+                    InterClass.FacebookInterPreLoad2();
+
+                } else if (MyHelpers.getFacebookInter() != null && !MyHelpers.getFacebookInter().isEmpty() &&
+                        MyHelpers.getFacebookInter1() != null && !MyHelpers.getFacebookInter1().isEmpty() &&
+                        MyHelpers.getFacebookInter2() != null && !MyHelpers.getFacebookInter2().isEmpty()) {
+
+                    MyHelpers.fb_inter_number = 3;
+                    InterClass.FacebookInterPreLoad1();
+                    InterClass.FacebookInterPreLoad2();
+                    InterClass.FacebookInterPreLoad3();
+
                 }
+
             }
         }
     }
