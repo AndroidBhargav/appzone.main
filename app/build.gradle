@@ -36,6 +36,7 @@ dependencies {
     /*Extra Library*/
     implementation 'com.google.code.gson:gson:2.10'
     implementation 'com.loopj.android:android-async-http:1.4.9'
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
     /*glide*/
     implementation 'com.github.bumptech.glide:glide:4.13.0'

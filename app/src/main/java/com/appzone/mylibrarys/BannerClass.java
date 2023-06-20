@@ -44,11 +44,17 @@ public class BannerClass {
     public static com.google.android.gms.ads.nativead.NativeAd regular_google_native_banner_2 = null;
     public static com.google.android.gms.ads.nativead.NativeAd regular_google_native_banner_3 = null;
 
+    public static com.google.android.gms.ads.nativead.NativeAd on_demand_google_native_banner = null;
+    public static com.google.android.gms.ads.nativead.NativeAd main_on_demand_google_native_banner = null;
+
     /*Facebook*/
     public static com.facebook.ads.AdView regular_facebook_banner_adView = null;
     public static com.facebook.ads.AdView regular_facebook_banner_adView_1 = null;
     public static com.facebook.ads.AdView regular_facebook_banner_adView_2 = null;
     public static com.facebook.ads.AdView regular_facebook_banner_adView_3 = null;
+
+    public static com.facebook.ads.AdView on_demand_facebook_banner_adView = null;
+    public static com.facebook.ads.AdView main_on_demand_facebook_banner_adView = null;
 
     /*AppLovin*/
     public static MaxAdView regular_applovin_banner_adView = null;
@@ -139,20 +145,199 @@ public class BannerClass {
      */
     /*Regula*/
     private static void RegularBannerAdsShow() {
-        if (MyHelpers.getGoogleEnable().equals("1") && MyHelpers.getlive_status().equals("1")) {
-            RegularGoogleADSBannerShow("r");
-        } else if (MyHelpers.getFacebookEnable().equals("1") && MyHelpers.getlive_status().equals("1")) {
-            RegularFacebookADSBannerShow("f");
-        } else if (MyHelpers.getAppLovinEnable().equals("1")) {
-            RegularAppLovingBannerShow();
-        } else if (MyHelpers.getUnityEnable().equals("1")) {
-            RegularUnityBannerShow();
-        } else if (MyHelpers.getCustomEnable().equals("1")) {
-            RegularCustomBannerAdsShow();
+
+        if (MyHelpers.getExtraBtn_2().equals("1")) {
+            if (MyHelpers.getGoogleEnable().equals("1") && MyHelpers.getlive_status().equals("1")) {
+                GoogleADSShowONDemandBanner();
+            } else if (MyHelpers.getFacebookEnable().equals("1") && MyHelpers.getlive_status().equals("1")) {
+                FacebookADSShowONDemandBanner();
+            }
         } else {
-            main_banner.removeAllViews();
+            if (MyHelpers.getGoogleEnable().equals("1") && MyHelpers.getlive_status().equals("1")) {
+                RegularGoogleADSBannerShow("r");
+            } else if (MyHelpers.getFacebookEnable().equals("1") && MyHelpers.getlive_status().equals("1")) {
+                RegularFacebookADSBannerShow("f");
+            } else if (MyHelpers.getAppLovinEnable().equals("1")) {
+                RegularAppLovingBannerShow();
+            } else if (MyHelpers.getUnityEnable().equals("1")) {
+                RegularUnityBannerShow();
+            } else if (MyHelpers.getCustomEnable().equals("1")) {
+                RegularCustomBannerAdsShow();
+            } else {
+                main_banner.removeAllViews();
+            }
         }
     }
+
+    public static void BannerLoader() {
+
+        View layout_ad_view = LayoutInflater.from(main_context).inflate(R.layout.ad_small_native_banner_loading_lay, null);
+        main_banner.removeAllViews();
+        main_banner.addView(layout_ad_view);
+
+    }
+
+    private static void GoogleADSShowONDemandBanner() {
+
+        if (MyHelpers.getGoogleBanner() != null && !MyHelpers.getGoogleBanner().isEmpty()) {
+
+            BannerLoader();
+            AdLoader adLoader = new AdLoader.Builder(main_context, MyHelpers.getGoogleBanner()).forNativeAd(nativeAds -> {
+                on_demand_google_native_banner = nativeAds;
+            }).withAdListener(new AdListener() {
+                @Override
+                public void onAdFailedToLoad(@NonNull LoadAdError adError) {
+                    on_demand_google_native_banner = null;
+                    GoogleAdsShowOnDemandFail_showFB();
+                }
+
+                @Override
+                public void onAdClicked() {
+                    super.onAdClicked();
+                }
+
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    if (on_demand_google_native_banner != null) {
+                        RegularGoogleBannerPopulateShow(on_demand_google_native_banner);
+                    }
+                }
+
+                @Override
+                public void onAdImpression() {
+                    super.onAdImpression();
+                }
+
+                @Override
+                public void onAdOpened() {
+                    super.onAdOpened();
+                }
+
+            }).build();
+            adLoader.loadAd(new AdRequest.Builder().build());
+
+        }
+    }
+
+    private static void GoogleAdsShowOnDemandFail_showFB() {
+
+        if (MyHelpers.getFacebookBanner() != null && !MyHelpers.getFacebookBanner().isEmpty()) {
+
+            on_demand_facebook_banner_adView = new com.facebook.ads.AdView(main_context, MyHelpers.getFacebookBanner(), com.facebook.ads.AdSize.BANNER_HEIGHT_50);
+            com.facebook.ads.AdListener adListener = new com.facebook.ads.AdListener() {
+                @Override
+                public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                    on_demand_facebook_banner_adView = null;
+                    main_banner.removeAllViews();
+                }
+
+                @Override
+                public void onAdLoaded(Ad ad) {
+                    if (on_demand_facebook_banner_adView != null && !on_demand_facebook_banner_adView.isAdInvalidated()) {
+                        main_banner.removeAllViews();
+                        main_banner.addView(on_demand_facebook_banner_adView);
+                    }
+                }
+
+                @Override
+                public void onAdClicked(Ad ad) {
+
+                }
+
+                @Override
+                public void onLoggingImpression(Ad ad) {
+
+                }
+            };
+            com.facebook.ads.AdView.AdViewLoadConfig loadAdConfig = on_demand_facebook_banner_adView.buildLoadAdConfig().withAdListener(adListener).build();
+            on_demand_facebook_banner_adView.loadAd(loadAdConfig);
+
+        }
+
+    }
+
+    private static void FacebookADSShowONDemandBanner() {
+
+        if (MyHelpers.getFacebookBanner() != null && !MyHelpers.getFacebookBanner().isEmpty()) {
+
+            BannerLoader();
+            main_on_demand_facebook_banner_adView = new com.facebook.ads.AdView(main_context, MyHelpers.getFacebookBanner(), com.facebook.ads.AdSize.BANNER_HEIGHT_50);
+            com.facebook.ads.AdListener adListener = new com.facebook.ads.AdListener() {
+                @Override
+                public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                    main_on_demand_facebook_banner_adView = null;
+                    FacebookAdsShowOnDemandFail_showG();
+                }
+
+                @Override
+                public void onAdLoaded(Ad ad) {
+                    if (main_on_demand_facebook_banner_adView != null && !main_on_demand_facebook_banner_adView.isAdInvalidated()) {
+                        main_banner.removeAllViews();
+                        main_banner.addView(main_on_demand_facebook_banner_adView);
+                    }
+                }
+
+                @Override
+                public void onAdClicked(Ad ad) {
+
+                }
+
+                @Override
+                public void onLoggingImpression(Ad ad) {
+
+                }
+            };
+            com.facebook.ads.AdView.AdViewLoadConfig loadAdConfig = main_on_demand_facebook_banner_adView.buildLoadAdConfig().withAdListener(adListener).build();
+            main_on_demand_facebook_banner_adView.loadAd(loadAdConfig);
+
+        }
+
+    }
+
+    private static void FacebookAdsShowOnDemandFail_showG() {
+
+        if (MyHelpers.getGoogleBanner() != null && !MyHelpers.getGoogleBanner().isEmpty()) {
+
+            AdLoader adLoader = new AdLoader.Builder(main_context, MyHelpers.getGoogleBanner()).forNativeAd(nativeAds -> {
+                main_on_demand_google_native_banner = nativeAds;
+            }).withAdListener(new AdListener() {
+                @Override
+                public void onAdFailedToLoad(@NonNull LoadAdError adError) {
+                    main_on_demand_google_native_banner = null;
+                    main_banner.removeAllViews();
+                }
+
+                @Override
+                public void onAdClicked() {
+                    super.onAdClicked();
+                }
+
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    if (main_on_demand_google_native_banner != null) {
+                        RegularGoogleBannerPopulateShow(main_on_demand_google_native_banner);
+                    }
+                }
+
+                @Override
+                public void onAdImpression() {
+                    super.onAdImpression();
+                }
+
+                @Override
+                public void onAdOpened() {
+                    super.onAdOpened();
+                }
+
+            }).build();
+            adLoader.loadAd(new AdRequest.Builder().build());
+
+        }
+
+    }
+
 
     /*Google*/
     private static void RegularGoogleADSBannerShow(String checker) {
@@ -241,6 +426,7 @@ public class BannerClass {
     }
 
     public static void RegularGoogleBannerPopulateShow(com.google.android.gms.ads.nativead.NativeAd nativeAd) {
+
         View layout_ad_view = LayoutInflater.from(main_context).inflate(R.layout.ad_google_native_small_banner, null);
         com.google.android.gms.ads.nativead.NativeAdView native_ad_view = layout_ad_view.findViewById(R.id.ad_view_small_banner);
         native_ad_view.setHeadlineView(native_ad_view.findViewById(R.id.ad_headline_small_banner));
@@ -259,6 +445,7 @@ public class BannerClass {
         native_ad_view.setNativeAd(nativeAd);
         main_banner.removeAllViews();
         main_banner.addView(layout_ad_view);
+
     }
 
 
