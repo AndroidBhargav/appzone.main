@@ -8,12 +8,17 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinSdkConfiguration;
+import com.bumptech.glide.Glide;
 import com.facebook.ads.AudienceNetworkAds;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -744,6 +749,36 @@ public class MyHelpers extends Application {
         LinkOpenChromeCustomTabUrl(instance, Auto_Link[getRandomNumber(0, Auto_Link.length - 1)]);
     }
 
+    public static void Q_A_NativeAuto(RelativeLayout main_native, Context context) {
+        String[] AutoNativeLink = MyHelpers.getExtraText_4().split(",");
+        if (AutoNativeLink.length == 1) {
+
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            RelativeLayout adView = (RelativeLayout) inflater.inflate(R.layout.q_a_native_lay, main_native, false);
+            ImageView img = adView.findViewById(R.id.img);
+            Glide.with(context).load(AutoNativeLink[0]).into(img);
+            img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    BtnAutolink();
+                }
+            });
+            main_native.removeAllViews();
+            main_native.addView(adView);
+            return;
+        }
+
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        RelativeLayout adView = (RelativeLayout) inflater.inflate(R.layout.q_a_native_lay, main_native, false);
+        ImageView img = adView.findViewById(R.id.img);
+        Glide.with(context).load(AutoNativeLink[getRandomNumber(0, AutoNativeLink.length - 1)]).into(img);
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BtnAutolink();
+            }
+        });
+        main_native.removeAllViews();
+        main_native.addView(adView);
+    }
 }
-
-

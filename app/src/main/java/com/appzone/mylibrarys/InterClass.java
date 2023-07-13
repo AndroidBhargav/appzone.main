@@ -1,5 +1,8 @@
 package com.appzone.mylibrarys;
 
+import static com.appzone.mylibrarys.MyHelpers.BtnAutolink;
+import static com.appzone.mylibrarys.MyHelpers.LinkOpenChromeCustomTabUrl;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -190,7 +193,7 @@ public class InterClass {
             } else if (MyHelpers.getUnityEnable().equals("1")) {
                 UnityADSShow();
             } else if (MyHelpers.get_q_link_btn_on_off().equals("1")) {
-                MyHelpers.BtnAutolink();
+                BtnAutolink();
             } else if (MyHelpers.getCustomEnable().equals("1")) {
                 CustomADSInter();
             }
@@ -211,6 +214,7 @@ public class InterClass {
                     public void onAdLoaded(@NonNull com.google.android.gms.ads.interstitial.InterstitialAd interstitialAd) {
                         super.onAdLoaded(interstitialAd);
 
+                        hideLoading();
                         interstitialAd.show(main_context);
                         interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                             @Override
@@ -232,13 +236,6 @@ public class InterClass {
 
                         });
 
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                hideLoading();
-                            }
-                        }, 1000);
-
                     }
 
                     @Override
@@ -248,6 +245,8 @@ public class InterClass {
                     }
                 });
 
+            } else {
+                GoogleAdsShowOnDemandFail_showFB();
             }
 
         } catch (Exception e) {
@@ -276,20 +275,15 @@ public class InterClass {
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
                     facebook_interstitial_loading = null;
                     hideLoading();
+                    BtnAutolink();
                 }
 
                 @Override
                 public void onAdLoaded(Ad ad) {
+                    hideLoading();
                     if (facebook_interstitial_loading != null && facebook_interstitial_loading.isAdLoaded()) {
                         facebook_interstitial_loading.show();
                     }
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            hideLoading();
-                        }
-                    }, 1000);
-
                 }
 
                 @Override
@@ -303,6 +297,9 @@ public class InterClass {
                 }
             };
             facebook_interstitial_loading.loadAd(facebook_interstitial_loading.buildLoadAdConfig().withAdListener(adListener).build());
+        } else {
+            hideLoading();
+            BtnAutolink();
         }
     }
 
@@ -333,15 +330,10 @@ public class InterClass {
 
                     @Override
                     public void onAdLoaded(Ad ad) {
+                        hideLoading();
                         if (facebook_interstitial_loading_main != null && facebook_interstitial_loading_main.isAdLoaded()) {
                             facebook_interstitial_loading_main.show();
                         }
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                hideLoading();
-                            }
-                        }, 1000);
                     }
 
                     @Override
@@ -355,6 +347,8 @@ public class InterClass {
                     }
                 };
                 facebook_interstitial_loading_main.loadAd(facebook_interstitial_loading_main.buildLoadAdConfig().withAdListener(adListener).build());
+            } else {
+                FacebookAdsShowOnDemandFail_showG();
             }
 
         } catch (Exception e) {
@@ -373,12 +367,14 @@ public class InterClass {
                 public void onAdLoaded(@NonNull com.google.android.gms.ads.interstitial.InterstitialAd interstitialAd) {
                     super.onAdLoaded(interstitialAd);
 
+                    hideLoading();
                     interstitialAd.show(main_context);
                     interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
                         public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                             super.onAdFailedToShowFullScreenContent(adError);
-
+                            hideLoading();
+                            BtnAutolink();
                         }
 
                         @Override
@@ -394,21 +390,19 @@ public class InterClass {
 
                     });
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            hideLoading();
-                        }
-                    }, 1000);
                 }
 
                 @Override
                 public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                     super.onAdFailedToLoad(loadAdError);
                     hideLoading();
+                    BtnAutolink();
                 }
             });
 
+        } else {
+            hideLoading();
+            BtnAutolink();
         }
 
     }
@@ -810,7 +804,7 @@ public class InterClass {
     /*Open Link*/
     public static void OpenLink() {
         if (MyHelpers.get_q_link_array() != null && !MyHelpers.get_q_link_array().isEmpty()) {
-            MyHelpers.BtnAutolink();
+            BtnAutolink();
         }
     }
 
@@ -873,7 +867,7 @@ public class InterClass {
         } else if (value.equals("u")) {
             UnityADSShow();
         } else if (value.equals("q")) {
-            MyHelpers.BtnAutolink();
+            BtnAutolink();
         } else if (value.equals("c")) {
             CustomADSInter();
         }

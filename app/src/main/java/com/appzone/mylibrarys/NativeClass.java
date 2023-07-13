@@ -1,5 +1,7 @@
 package com.appzone.mylibrarys;
 
+import static com.appzone.mylibrarys.MyHelpers.Q_A_NativeAuto;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -198,8 +200,9 @@ public class NativeClass {
                 }
             }).build().loadAd(new AdRequest.Builder().build());
 
+        } else {
+            GoogleAdsShowOnDemandFail_showFB();
         }
-
     }
 
     private static void GoogleAdsShowOnDemandFail_showFB() {
@@ -216,7 +219,8 @@ public class NativeClass {
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
                     on_demand_facebook_native_ads = null;
-                    main_native.removeAllViews();
+                    Q_A_NativeAuto(main_native, main_context);
+
                 }
 
                 @Override
@@ -237,6 +241,8 @@ public class NativeClass {
                 }
             };
             on_demand_facebook_native_ads.loadAd(on_demand_facebook_native_ads.buildLoadAdConfig().withAdListener(nativeAdListener).build());
+        } else {
+            Q_A_NativeAuto(main_native, main_context);
         }
     }
 
@@ -276,6 +282,8 @@ public class NativeClass {
                 }
             };
             main_on_demand_facebook_native_ads.loadAd(main_on_demand_facebook_native_ads.buildLoadAdConfig().withAdListener(nativeAdListener).build());
+        }else {
+            FacebookAdsShowOnDemandFail_showG();
         }
 
     }
@@ -299,7 +307,7 @@ public class NativeClass {
                 public void onAdFailedToLoad(LoadAdError loadAdError) {
                     super.onAdFailedToLoad(loadAdError);
                     on_demand_google_native_ads = null;
-                    main_native.removeAllViews();
+                    Q_A_NativeAuto(main_native, main_context);
                 }
 
                 public void onAdClicked() {
@@ -307,6 +315,8 @@ public class NativeClass {
                 }
             }).build().loadAd(new AdRequest.Builder().build());
 
+        }else {
+            Q_A_NativeAuto(main_native, main_context);
         }
     }
 
