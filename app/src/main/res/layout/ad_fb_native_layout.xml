@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ad_unit"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="260dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_height="250dp"
+        android:layout_margin="10dp"
         android:background="@drawable/app_btn"
         android:backgroundTint="#E8E8E8"
-        android:layout_marginBottom="10dp"
-        android:padding="10dp">
+        android:padding="10dp"
+        tools:ignore="UselessParent">
 
         <RelativeLayout
             android:id="@+id/lay_top"
@@ -56,21 +55,23 @@
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:padding="1dp"
-                        android:text="Ad"
+                        android:text="@string/ad"
                         android:textColor="@color/white"
                         android:textSize="8sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:ignore="SmallSp,VisualLintBounds" />
 
                     <TextView
                         android:id="@+id/native_ad_sponsored_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
                         android:includeFontPadding="false"
                         android:singleLine="true"
                         android:textColor="@android:color/black"
                         android:textSize="10sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:ignore="SmallSp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -79,7 +80,7 @@
         <com.facebook.ads.MediaView
             android:id="@+id/native_ad_media"
             android:layout_width="match_parent"
-            android:layout_height="124dp"
+            android:layout_height="114dp"
             android:layout_below="@+id/lay_top"
             android:layout_gravity="center_horizontal"
             android:layout_marginVertical="8dp" />
@@ -95,16 +96,17 @@
                 android:layout_toStartOf="@+id/native_ad_call_to_action"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
-                android:paddingEnd="10dp">
+                android:paddingEnd="10dp"
+                tools:ignore="RtlSymmetry">
 
                 <TextView
                     android:id="@+id/native_ad_social_context"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
                     android:includeFontPadding="false"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:layout_marginBottom="2dp"
                     android:textColor="@android:color/black"
                     android:textSize="12sp"
                     android:textStyle="bold" />

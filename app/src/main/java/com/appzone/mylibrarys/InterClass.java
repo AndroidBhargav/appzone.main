@@ -1,8 +1,8 @@
 package com.appzone.mylibrarys;
 
 import static com.appzone.mylibrarys.MyHelpers.BtnAutolink;
-import static com.appzone.mylibrarys.MyHelpers.LinkOpenChromeCustomTabUrl;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -10,8 +10,6 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Handler;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -27,6 +25,7 @@ import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.unity3d.ads.IUnityAdsLoadListener;
 import com.unity3d.ads.IUnityAdsShowListener;
@@ -45,7 +44,11 @@ public class InterClass {
     public static int mix_adsInter = 0;
     public static int auto_notShow_ads_inter = 0;
 
+    public static int google_inter_count_number = 0;
+
     //facebook
+
+    public static int fb_inter_count_number = 0;
     public static com.facebook.ads.InterstitialAd facebook_interstitialAd;
     public static com.facebook.ads.InterstitialAd facebook_interstitialAd1;
     public static com.facebook.ads.InterstitialAd facebook_interstitialAd2;
@@ -53,6 +56,8 @@ public class InterClass {
 
     public static com.facebook.ads.InterstitialAd facebook_interstitial_loading;
     public static com.facebook.ads.InterstitialAd facebook_interstitial_loading_main;
+    public static com.facebook.ads.InterstitialAd facebook_interstitial_loading_main_1;
+    public static com.facebook.ads.InterstitialAd facebook_interstitial_loading_main_2;
 
     //App Loving
     public static MaxInterstitialAd applovin_interstitialAd;
@@ -61,6 +66,7 @@ public class InterClass {
     public static boolean UnityAdLoadChecker = false;
 
     /*Helper*/
+    @SuppressLint("StaticFieldLeak")
     public static Activity main_context;
     public static int auto_notShow_adsBack = 0;
 
@@ -91,10 +97,10 @@ public class InterClass {
      */
     public static void Interstitial(Activity context) {
         main_context = context;
-        /**
-         * ActivityFinish == 0 next activity
-         * ActivityFinish == 1 next and finish activity
-         * ActivityFinish == 2 finish activity
+        /*
+          ActivityFinish == 0 next activity
+          ActivityFinish == 1 next and finish activity
+          ActivityFinish == 2 finish activity
          */
         if (InterClass.checkConnection(context)) {
 
@@ -136,8 +142,8 @@ public class InterClass {
         if (InterClass.checkConnection(context)) {
 
             if (MyHelpers.getBackAdsOnOff().equals("1")) {
-                /**
-                 * Skip Ads
+                /*
+                  Skip Ads
                  */
 
                 if (MyHelpers.getBackCounter() != 5000) {
@@ -154,8 +160,8 @@ public class InterClass {
                     return;
                 }
 
-                /**
-                 * Mix Ads
+                /*
+                  Mix Ads
                  */
                 if (MyHelpers.getmix_ad_on_off().equals("1")) {
                     MixAds();
@@ -178,9 +184,34 @@ public class InterClass {
         if (MyHelpers.getExtraBtn_1().equals("1")) {
 
             if (MyHelpers.getGoogleEnable().equals("1") && MyHelpers.getlive_status().equals("1")) {
-                GoogleADSShowONDemand();
+
+                if (google_inter_count_number > 2) {
+                    google_inter_count_number = 0;
+                }
+
+                if (google_inter_count_number == 0) {
+                    GoogleADSShowONDemand();
+                } else if (google_inter_count_number == 1) {
+                    GoogleADSShowONDemand_1();
+                } else if (google_inter_count_number == 2) {
+                    GoogleADSShowONDemand_2();
+                }
+
+
             } else if (MyHelpers.getFacebookEnable().equals("1") && MyHelpers.getlive_status().equals("1")) {
-                FacebookADSShowONDemand();
+
+                if (fb_inter_count_number > 2) {
+                    fb_inter_count_number = 0;
+                }
+
+                if (fb_inter_count_number == 0) {
+                    FacebookADSShowONDemand();
+                } else if (fb_inter_count_number == 1) {
+                    FacebookADSShowONDemand_1();
+                } else if (fb_inter_count_number == 2) {
+                    FacebookADSShowONDemand_2();
+                }
+
             }
 
         } else {
@@ -232,6 +263,7 @@ public class InterClass {
                             @Override
                             public void onAdDismissedFullScreenContent() {
                                 super.onAdDismissedFullScreenContent();
+                                google_inter_count_number++;
                             }
 
                         });
@@ -241,11 +273,14 @@ public class InterClass {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                         super.onAdFailedToLoad(loadAdError);
+                        google_inter_count_number++;
                         GoogleAdsShowOnDemandFail_showFB();
                     }
                 });
 
             } else {
+                showLoading(main_context, false);
+                google_inter_count_number++;
                 GoogleAdsShowOnDemandFail_showFB();
             }
 
@@ -254,6 +289,119 @@ public class InterClass {
             hideLoading();
         }
     }
+    private static void GoogleADSShowONDemand_1() {
+
+        try {
+
+            if (MyHelpers.getGoogleInter1() != null && !MyHelpers.getGoogleInter1().isEmpty()) {
+
+                showLoading(main_context, false);
+                AdRequest adRequest = new AdRequest.Builder().build();
+                com.google.android.gms.ads.interstitial.InterstitialAd.load(main_context, MyHelpers.getGoogleInter1(), adRequest, new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull com.google.android.gms.ads.interstitial.InterstitialAd interstitialAd) {
+                        super.onAdLoaded(interstitialAd);
+
+                        hideLoading();
+                        interstitialAd.show(main_context);
+                        interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                super.onAdFailedToShowFullScreenContent(adError);
+                                GoogleAdsShowOnDemandFail_showFB();
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                super.onAdShowedFullScreenContent();
+
+                            }
+
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                super.onAdDismissedFullScreenContent();
+                                google_inter_count_number++;
+                            }
+
+                        });
+
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        super.onAdFailedToLoad(loadAdError);
+                        google_inter_count_number++;
+                        GoogleAdsShowOnDemandFail_showFB();
+                    }
+                });
+
+            } else {
+                showLoading(main_context, false);
+                google_inter_count_number++;
+                GoogleAdsShowOnDemandFail_showFB();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            hideLoading();
+        }
+    }
+    private static void GoogleADSShowONDemand_2() {
+
+        try {
+
+            if (MyHelpers.getGoogleInter2() != null && !MyHelpers.getGoogleInter2().isEmpty()) {
+
+                showLoading(main_context, false);
+                AdRequest adRequest = new AdRequest.Builder().build();
+                com.google.android.gms.ads.interstitial.InterstitialAd.load(main_context, MyHelpers.getGoogleInter2(), adRequest, new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull com.google.android.gms.ads.interstitial.InterstitialAd interstitialAd) {
+                        super.onAdLoaded(interstitialAd);
+
+                        hideLoading();
+                        interstitialAd.show(main_context);
+                        interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                super.onAdFailedToShowFullScreenContent(adError);
+                                GoogleAdsShowOnDemandFail_showFB();
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                super.onAdShowedFullScreenContent();
+
+                            }
+
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                super.onAdDismissedFullScreenContent();
+                                google_inter_count_number++;
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        super.onAdFailedToLoad(loadAdError);
+                        google_inter_count_number++;
+                        GoogleAdsShowOnDemandFail_showFB();
+                    }
+                });
+
+            } else {
+                showLoading(main_context, false);
+                google_inter_count_number++;
+                GoogleAdsShowOnDemandFail_showFB();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            hideLoading();
+        }
+    }
+
 
     private static void GoogleAdsShowOnDemandFail_showFB() {
 
@@ -319,12 +467,13 @@ public class InterClass {
 
                     @Override
                     public void onInterstitialDismissed(Ad ad) {
-
+                        fb_inter_count_number++;
                     }
 
                     @Override
                     public void onError(Ad ad, com.facebook.ads.AdError adError) {
                         facebook_interstitial_loading_main = null;
+                        fb_inter_count_number++;
                         FacebookAdsShowOnDemandFail_showG();
                     }
 
@@ -348,6 +497,120 @@ public class InterClass {
                 };
                 facebook_interstitial_loading_main.loadAd(facebook_interstitial_loading_main.buildLoadAdConfig().withAdListener(adListener).build());
             } else {
+                showLoading(main_context, false);
+                fb_inter_count_number++;
+                FacebookAdsShowOnDemandFail_showG();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            hideLoading();
+        }
+    }
+    private static void FacebookADSShowONDemand_1() {
+
+        try {
+
+            if (MyHelpers.getFacebookInter1() != null && !MyHelpers.getFacebookInter1().isEmpty()) {
+
+                showLoading(main_context, false);
+                facebook_interstitial_loading_main_1 = new com.facebook.ads.InterstitialAd(main_context, MyHelpers.getFacebookInter1());
+                InterstitialAdListener adListener = new InterstitialAdListener() {
+                    @Override
+                    public void onInterstitialDisplayed(Ad ad) {
+
+                    }
+
+                    @Override
+                    public void onInterstitialDismissed(Ad ad) {
+                        fb_inter_count_number++;
+                    }
+
+                    @Override
+                    public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                        facebook_interstitial_loading_main_1 = null;
+                        fb_inter_count_number++;
+                        FacebookAdsShowOnDemandFail_showG();
+                    }
+
+                    @Override
+                    public void onAdLoaded(Ad ad) {
+                        hideLoading();
+                        if (facebook_interstitial_loading_main_1 != null && facebook_interstitial_loading_main_1.isAdLoaded()) {
+                            facebook_interstitial_loading_main_1.show();
+                        }
+                    }
+
+                    @Override
+                    public void onAdClicked(Ad ad) {
+
+                    }
+
+                    @Override
+                    public void onLoggingImpression(Ad ad) {
+
+                    }
+                };
+                facebook_interstitial_loading_main_1.loadAd(facebook_interstitial_loading_main_1.buildLoadAdConfig().withAdListener(adListener).build());
+            } else {
+                showLoading(main_context, false);
+                fb_inter_count_number++;
+                FacebookAdsShowOnDemandFail_showG();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            hideLoading();
+        }
+    }
+    private static void FacebookADSShowONDemand_2() {
+
+        try {
+
+            if (MyHelpers.getFacebookInter2() != null && !MyHelpers.getFacebookInter2().isEmpty()) {
+
+                showLoading(main_context, false);
+                facebook_interstitial_loading_main_2 = new com.facebook.ads.InterstitialAd(main_context, MyHelpers.getFacebookInter2());
+                InterstitialAdListener adListener = new InterstitialAdListener() {
+                    @Override
+                    public void onInterstitialDisplayed(Ad ad) {
+
+                    }
+
+                    @Override
+                    public void onInterstitialDismissed(Ad ad) {
+                        fb_inter_count_number++;
+                    }
+
+                    @Override
+                    public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                        facebook_interstitial_loading_main_2 = null;
+                        fb_inter_count_number++;
+                        FacebookAdsShowOnDemandFail_showG();
+                    }
+
+                    @Override
+                    public void onAdLoaded(Ad ad) {
+                        hideLoading();
+                        if (facebook_interstitial_loading_main_2 != null && facebook_interstitial_loading_main_2.isAdLoaded()) {
+                            facebook_interstitial_loading_main_2.show();
+                        }
+                    }
+
+                    @Override
+                    public void onAdClicked(Ad ad) {
+
+                    }
+
+                    @Override
+                    public void onLoggingImpression(Ad ad) {
+
+                    }
+                };
+                facebook_interstitial_loading_main_2.loadAd(facebook_interstitial_loading_main_2.buildLoadAdConfig().withAdListener(adListener).build());
+            } else {
+                showLoading(main_context, false);
+                fb_inter_count_number++;
                 FacebookAdsShowOnDemandFail_showG();
             }
 
@@ -581,7 +844,7 @@ public class InterClass {
 
         if (UnityAdLoadChecker) {
 
-            UnityAds.show((Activity) main_context, MyHelpers.getUnityInterID(), new UnityAdsShowOptions(), new IUnityAdsShowListener() {
+            UnityAds.show(main_context, MyHelpers.getUnityInterID(), new UnityAdsShowOptions(), new IUnityAdsShowListener() {
                 @Override
                 public void onUnityAdsShowFailure(String placementId, UnityAds.UnityAdsShowError error, String message) {
                     AllAdsPreLoadsInter("u");
@@ -611,14 +874,15 @@ public class InterClass {
     }
 
     private static void AllGoogle_Fails_OtherAdShow(String adview) {
-        if (adview.equals("r")) {
-            FacebookADSShow(adview);
-        } else if (adview.equals("f")) {
-            Facebook_Fails_RegularAppLovingShow();
-        } else if (adview.equals("a")) {
-            FacebookADSShow(adview);
-        } else if (adview.equals("u")) {
-            FacebookADSShow(adview);
+        switch (adview) {
+            case "r":
+            case "a":
+            case "u":
+                FacebookADSShow(adview);
+                break;
+            case "f":
+                Facebook_Fails_RegularAppLovingShow();
+                break;
         }
     }
 
@@ -686,14 +950,19 @@ public class InterClass {
 
     private static void AllFacebook_Fails_OtherAdShow(String adview) {
 
-        if (adview.equals("r")) {
-            Facebook_Fails_RegularAppLovingShow();
-        } else if (adview.equals("f")) {
-            GoogleADSShow("f");
-        } else if (adview.equals("a")) {
-            AllAds_Fails_Unity_Show();
-        } else {
-            Unity_Google_Facebook_ShowFails_ApplovinShowLisner();
+        switch (adview) {
+            case "r":
+                Facebook_Fails_RegularAppLovingShow();
+                break;
+            case "f":
+                GoogleADSShow("f");
+                break;
+            case "a":
+                AllAds_Fails_Unity_Show();
+                break;
+            default:
+                Unity_Google_Facebook_ShowFails_AppLovingShowListener();
+                break;
         }
 
     }
@@ -744,7 +1013,7 @@ public class InterClass {
     private static void UnityADSShow() {
 
         if (UnityAdLoadChecker) {
-            UnityAds.show((Activity) main_context, MyHelpers.getUnityInterID(), new UnityAdsShowOptions(), new IUnityAdsShowListener() {
+            UnityAds.show(main_context, MyHelpers.getUnityInterID(), new UnityAdsShowOptions(), new IUnityAdsShowListener() {
                 @Override
                 public void onUnityAdsShowFailure(String placementId, UnityAds.UnityAdsShowError error, String message) {
                     GoogleADSShow("u");
@@ -774,7 +1043,7 @@ public class InterClass {
         }
     }
 
-    private static void Unity_Google_Facebook_ShowFails_ApplovinShowLisner() {
+    private static void Unity_Google_Facebook_ShowFails_AppLovingShowListener() {
         try {
 
             if (MyHelpers.getAppLovinInter() != null && !MyHelpers.getAppLovinInter().isEmpty()) {
@@ -880,7 +1149,7 @@ public class InterClass {
     public static void GoogleInterPreload() {
         try {
             AdRequest adRequest = new AdRequest.Builder().build();
-            google_InterstitialAd.load(main_context, MyHelpers.getGoogleInter(), adRequest, new InterstitialAdLoadCallback() {
+            InterstitialAd.load(main_context, MyHelpers.getGoogleInter(), adRequest, new InterstitialAdLoadCallback() {
                 @Override
                 public void onAdLoaded(@NonNull com.google.android.gms.ads.interstitial.InterstitialAd interstitialAd) {
                     super.onAdLoaded(interstitialAd);
@@ -903,7 +1172,7 @@ public class InterClass {
 
         try {
             AdRequest adRequest = new AdRequest.Builder().build();
-            google_InterstitialAd_1.load(main_context, MyHelpers.getGoogleInter(), adRequest, new InterstitialAdLoadCallback() {
+            InterstitialAd.load(main_context, MyHelpers.getGoogleInter(), adRequest, new InterstitialAdLoadCallback() {
                 @Override
                 public void onAdLoaded(@NonNull com.google.android.gms.ads.interstitial.InterstitialAd interstitialAd) {
                     super.onAdLoaded(interstitialAd);
@@ -925,7 +1194,7 @@ public class InterClass {
     public static void GoogleInterPreload2() {
         try {
             AdRequest adRequest = new AdRequest.Builder().build();
-            google_InterstitialAd_2.load(main_context, MyHelpers.getGoogleInter1(), adRequest, new InterstitialAdLoadCallback() {
+            InterstitialAd.load(main_context, MyHelpers.getGoogleInter1(), adRequest, new InterstitialAdLoadCallback() {
                 @Override
                 public void onAdLoaded(@NonNull com.google.android.gms.ads.interstitial.InterstitialAd interstitialAd) {
                     super.onAdLoaded(interstitialAd);
@@ -948,7 +1217,7 @@ public class InterClass {
     public static void GoogleInterPreload3() {
         try {
             AdRequest adRequest = new AdRequest.Builder().build();
-            google_InterstitialAd_3.load(main_context, MyHelpers.getGoogleInter2(), adRequest, new InterstitialAdLoadCallback() {
+            InterstitialAd.load(main_context, MyHelpers.getGoogleInter2(), adRequest, new InterstitialAdLoadCallback() {
                 @Override
                 public void onAdLoaded(@NonNull com.google.android.gms.ads.interstitial.InterstitialAd interstitialAd) {
                     super.onAdLoaded(interstitialAd);
@@ -1126,7 +1395,7 @@ public class InterClass {
     /*AppLoving*/
     public static void AppLovingInterPreLoad() {
 
-        applovin_interstitialAd = new MaxInterstitialAd(MyHelpers.getAppLovinInter(), (Activity) main_context);
+        applovin_interstitialAd = new MaxInterstitialAd(MyHelpers.getAppLovinInter(), main_context);
         applovin_interstitialAd.setListener(new MaxAdListener() {
             @Override
             public void onAdLoaded(MaxAd ad) {
@@ -1182,26 +1451,37 @@ public class InterClass {
     /*All Preload*/
     public static void AllAdsPreLoadsInter(String refresh) {
 
-        if (refresh.equals("g")) {
-            google_InterstitialAd = null;
-        } else if (refresh.equals("g1")) {
-            google_InterstitialAd_1 = null;
-        } else if (refresh.equals("g2")) {
-            google_InterstitialAd_2 = null;
-        } else if (refresh.equals("g3")) {
-            google_InterstitialAd_3 = null;
-        } else if (refresh.equals("f")) {
-            facebook_interstitialAd = null;
-        } else if (refresh.equals("f1")) {
-            facebook_interstitialAd1 = null;
-        } else if (refresh.equals("f2")) {
-            facebook_interstitialAd2 = null;
-        } else if (refresh.equals("f3")) {
-            facebook_interstitialAd3 = null;
-        } else if (refresh.equals("a")) {
-            applovin_interstitialAd = null;
-        } else if (refresh.equals("u")) {
-            UnityAdLoadChecker = false;
+        switch (refresh) {
+            case "g":
+                google_InterstitialAd = null;
+                break;
+            case "g1":
+                google_InterstitialAd_1 = null;
+                break;
+            case "g2":
+                google_InterstitialAd_2 = null;
+                break;
+            case "g3":
+                google_InterstitialAd_3 = null;
+                break;
+            case "f":
+                facebook_interstitialAd = null;
+                break;
+            case "f1":
+                facebook_interstitialAd1 = null;
+                break;
+            case "f2":
+                facebook_interstitialAd2 = null;
+                break;
+            case "f3":
+                facebook_interstitialAd3 = null;
+                break;
+            case "a":
+                applovin_interstitialAd = null;
+                break;
+            case "u":
+                UnityAdLoadChecker = false;
+                break;
         }
 
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -12,14 +13,16 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/app_btn"
-        android:backgroundTint="#E8E8E8">
+        android:backgroundTint="#E8E8E8"
+        tools:ignore="UselessParent">
 
         <ImageView
             android:id="@+id/ads_banner"
             android:layout_width="match_parent"
             android:layout_height="114dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/updateapp" />
+            android:src="@drawable/updateapp"
+            android:contentDescription="@string/todo" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,12 +43,12 @@
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
                     android:scaleType="fitXY"
-                    android:src="@drawable/common_google_signin_btn_icon_dark" />
+                    android:src="@drawable/common_google_signin_btn_icon_dark"
+                    android:contentDescription="@string/todo" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_toEndOf="@+id/app_icon"
                     android:gravity="center_vertical"
                     android:orientation="vertical"
                     android:paddingHorizontal="10dp">
@@ -62,21 +65,23 @@
                             android:gravity="center"
                             android:includeFontPadding="false"
                             android:padding="1dp"
-                            android:text="Ad"
+                            android:text="@string/ad"
                             android:textColor="@color/white"
                             android:textSize="8sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            tools:ignore="SmallSp,VisualLintBounds" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
                             android:gravity="start|center_vertical"
                             android:includeFontPadding="false"
-                            android:text="Sponsored"
+                            android:text="@string/sponsored"
                             android:textColor="@android:color/black"
                             android:textSize="10sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            tools:ignore="SmallSp" />
 
                     </LinearLayout>
 
@@ -88,7 +93,6 @@
                         android:includeFontPadding="false"
                         android:maxLines="1"
                         android:singleLine="true"
-                        android:text="app name"
                         android:textColor="@android:color/black"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -99,7 +103,6 @@
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
                         android:singleLine="true"
-                        android:text="app Intro"
                         android:textColor="@android:color/black"
                         android:textSize="12sp" />
 
@@ -110,16 +113,16 @@
                 android:id="@+id/btn_install"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_below="@+id/lin_as_header"
                 android:background="@drawable/app_btn"
                 android:backgroundTint="@android:color/black"
                 android:gravity="center"
                 android:includeFontPadding="false"
                 android:singleLine="true"
-                android:text="Install"
+                android:text="@string/install"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="VisualLintButtonSize" />
 
         </LinearLayout>
 

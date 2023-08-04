@@ -2,6 +2,7 @@ package com.appzone.mylibrarys;
 
 import static androidx.lifecycle.Lifecycle.Event.ON_START;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
@@ -21,8 +22,7 @@ import com.google.android.gms.ads.appopen.AppOpenAd;
 public class AppOpenManager implements Application.ActivityLifecycleCallbacks, LifecycleObserver {
 
     private AppOpenAd appOpenAd = null;
-    private AppOpenAd.AppOpenAdLoadCallback loadCallback;
-    private Activity activity;
+    private Activity main_activity;
     private static boolean isShowingAd = false;
     private final Application myApplication;
     OnAppOpenClose onAppOpenClose;
@@ -32,11 +32,12 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     public interface OnAppOpenClose {
         void OnAppOpenFailToLoad();
 
-        void OnAppOpenClose();
+        @SuppressLint("NotConstructor")
+        void onAppOpenClose();
     }
 
     public AppOpenManager(String open_ad_id, Application myApplication, OnAppOpenClose onAppOpenClose) {
-        this.app_id = open_ad_id;
+        app_id = open_ad_id;
         this.myApplication = myApplication;
         this.onAppOpenClose = onAppOpenClose;
         this.myApplication.registerActivityLifecycleCallbacks(this);
@@ -50,9 +51,9 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         if (isAdAvailable()) {
             return;
         }
-        loadCallback = new AppOpenAd.AppOpenAdLoadCallback() {
+        AppOpenAd.AppOpenAdLoadCallback loadCallback = new AppOpenAd.AppOpenAdLoadCallback() {
             @Override
-            public void onAdLoaded(AppOpenAd ad) {
+            public void onAdLoaded(@NonNull AppOpenAd ad) {
                 AppOpenManager.this.appOpenAd = ad;
                 if (myids1 == 1) {
                     myids1 = 0;
@@ -61,7 +62,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
             }
 
             @Override
-            public void onAdFailedToLoad(LoadAdError loadAdError) {
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                 onAppOpenClose.OnAppOpenFailToLoad();
 
             }
@@ -81,11 +82,11 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                             AppOpenManager.this.appOpenAd = null;
                             isShowingAd = false;
                             fetchAd();
-                            onAppOpenClose.OnAppOpenClose();
+                            onAppOpenClose.onAppOpenClose();
                         }
 
                         @Override
-                        public void onAdFailedToShowFullScreenContent(AdError adError) {
+                        public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                         }
 
                         @Override
@@ -95,7 +96,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                     };
 
             appOpenAd.setFullScreenContentCallback(fullScreenContentCallback);
-            appOpenAd.show(activity);
+            appOpenAd.show(main_activity);
 
         } else {
             fetchAd();
@@ -118,13 +119,13 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
 
     @Override
     public void onActivityStarted(@NonNull Activity activity) {
-        activity = activity;
+        main_activity = activity;
 
     }
 
     @Override
     public void onActivityResumed(@NonNull Activity activity) {
-        activity = activity;
+        main_activity = activity;
     }
 
     @Override
@@ -144,7 +145,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
 
     @Override
     public void onActivityDestroyed(@NonNull Activity activity) {
-        activity = null;
+        main_activity = null;
     }
 
     @OnLifecycleEvent(ON_START)

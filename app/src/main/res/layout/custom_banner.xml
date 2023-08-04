@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:background="#E8E8E8">
+        android:background="#E8E8E8"
+        tools:ignore="UselessParent">
 
         <RelativeLayout
             android:id="@+id/full_click_banner"
@@ -21,7 +23,8 @@
                 android:layout_alignParentStart="true"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                android:src="@drawable/common_google_signin_btn_icon_dark" />
+                android:src="@drawable/common_google_signin_btn_icon_dark"
+                android:contentDescription="@string/todo" />
 
 
             <LinearLayout
@@ -45,21 +48,23 @@
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:padding="1dp"
-                        android:text="Ad"
+                        android:text="@string/ad"
                         android:textColor="@color/white"
                         android:textSize="8sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:ignore="SmallSp,VisualLintBounds" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
                         android:gravity="start|center_vertical"
                         android:includeFontPadding="false"
-                        android:text="Sponsored"
+                        android:text="@string/sponsored"
                         android:textColor="@android:color/black"
                         android:textSize="10sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:ignore="SmallSp" />
 
                 </LinearLayout>
 
@@ -99,7 +104,7 @@
                 android:gravity="center"
                 android:padding="10dp"
                 android:singleLine="true"
-                android:text="Install"
+                android:text="@string/install"
                 android:textColor="@android:color/white"
                 android:textSize="15sp"
                 android:textStyle="bold" />

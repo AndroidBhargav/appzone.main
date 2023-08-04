@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -17,12 +16,9 @@ import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.applovin.sdk.AppLovinSdk;
-import com.applovin.sdk.AppLovinSdkConfiguration;
 import com.bumptech.glide.Glide;
 import com.facebook.ads.AudienceNetworkAds;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import java.util.Random;
 
@@ -33,7 +29,7 @@ public class MyHelpers extends Application {
     public static SharedPreferences.Editor editor;
     public static MyHelpers app;
     public static MyHelpers instance;
-    public static int Entery_UpdateApps;
+    public static int Entry_UpdateApps;
 
     /*Google*/
     public static int Google_inter_number;
@@ -61,24 +57,18 @@ public class MyHelpers extends Application {
     public void onCreate() {
         instance = this;
         /*Google*/
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
+        MobileAds.initialize(this, initializationStatus -> {
         });
         /*Facebook*/
         AudienceNetworkAds.initialize(this);
         // AdSettings.setTestMode(true);
 
-        /*App Lovin*/
+        /*App Loving*/
         AppLovinSdk.getInstance(this).setMediationProvider("max");
-        AppLovinSdk.initializeSdk(this, new AppLovinSdk.SdkInitializationListener() {
-            @Override
-            public void onSdkInitialized(final AppLovinSdkConfiguration configuration) {
-            }
+        AppLovinSdk.initializeSdk(this, configuration -> {
         });
 
-        sharedPreferences = getSharedPreferences("babaji", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("baba", MODE_PRIVATE);
         editor = sharedPreferences.edit();
         super.onCreate();
     }
@@ -109,14 +99,6 @@ public class MyHelpers extends Application {
 
     public static String getGoogle_OpenADS() {
         return sharedPreferences.getString("Google_OpenADS", null);
-    }
-
-    public static void setad_ICON(String ad_ICON) {
-        editor.putString("ad_ICON", ad_ICON).commit();
-    }
-
-    public static String getad_ICON() {
-        return sharedPreferences.getString("ad_ICON", null);
     }
 
     public static void setGooglebutton_color(String Googlebutton_color) {
@@ -294,9 +276,9 @@ public class MyHelpers extends Application {
     }
 
     /**
-     * AppLovin
+     * AppLoving
      */
-    public static void setAppLovinEnable(String AppLovinEnable) {
+    public static void setAppLovingEnable(String AppLovinEnable) {
         editor.putString("AppLovinEnable", AppLovinEnable).commit();
     }
 
@@ -662,7 +644,7 @@ public class MyHelpers extends Application {
     }
 
 
-    public static void LinkopenChromeCustomTabUrl(Context context, String Link) {
+    public static void LinkopingChromeCustomTabUrl(Context context, String Link) {
 
         try {
 
@@ -690,7 +672,7 @@ public class MyHelpers extends Application {
 
     public static boolean isAppInstalled(String packageName, Context context) {
         PackageManager pm = context.getPackageManager();
-        boolean installed = false;
+        boolean installed;
         try {
             pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
             installed = true;
@@ -708,12 +690,9 @@ public class MyHelpers extends Application {
 
     public static void Autolink() {
         String[] Auto_Link = MyHelpers.getauto_link_array().split(",");
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Autolink();
-                LinkOpenChromeCustomTabUrl(instance, Auto_Link[getRandomNumber(0, Auto_Link.length - 1)]);
-            }
+        new Handler().postDelayed(() -> {
+            Autolink();
+            LinkOpenChromeCustomTabUrl(instance, Auto_Link[getRandomNumber(0, Auto_Link.length - 1)]);
         }, Integer.parseInt(MyHelpers.getauto_link_timer()));
     }
 
@@ -757,12 +736,7 @@ public class MyHelpers extends Application {
             RelativeLayout adView = (RelativeLayout) inflater.inflate(R.layout.q_a_native_lay, main_native, false);
             ImageView img = adView.findViewById(R.id.img);
             Glide.with(context).load(AutoNativeLink[0]).into(img);
-            img.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    BtnAutolink();
-                }
-            });
+            img.setOnClickListener(v -> BtnAutolink());
             main_native.removeAllViews();
             main_native.addView(adView);
             return;
@@ -772,12 +746,7 @@ public class MyHelpers extends Application {
         RelativeLayout adView = (RelativeLayout) inflater.inflate(R.layout.q_a_native_lay, main_native, false);
         ImageView img = adView.findViewById(R.id.img);
         Glide.with(context).load(AutoNativeLink[getRandomNumber(0, AutoNativeLink.length - 1)]).into(img);
-        img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BtnAutolink();
-            }
-        });
+        img.setOnClickListener(v -> BtnAutolink());
         main_native.removeAllViews();
         main_native.addView(adView);
     }

@@ -2,13 +2,13 @@ package com.appzone.mylibrarys;
 
 import static ProMex.classs.Utils.Util.DEc;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.TelephonyManager;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -39,17 +39,19 @@ import cz.msebera.android.httpclient.Header;
 
 public class SplashHelp extends AppCompatActivity {
 
-    public static Context contextx;
-    public static Intent intentx;
+    @SuppressLint("StaticFieldLeak")
+    public static Context contexts;
+    public static Intent intents;
 
     public static boolean isShowOpen = false;
+    @SuppressLint("StaticFieldLeak")
     public static AppOpenManager appOpenManager;
     public static String PackName = "";
 
-    public static ArrayList<AdsModal> adsModals = new ArrayList<AdsModal>();
+    public static ArrayList<AdsModal> adsModals = new ArrayList<>();
 
 
-    public static boolean customads_status = false;
+    public static boolean customs_status = false;
     public static boolean OpenAdsStatus = false;
 
     public static boolean checkAppOpen = true;
@@ -61,13 +63,13 @@ public class SplashHelp extends AppCompatActivity {
     }
 
     /**
-     * Api Csll
+     * Api Call
      */
     public static void splash_next(String packageName, String versionCode, Context context, Intent intent) {
 
         PackName = packageName;
-        contextx = context;
-        intentx = intent;
+        contexts = context;
+        intents = intent;
 
         /*Custom*/
         SplashHelp.CustomAPICalls();
@@ -86,138 +88,160 @@ public class SplashHelp extends AppCompatActivity {
                 super.onSuccess(statusCode, headers, response);
                 try {
 
-                    /**
-                     * Google
+                    /*
+                      Google
                      */
                     MyHelpers.setGoogleEnable(response.getString("enable_google_admob_id"));
                     //google Banner
-                    if (response.getString("google_admob_banner_id") != null && !response.getString("google_admob_banner_id").isEmpty()) {
+                    response.getString("google_admob_banner_id");
+                    if (!response.getString("google_admob_banner_id").isEmpty()) {
                         MyHelpers.SetGoogleBanner(response.getString("google_admob_banner_id"));
                     } else {
                         MyHelpers.SetGoogleBanner(null);
                     }
-                    if (response.getString("google_admob_banner_id_1") != null && !response.getString("google_admob_banner_id_1").isEmpty()) {
+                    response.getString("google_admob_banner_id_1");
+                    if (!response.getString("google_admob_banner_id_1").isEmpty()) {
                         MyHelpers.SetGoogleBanner1(response.getString("google_admob_banner_id_1"));
                     } else {
                         MyHelpers.SetGoogleBanner1(null);
                     }
-                    if (response.getString("google_admob_banner_id_2") != null && !response.getString("google_admob_banner_id_2").isEmpty()) {
+                    response.getString("google_admob_banner_id_2");
+                    if (!response.getString("google_admob_banner_id_2").isEmpty()) {
                         MyHelpers.SetGoogleBanner2(response.getString("google_admob_banner_id_2"));
                     } else {
                         MyHelpers.SetGoogleBanner2(null);
                     }
                     //google Native
-                    if (response.getString("google_admob_native_id") != null && !response.getString("google_admob_native_id").isEmpty()) {
+                    response.getString("google_admob_native_id");
+                    if (!response.getString("google_admob_native_id").isEmpty()) {
                         MyHelpers.SetGoogleNative(response.getString("google_admob_native_id"));
                     } else {
                         MyHelpers.SetGoogleNative(null);
                     }
-                    if (response.getString("google_admob_native_id_1") != null && !response.getString("google_admob_native_id_1").isEmpty()) {
+                    response.getString("google_admob_native_id_1");
+                    if (!response.getString("google_admob_native_id_1").isEmpty()) {
                         MyHelpers.SetGoogleNative1(response.getString("google_admob_native_id_1"));
                     } else {
                         MyHelpers.SetGoogleNative1(null);
                     }
-                    if (response.getString("google_admob_native_id_2") != null && !response.getString("google_admob_native_id_2").isEmpty()) {
+                    response.getString("google_admob_native_id_2");
+                    if (!response.getString("google_admob_native_id_2").isEmpty()) {
                         MyHelpers.SetGoogleNative2(response.getString("google_admob_native_id_2"));
                     } else {
                         MyHelpers.SetGoogleNative2(null);
                     }
                     //google Native Btn Name
-                    if (response.getString("google_button_name") != null && !response.getString("google_button_name").isEmpty()) {
+                    response.getString("google_button_name");
+                    if (!response.getString("google_button_name").isEmpty()) {
                         MyHelpers.setGooglebutton_name(response.getString("google_button_name"));
                     } else {
                         MyHelpers.setGooglebutton_name(null);
                     }
                     //google Native Btn color
-                    if (response.getString("google_button_color") != null && !response.getString("google_button_color").isEmpty()) {
+                    response.getString("google_button_color");
+                    if (!response.getString("google_button_color").isEmpty()) {
                         MyHelpers.setGooglebutton_color(response.getString("google_button_color"));
                     } else {
                         MyHelpers.setGooglebutton_color("#000000");
                     }
                     // google Open ADS
-                    if (response.getString("google_open_id") != null && !response.getString("google_open_id").isEmpty()) {
+                    response.getString("google_open_id");
+                    if (!response.getString("google_open_id").isEmpty()) {
                         MyHelpers.setGoogle_OpenADS(response.getString("google_open_id"));
                     } else {
                         MyHelpers.setGoogle_OpenADS(null);
                     }
                     //google Interstitial
-                    if (response.getString("google_admob_interstitial_id") != null && !response.getString("google_admob_interstitial_id").isEmpty()) {
+                    response.getString("google_admob_interstitial_id");
+                    if (!response.getString("google_admob_interstitial_id").isEmpty()) {
                         MyHelpers.SetGoogleInter(response.getString("google_admob_interstitial_id"));
                     } else {
                         MyHelpers.SetGoogleInter(null);
                     }
-                    if (response.getString("google_admob_interstitial_id_1") != null && !response.getString("google_admob_interstitial_id_1").isEmpty()) {
+                    response.getString("google_admob_interstitial_id_1");
+                    if (!response.getString("google_admob_interstitial_id_1").isEmpty()) {
                         MyHelpers.SetGoogleInter1(response.getString("google_admob_interstitial_id_1"));
                     } else {
                         MyHelpers.SetGoogleInter1(null);
                     }
-                    if (response.getString("google_admob_interstitial_id_2") != null && !response.getString("google_admob_interstitial_id_2").isEmpty()) {
+                    response.getString("google_admob_interstitial_id_2");
+                    if (!response.getString("google_admob_interstitial_id_2").isEmpty()) {
                         MyHelpers.SetGoogleInter2(response.getString("google_admob_interstitial_id_2"));
                     } else {
                         MyHelpers.SetGoogleInter2(null);
                     }
-                    /**
-                     * Facebook
+                    /*
+                      Facebook
                      */
                     MyHelpers.setFacebookEnable(response.getString("enable_facebook_id"));
                     //Facebook Banner
-                    if (response.getString("facebook_banner_id") != null && !response.getString("facebook_banner_id").isEmpty()) {
+                    response.getString("facebook_banner_id");
+                    if (!response.getString("facebook_banner_id").isEmpty()) {
                         MyHelpers.setFacebookBanner(response.getString("facebook_banner_id"));
                     } else {
                         MyHelpers.setFacebookBanner(null);
                     }
-                    if (response.getString("facebook_banner_id_1") != null && !response.getString("facebook_banner_id_1").isEmpty()) {
+                    response.getString("facebook_banner_id_1");
+                    if (!response.getString("facebook_banner_id_1").isEmpty()) {
                         MyHelpers.setFacebookBanner1(response.getString("facebook_banner_id_1"));
                     } else {
                         MyHelpers.setFacebookBanner1(null);
                     }
-                    if (response.getString("facebook_banner_id_2") != null && !response.getString("facebook_banner_id_2").isEmpty()) {
+                    response.getString("facebook_banner_id_2");
+                    if (!response.getString("facebook_banner_id_2").isEmpty()) {
                         MyHelpers.setFacebookBanner2(response.getString("facebook_banner_id_2"));
                     } else {
                         MyHelpers.setFacebookBanner2(null);
                     }
                     //Facebook Native
-                    if (response.getString("facebook_native_id") != null && !response.getString("facebook_native_id").isEmpty()) {
+                    response.getString("facebook_native_id");
+                    if (!response.getString("facebook_native_id").isEmpty()) {
                         MyHelpers.SetFacebookNative(response.getString("facebook_native_id"));
                     } else {
                         MyHelpers.SetFacebookNative(null);
                     }
-                    if (response.getString("facebook_native_id_1") != null && !response.getString("facebook_native_id_1").isEmpty()) {
+                    response.getString("facebook_native_id_1");
+                    if (!response.getString("facebook_native_id_1").isEmpty()) {
                         MyHelpers.SetFacebookNative1(response.getString("facebook_native_id_1"));
                     } else {
                         MyHelpers.SetFacebookNative1(null);
                     }
-                    if (response.getString("facebook_native_id_2") != null && !response.getString("facebook_native_id_2").isEmpty()) {
+                    response.getString("facebook_native_id_2");
+                    if (!response.getString("facebook_native_id_2").isEmpty()) {
                         MyHelpers.SetFacebookNative2(response.getString("facebook_native_id_2"));
                     } else {
                         MyHelpers.SetFacebookNative2(null);
                     }
 
                     //Facebook Open ADS
-                    if (response.getString("facebook_open_id") != null && !response.getString("facebook_open_id").isEmpty()) {
+                    response.getString("facebook_open_id");
+                    if (!response.getString("facebook_open_id").isEmpty()) {
                         MyHelpers.setfacebook_open_ad_id(response.getString("facebook_open_id"));
                     } else {
                         MyHelpers.setfacebook_open_ad_id(null);
                     }
                     //Facebook Interstitial
-                    if (response.getString("facebook_interstitial_id") != null && !response.getString("facebook_interstitial_id").isEmpty()) {
+                    response.getString("facebook_interstitial_id");
+                    if (!response.getString("facebook_interstitial_id").isEmpty()) {
                         MyHelpers.SetFacebookInter(response.getString("facebook_interstitial_id"));
                     } else {
                         MyHelpers.SetFacebookInter(null);
                     }
-                    if (response.getString("facebook_interstitial_id_1") != null && !response.getString("facebook_interstitial_id_1").isEmpty()) {
+                    response.getString("facebook_interstitial_id_1");
+                    if (!response.getString("facebook_interstitial_id_1").isEmpty()) {
                         MyHelpers.SetFacebookInter1(response.getString("facebook_interstitial_id_1"));
                     } else {
                         MyHelpers.SetFacebookInter1(null);
                     }
-                    if (response.getString("facebook_interstitial_id_2") != null && !response.getString("facebook_interstitial_id_2").isEmpty()) {
+                    response.getString("facebook_interstitial_id_2");
+                    if (!response.getString("facebook_interstitial_id_2").isEmpty()) {
                         MyHelpers.SetFacebookInter2(response.getString("facebook_interstitial_id_2"));
                     } else {
                         MyHelpers.SetFacebookInter2(null);
                     }
 
-                    /**
-                     *  Atme and qureka Link
+                    /*
+                       Atmel and qureka Link
                      */
                     /*auto link*/
                     MyHelpers.setauto_link_on_off(response.getString("enable_auto_quereka_link"));  //on_off Auto link
@@ -230,90 +254,100 @@ public class SplashHelp extends AppCompatActivity {
                     MyHelpers.set_q_link_btn_on_off(response.getString("enable_quereka_link"));  //on_off Q link btn
                     MyHelpers.set_q_link_array(response.getString("quereka_link")); //link Array
 
-                    /**
-                     * App Lovin
+                    /*
+                      App Lovin
                      */
-                    MyHelpers.setAppLovinEnable(response.getString("enable_applovin_id"));  //on_off App Lovin
-                    if (response.getString("applovin_banner") != null && !response.getString("applovin_banner").isEmpty()) {   //Banner
+                    MyHelpers.setAppLovingEnable(response.getString("enable_applovin_id"));  //on_off App Lovin
+                    response.getString("applovin_banner");
+                    if (!response.getString("applovin_banner").isEmpty()) {   //Banner
                         MyHelpers.setAppLovinBanner(response.getString("applovin_banner"));
                     } else {
                         MyHelpers.setAppLovinBanner(null);
                     }
-                    if (response.getString("applovin_native") != null && !response.getString("applovin_native").isEmpty()) {   //Native
+                    response.getString("applovin_native");
+                    if (!response.getString("applovin_native").isEmpty()) {   //Native
                         MyHelpers.setAppLovinNative(response.getString("applovin_native"));
                     } else {
                         MyHelpers.setAppLovinNative(null);
                     }
-                    if (response.getString("applovin_interstitial") != null && !response.getString("applovin_interstitial").isEmpty()) {   //Inter
+                    response.getString("applovin_interstitial");
+                    if (!response.getString("applovin_interstitial").isEmpty()) {   //Inter
                         MyHelpers.setAppLovinInter(response.getString("applovin_interstitial"));
 
                     } else {
                         MyHelpers.setAppLovinInter(null);
                     }
 
-                    /**
-                     *
-                     * Unity
+                    /*
+
+                      Unity
                      */
                     MyHelpers.setUnityEnable(response.getString("enable_unity_id"));  //on_off Unity
-                    if (response.getString("unity_game_id") != null && !response.getString("unity_game_id").isEmpty()) {   //Unity ID
+                    response.getString("unity_game_id");
+                    if (!response.getString("unity_game_id").isEmpty()) {   //Unity ID
                         MyHelpers.setUnityAppID(response.getString("unity_game_id"));
                         UnityAds.initialize(MyHelpers.instance, MyHelpers.getUnityAppID(), true);
                     } else {
                         MyHelpers.setUnityAppID(null);
                     }
-                    if (response.getString("unity_banner") != null && !response.getString("unity_banner").isEmpty()) { //Unity Banner ID
+                    response.getString("unity_banner");
+                    if (!response.getString("unity_banner").isEmpty()) { //Unity Banner ID
                         MyHelpers.setUnityBannerID(response.getString("unity_banner"));
                     } else {
                         MyHelpers.setUnityBannerID(null);
                     }
-                    if (response.getString("unity_interstitial") != null && !response.getString("unity_interstitial").isEmpty()) {  //Unity Inter ID
+                    response.getString("unity_interstitial");
+                    if (!response.getString("unity_interstitial").isEmpty()) {  //Unity Inter ID
                         MyHelpers.setUnityInterID(response.getString("unity_interstitial"));
                     } else {
                         MyHelpers.setUnityInterID(null);
                     }
 
-                    /**
-                     * Custom
+                    /*
+                      Custom
                      */
                     MyHelpers.setCustomEnable(response.getString("custom_ads_switch"));  //on_off Custom ads
 
-                    /**
-                     * Back Button
+                    /*
+                      Back Button
                      */
                     MyHelpers.setBackAdsOnOff(response.getString("enable_back_button"));
-                    if (response.getString("back_button_counter") != null && !response.getString("back_button_counter").isEmpty()) {
+                    response.getString("back_button_counter");
+                    if (!response.getString("back_button_counter").isEmpty()) {
                         MyHelpers.setBackCounter(Integer.parseInt(response.getString("back_button_counter")));  //skip ads number
                     } else {
                         MyHelpers.setBackCounter(5000);
                     }
 
-                    /**
-                     * Skip ads
-                     * 1 - Inter
-                     * 2 - Native
-                     * 3 - Banner
-                     *
-                     * btn number 0 stop ads
-                     * */
-                    if (response.getString("regular_button_counter") != null && !response.getString("regular_button_counter").isEmpty()) {
+                    /*
+                      Skip ads
+                      1 - Inter
+                      2 - Native
+                      3 - Banner
+
+                      btn number 0 stop ads
+                      */
+                    response.getString("regular_button_counter");
+                    if (!response.getString("regular_button_counter").isEmpty()) {
                         MyHelpers.setCounter_Inter(Integer.parseInt(response.getString("regular_button_counter")));
                     } else {
                         MyHelpers.setCounter_Inter(5000);
                     }
-                    if (response.getString("skip_native_ad") != null && !response.getString("skip_native_ad").isEmpty()) {
+                    response.getString("skip_native_ad");
+                    if (!response.getString("skip_native_ad").isEmpty()) {
                         MyHelpers.setCounter_Native(Integer.parseInt(response.getString("skip_native_ad")));
                     } else {
                         MyHelpers.setCounter_Native(5000);
                     }
-                    if (response.getString("skip_banner_ad") != null && !response.getString("skip_banner_ad").isEmpty()) {
+                    response.getString("skip_banner_ad");
+                    if (!response.getString("skip_banner_ad").isEmpty()) {
                         MyHelpers.setCounter_Banner(Integer.parseInt(response.getString("skip_banner_ad")));
                     } else {
                         MyHelpers.setCounter_Banner(5000);
                     }
 
-                    /**
-                     * App Live Status
+                    /*
+                      App Live Status
                      */
 
                     if (PackName.equals("Test")) {
@@ -324,16 +358,17 @@ public class SplashHelp extends AppCompatActivity {
                         MyHelpers.setlive_status(response.getString("live"));
                     }
 
-                    /**
-                     * MIX ads
-                     * 1 - Inter
-                     * 2 - Native
-                     * 3 - Banner
-                     * */
+                    /*
+                      MIX ads
+                      1 - Inter
+                      2 - Native
+                      3 - Banner
+                      */
                     MyHelpers.setmix_ad_on_off(response.getString("mix_ad"));
 
                     //Mix Ads Counter
-                    if (response.getString("mix_ad_name") != null && !response.getString("mix_ad_name").isEmpty()) {
+                    response.getString("mix_ad_name");
+                    if (!response.getString("mix_ad_name").isEmpty()) {
                         MyHelpers.setmix_ad_name(response.getString("mix_ad_name"));
                         String[] Ads_number = MyHelpers.getmix_ad_name().split(",");
                         MyHelpers.setmix_ad_counter_banner(Integer.parseInt(Ads_number[0]));
@@ -348,30 +383,34 @@ public class SplashHelp extends AppCompatActivity {
 
 
                     //Mix Ads Name
-                    if (response.getString("mix_ad_banner") != null && !response.getString("mix_ad_banner").isEmpty()) {
+                    response.getString("mix_ad_banner");
+                    if (!response.getString("mix_ad_banner").isEmpty()) {
                         MyHelpers.setmix_ad_banner(response.getString("mix_ad_banner"));
                     } else {
                         MyHelpers.setmix_ad_banner(null);
                     }
 
-                    if (response.getString("mix_ad_native") != null && !response.getString("mix_ad_native").isEmpty()) {
+                    response.getString("mix_ad_native");
+                    if (!response.getString("mix_ad_native").isEmpty()) {
                         MyHelpers.setmix_ad_native(response.getString("mix_ad_native"));
                     } else {
                         MyHelpers.setmix_ad_native(null);
                     }
 
-                    if (response.getString("mix_ad_counter") != null && !response.getString("mix_ad_counter").isEmpty()) {
+                    response.getString("mix_ad_counter");
+                    if (!response.getString("mix_ad_counter").isEmpty()) {
                         MyHelpers.setmix_ad_inter(response.getString("mix_ad_counter"));
                     } else {
                         MyHelpers.setmix_ad_inter(null);
                     }
 
-                    /**
-                     * Skip Country
+                    /*
+                      Skip Country
                      */
                     MyHelpers.setSkip_country_on_off(response.getString("off_ad_country"));
                     if (MyHelpers.getSkip_country_on_off().equals("1")) {
-                        if (response.getString("off_ad_country_name") != null && !response.getString("off_ad_country_name").isEmpty()) {
+                        response.getString("off_ad_country_name");
+                        if (!response.getString("off_ad_country_name").isEmpty()) {
                             MyHelpers.setSkip_country_list(response.getString("off_ad_country_name"));
                         } else {
                             MyHelpers.setSkip_country_list(null);
@@ -379,8 +418,8 @@ public class SplashHelp extends AppCompatActivity {
                     }
 
 
-                    /**
-                     * Extra data
+                    /*
+                      Extra data
                      */
 
                     MyHelpers.setExtraBtn_1(response.getString("extra_switch_1"));
@@ -394,45 +433,45 @@ public class SplashHelp extends AppCompatActivity {
                     MyHelpers.setExtraText_4(response.getString("extra_text_4"));
 
 
-                    /**
-                     * Other App Open
+                    /*
+                      Other App Open
                      */
                     MyHelpers.setOtherAppsShow(response.getString("replace_app"));
                     MyHelpers.setOtherAppsShowLink(response.getString("new_app_link"));
                     if (MyHelpers.getOtherAppsShow().equals("1")) {
-                        MyHelpers.Entery_UpdateApps = 2;
+                        MyHelpers.Entry_UpdateApps = 2;
                         context.startActivity(new Intent(context, UpdateAppActivity.class));
                         return;
                     }
 
-                    /**
-                     * Update Our App
+                    /*
+                      Update Our App
                      */
                     MyHelpers.setUpdateApps(response.getString("update_app"));
                     MyHelpers.setAppversioncode(response.getString("version_code"));
                     if (MyHelpers.getUpdateApps().equals("1")) {
                         if (!MyHelpers.getAppversioncode().equals(versionCode)) {
-                            MyHelpers.Entery_UpdateApps = 1;
+                            MyHelpers.Entry_UpdateApps = 1;
                             context.startActivity(new Intent(context, UpdateAppActivity.class));
                             return;
                         }
                     }
 
 
-                    /**
-                     * Next App
+                    /*
+                      Next App
                      */
                     if (MyHelpers.getSkip_country_on_off().equals("1") && CheckCountry(MyHelpers.getSkip_country_list())) {
                         MyHelpers.setGoogleEnable("0");
                         MyHelpers.setFacebookEnable("0");
                         MyHelpers.setauto_link_on_off("0");
                         MyHelpers.set_q_link_btn_on_off("0");
-                        MyHelpers.setAppLovinEnable("0");
+                        MyHelpers.setAppLovingEnable("0");
                         MyHelpers.setUnityEnable("0");
                         MyHelpers.setCustomEnable("0");
                         MyHelpers.setmix_ad_on_off("0");
                         MyHelpers.setBackAdsOnOff("0");
-                        NextIntent(contextx, intentx);
+                        NextIntent(contexts, intents);
                     } else {
                         ShowADS();
                     }
@@ -464,7 +503,7 @@ public class SplashHelp extends AppCompatActivity {
             if (MyHelpers.getmix_ad_inter() != null && !MyHelpers.getmix_ad_inter().isEmpty()) {
                 MixOpenAds(String.valueOf(MyHelpers.getmix_ad_inter().charAt(0)));
             } else {
-                NextIntent(contextx, intentx);
+                NextIntent(contexts, intents);
             }
             return;
         }
@@ -490,7 +529,7 @@ public class SplashHelp extends AppCompatActivity {
             CustomOpenAds();
 
         } else {
-            NextIntent(contextx, intentx);
+            NextIntent(contexts, intents);
         }
     }
 
@@ -501,7 +540,7 @@ public class SplashHelp extends AppCompatActivity {
             UnityAds.load(MyHelpers.getUnityInterID(), new IUnityAdsLoadListener() {
                 @Override
                 public void onUnityAdsAdLoaded(String placementId) {
-                    UnityAds.show((Activity) contextx, MyHelpers.getUnityInterID(), new UnityAdsShowOptions(), new IUnityAdsShowListener() {
+                    UnityAds.show((Activity) contexts, MyHelpers.getUnityInterID(), new UnityAdsShowOptions(), new IUnityAdsShowListener() {
                         @Override
                         public void onUnityAdsShowFailure(String placementId, UnityAds.UnityAdsShowError error, String message) {
                             /*Unity Mix Auto Load Inter*/
@@ -524,7 +563,7 @@ public class SplashHelp extends AppCompatActivity {
 
                         @Override
                         public void onUnityAdsShowComplete(String placementId, UnityAds.UnityAdsShowCompletionState state) {
-                            NextIntent(contextx, intentx);
+                            NextIntent(contexts, intents);
                             /*Unity Mix Auto Load Inter*/
                             if (MyHelpers.getUnityInterID() != null && !MyHelpers.getUnityInterID().isEmpty()) {
                                 InterClass.UnityInterPreLoad();
@@ -552,7 +591,7 @@ public class SplashHelp extends AppCompatActivity {
     private static void AppLovingAppOpen() {
 
         if (MyHelpers.getAppLovinInter() != null && !MyHelpers.getAppLovinInter().isEmpty()) {
-            MaxInterstitialAd interstitialAd = new MaxInterstitialAd(MyHelpers.getAppLovinInter(), (Activity) contextx);
+            MaxInterstitialAd interstitialAd = new MaxInterstitialAd(MyHelpers.getAppLovinInter(), (Activity) contexts);
             interstitialAd.setListener(new MaxAdListener() {
                 @Override
                 public void onAdLoaded(MaxAd ad) {
@@ -573,7 +612,7 @@ public class SplashHelp extends AppCompatActivity {
 
                 @Override
                 public void onAdHidden(MaxAd ad) {
-                    NextIntent(contextx, intentx);
+                    NextIntent(contexts, intents);
                     /*AppLoving Inter PreLoad*/
                     if (MyHelpers.getAppLovinInter() != null && !MyHelpers.getAppLovinInter().isEmpty()) {
                         InterClass.AppLovingInterPreLoad();
@@ -611,7 +650,7 @@ public class SplashHelp extends AppCompatActivity {
 
         if (MyHelpers.getfacebook_open_ad_id() != null && !MyHelpers.getfacebook_open_ad_id().isEmpty()) {
 
-            com.facebook.ads.InterstitialAd interstitialAd_FB_1 = new com.facebook.ads.InterstitialAd(contextx, MyHelpers.getfacebook_open_ad_id());
+            com.facebook.ads.InterstitialAd interstitialAd_FB_1 = new com.facebook.ads.InterstitialAd(contexts, MyHelpers.getfacebook_open_ad_id());
             InterstitialAdListener adListener = new InterstitialAdListener() {
                 @Override
                 public void onInterstitialDisplayed(Ad ad) {
@@ -620,7 +659,7 @@ public class SplashHelp extends AppCompatActivity {
 
                 @Override
                 public void onInterstitialDismissed(Ad ad) {
-                    NextIntent(contextx, intentx);
+                    NextIntent(contexts, intents);
                 }
 
                 @Override
@@ -630,11 +669,7 @@ public class SplashHelp extends AppCompatActivity {
 
                 @Override
                 public void onAdLoaded(Ad ad) {
-                    if (interstitialAd_FB_1 != null) {
-                        interstitialAd_FB_1.show();
-                    } else {
-                        FailsAds("f");
-                    }
+                    interstitialAd_FB_1.show();
                 }
 
                 @Override
@@ -675,7 +710,7 @@ public class SplashHelp extends AppCompatActivity {
                     }
 
                     @Override
-                    public void OnAppOpenClose() {
+                    public void onAppOpenClose() {
 
                         if (checkAppOpen) {
                             checkAppOpen = false;
@@ -685,11 +720,11 @@ public class SplashHelp extends AppCompatActivity {
                             isShowOpen = false;
                         }
 
-                        //   NextIntent(contextx, intentx);
+                        //   NextIntent(contexts, intents);
 
                         if (!OpenAdsStatus) {
                             OpenAdsStatus = true;
-                            NextIntent(contextx, intentx);
+                            NextIntent(contexts, intents);
                         }
 
 
@@ -711,21 +746,18 @@ public class SplashHelp extends AppCompatActivity {
     }
 
     private static void CustomOpenAds() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (customads_status) {
+        new Handler().postDelayed(() -> {
+            if (customs_status) {
 
-                    if (SplashHelp.adsModals != null && !SplashHelp.adsModals.isEmpty()) {
-                        NextIntent(contextx, intentx);
-                        contextx.startActivity(new Intent(contextx, CustomAdsInterActivity.class));
-                    } else {
-                        NextIntent(contextx, intentx);
-                    }
-
+                if (SplashHelp.adsModals != null && !SplashHelp.adsModals.isEmpty()) {
+                    NextIntent(contexts, intents);
+                    contexts.startActivity(new Intent(contexts, CustomAdsInterActivity.class));
                 } else {
-                    CustomOpenAds();
+                    NextIntent(contexts, intents);
                 }
+
+            } else {
+                CustomOpenAds();
             }
         }, 100);
     }
@@ -735,189 +767,191 @@ public class SplashHelp extends AppCompatActivity {
      */
     public static void FailsAds(String Skip) {
 
-        if (Skip.equals("g")) {
+        switch (Skip) {
+            case "g":
 
-            if (MyHelpers.getfacebook_open_ad_id() != null && !MyHelpers.getfacebook_open_ad_id().isEmpty() && MyHelpers.getlive_status().equals("1")) {
-                com.facebook.ads.InterstitialAd interstitialAd_FB_1 = new com.facebook.ads.InterstitialAd(contextx, MyHelpers.getfacebook_open_ad_id());
-                InterstitialAdListener adListener = new InterstitialAdListener() {
-                    @Override
-                    public void onInterstitialDisplayed(Ad ad) {
+                if (MyHelpers.getfacebook_open_ad_id() != null && !MyHelpers.getfacebook_open_ad_id().isEmpty() && MyHelpers.getlive_status().equals("1")) {
+                    com.facebook.ads.InterstitialAd interstitialAd_FB_1 = new com.facebook.ads.InterstitialAd(contexts, MyHelpers.getfacebook_open_ad_id());
+                    InterstitialAdListener adListener = new InterstitialAdListener() {
+                        @Override
+                        public void onInterstitialDisplayed(Ad ad) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onInterstitialDismissed(Ad ad) {
-                        NextIntent(contextx, intentx);
-                    }
+                        @Override
+                        public void onInterstitialDismissed(Ad ad) {
+                            NextIntent(contexts, intents);
+                        }
 
-                    @Override
-                    public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                        GoogleandFacebookFails();
-                    }
+                        @Override
+                        public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                            GoogledFacebookFails();
+                        }
 
-                    @Override
-                    public void onAdLoaded(Ad ad) {
-                        if (interstitialAd_FB_1 != null) {
+                        @Override
+                        public void onAdLoaded(Ad ad) {
                             interstitialAd_FB_1.show();
-                        } else {
-                            GoogleandFacebookFails();
-                        }
-                    }
-
-                    @Override
-                    public void onAdClicked(Ad ad) {
-
-                    }
-
-                    @Override
-                    public void onLoggingImpression(Ad ad) {
-
-                    }
-                };
-                interstitialAd_FB_1.loadAd(interstitialAd_FB_1.buildLoadAdConfig().withAdListener(adListener).build());
-            } else {
-                GoogleandFacebookFails();
-            }
-
-        } else if (Skip.equals("f")) {
-
-            if (MyHelpers.getGoogle_OpenADS() != null && !MyHelpers.getGoogle_OpenADS().isEmpty() && MyHelpers.getlive_status().equals("1")) {
-                isShowOpen = false;
-                AppOpenManager.OnAppOpenClose onAppOpenClose = new AppOpenManager.OnAppOpenClose() {
-                    @Override
-                    public void OnAppOpenFailToLoad() {
-
-                        if (isShowOpen) {
-                            isShowOpen = false;
                         }
 
-                        if (checkAppOpen) {
-                            checkAppOpen = false;
-                            GoogleandFacebookFails();
+                        @Override
+                        public void onAdClicked(Ad ad) {
+
                         }
 
-                    }
+                        @Override
+                        public void onLoggingImpression(Ad ad) {
 
-                    @Override
-                    public void OnAppOpenClose() {
+                        }
+                    };
+                    interstitialAd_FB_1.loadAd(interstitialAd_FB_1.buildLoadAdConfig().withAdListener(adListener).build());
+                } else {
+                    GoogledFacebookFails();
+                }
 
-                        if (checkAppOpen) {
-                            checkAppOpen = false;
+                break;
+            case "f":
+
+                if (MyHelpers.getGoogle_OpenADS() != null && !MyHelpers.getGoogle_OpenADS().isEmpty() && MyHelpers.getlive_status().equals("1")) {
+                    isShowOpen = false;
+                    AppOpenManager.OnAppOpenClose onAppOpenClose = new AppOpenManager.OnAppOpenClose() {
+                        @Override
+                        public void OnAppOpenFailToLoad() {
+
+                            if (isShowOpen) {
+                                isShowOpen = false;
+                            }
+
+                            if (checkAppOpen) {
+                                checkAppOpen = false;
+                                GoogledFacebookFails();
+                            }
+
                         }
 
-                        if (isShowOpen) {
-                            isShowOpen = false;
+                        @Override
+                        public void onAppOpenClose() {
+
+                            if (checkAppOpen) {
+                                checkAppOpen = false;
+                            }
+
+                            if (isShowOpen) {
+                                isShowOpen = false;
+                            }
+                            if (!OpenAdsStatus) {
+                                OpenAdsStatus = true;
+                                NextIntent(contexts, intents);
+                            }
+
                         }
-                        if (!OpenAdsStatus) {
-                            OpenAdsStatus = true;
-                            NextIntent(contextx, intentx);
-                        }
+                    };
+                    isShowOpen = true;
+                    appOpenManager = new AppOpenManager(MyHelpers.getGoogle_OpenADS(), MyHelpers.getInstant(), onAppOpenClose);
+                } else {
+                    GoogledFacebookFails();
+                }
 
-                    }
-                };
-                isShowOpen = true;
-                appOpenManager = new AppOpenManager(MyHelpers.getGoogle_OpenADS(), MyHelpers.getInstant(), onAppOpenClose);
-            } else {
-                GoogleandFacebookFails();
-            }
+                break;
+            case "a":
 
-        } else if (Skip.equals("a")) {
+                if (MyHelpers.getGoogle_OpenADS() != null && !MyHelpers.getGoogle_OpenADS().isEmpty() && MyHelpers.getlive_status().equals("1")) {
 
-            if (MyHelpers.getGoogle_OpenADS() != null && !MyHelpers.getGoogle_OpenADS().isEmpty() && MyHelpers.getlive_status().equals("1")) {
+                    isShowOpen = false;
+                    AppOpenManager.OnAppOpenClose onAppOpenClose = new AppOpenManager.OnAppOpenClose() {
+                        @Override
+                        public void OnAppOpenFailToLoad() {
+                            if (isShowOpen) {
+                                isShowOpen = false;
+                            }
 
-                isShowOpen = false;
-                AppOpenManager.OnAppOpenClose onAppOpenClose = new AppOpenManager.OnAppOpenClose() {
-                    @Override
-                    public void OnAppOpenFailToLoad() {
-                        if (isShowOpen) {
-                            isShowOpen = false;
-                        }
-
-                        if (checkAppOpen) {
-                            checkAppOpen = false;
-                            FailAdsAppLovin_ShowFacebookUnityCustom();
-                        }
+                            if (checkAppOpen) {
+                                checkAppOpen = false;
+                                FailAdsAppLovin_ShowFacebookUnityCustom();
+                            }
 
 
-                    }
-
-
-                    @Override
-                    public void OnAppOpenClose() {
-
-                        if (checkAppOpen) {
-                            checkAppOpen = false;
-                        }
-
-                        if (isShowOpen) {
-                            isShowOpen = false;
-                        }
-                        if (!OpenAdsStatus) {
-                            OpenAdsStatus = true;
-                            NextIntent(contextx, intentx);
-                        }
-                    }
-                };
-                isShowOpen = true;
-                appOpenManager = new AppOpenManager(MyHelpers.getGoogle_OpenADS(), MyHelpers.getInstant(), onAppOpenClose);
-
-            } else {
-                FailAdsAppLovin_ShowFacebookUnityCustom();
-            }
-
-        } else if (Skip.equals("u")) {
-
-            if (MyHelpers.getGoogle_OpenADS() != null && !MyHelpers.getGoogle_OpenADS().isEmpty() && MyHelpers.getlive_status().equals("1")) {
-                isShowOpen = false;
-                AppOpenManager.OnAppOpenClose onAppOpenClose = new AppOpenManager.OnAppOpenClose() {
-                    @Override
-                    public void OnAppOpenFailToLoad() {
-                        if (isShowOpen) {
-                            isShowOpen = false;
-                        }
-
-                        if (checkAppOpen) {
-                            checkAppOpen = false;
-                            FailUnity_ShowFacebookAppLovinCustom();
                         }
 
 
-                    }
+                        @Override
+                        public void onAppOpenClose() {
 
-                    @Override
-                    public void OnAppOpenClose() {
+                            if (checkAppOpen) {
+                                checkAppOpen = false;
+                            }
 
-                        if (checkAppOpen) {
-                            checkAppOpen = false;
+                            if (isShowOpen) {
+                                isShowOpen = false;
+                            }
+                            if (!OpenAdsStatus) {
+                                OpenAdsStatus = true;
+                                NextIntent(contexts, intents);
+                            }
+                        }
+                    };
+                    isShowOpen = true;
+                    appOpenManager = new AppOpenManager(MyHelpers.getGoogle_OpenADS(), MyHelpers.getInstant(), onAppOpenClose);
+
+                } else {
+                    FailAdsAppLovin_ShowFacebookUnityCustom();
+                }
+
+                break;
+            case "u":
+
+                if (MyHelpers.getGoogle_OpenADS() != null && !MyHelpers.getGoogle_OpenADS().isEmpty() && MyHelpers.getlive_status().equals("1")) {
+                    isShowOpen = false;
+                    AppOpenManager.OnAppOpenClose onAppOpenClose = new AppOpenManager.OnAppOpenClose() {
+                        @Override
+                        public void OnAppOpenFailToLoad() {
+                            if (isShowOpen) {
+                                isShowOpen = false;
+                            }
+
+                            if (checkAppOpen) {
+                                checkAppOpen = false;
+                                FailUnity_ShowFacebookAppLovinCustom();
+                            }
+
+
                         }
 
-                        if (isShowOpen) {
-                            isShowOpen = false;
+                        @Override
+                        public void onAppOpenClose() {
+
+                            if (checkAppOpen) {
+                                checkAppOpen = false;
+                            }
+
+                            if (isShowOpen) {
+                                isShowOpen = false;
+                            }
+
+                            if (!OpenAdsStatus) {
+                                OpenAdsStatus = true;
+                                NextIntent(contexts, intents);
+                            }
                         }
+                    };
+                    isShowOpen = true;
+                    appOpenManager = new AppOpenManager(MyHelpers.getGoogle_OpenADS(), MyHelpers.getInstant(), onAppOpenClose);
 
-                        if (!OpenAdsStatus) {
-                            OpenAdsStatus = true;
-                            NextIntent(contextx, intentx);
-                        }
-                    }
-                };
-                isShowOpen = true;
-                appOpenManager = new AppOpenManager(MyHelpers.getGoogle_OpenADS(), MyHelpers.getInstant(), onAppOpenClose);
+                } else {
+                    FailUnity_ShowFacebookAppLovinCustom();
+                }
 
-            } else {
-                FailUnity_ShowFacebookAppLovinCustom();
-            }
-
-        } else {
-            CustomOpenAds();
+                break;
+            default:
+                CustomOpenAds();
+                break;
         }
     }
 
-    private static void GoogleandFacebookFails() {
+    private static void GoogledFacebookFails() {
 
         if (MyHelpers.getAppLovinInter() != null && !MyHelpers.getAppLovinInter().isEmpty()) {
 
-            MaxInterstitialAd interstitialAd = new MaxInterstitialAd(MyHelpers.getAppLovinInter(), (Activity) contextx);
+            MaxInterstitialAd interstitialAd = new MaxInterstitialAd(MyHelpers.getAppLovinInter(), (Activity) contexts);
             interstitialAd.setListener(new MaxAdListener() {
                 @Override
                 public void onAdLoaded(MaxAd ad) {
@@ -945,7 +979,7 @@ public class SplashHelp extends AppCompatActivity {
 
                 @Override
                 public void onAdHidden(MaxAd ad) {
-                    NextIntent(contextx, intentx);
+                    NextIntent(contexts, intents);
                     /*AppLoving Inter PreLoad*/
                     if (MyHelpers.getAppLovinInter() != null && !MyHelpers.getAppLovinInter().isEmpty()) {
                         InterClass.AppLovingInterPreLoad();
@@ -986,7 +1020,7 @@ public class SplashHelp extends AppCompatActivity {
 
     public static void FailAdsAppLovin_ShowFacebookUnityCustom() {
         if (MyHelpers.getfacebook_open_ad_id() != null && !MyHelpers.getfacebook_open_ad_id().isEmpty()) {
-            com.facebook.ads.InterstitialAd interstitialAd_FB_1 = new com.facebook.ads.InterstitialAd(contextx, MyHelpers.getfacebook_open_ad_id());
+            com.facebook.ads.InterstitialAd interstitialAd_FB_1 = new com.facebook.ads.InterstitialAd(contexts, MyHelpers.getfacebook_open_ad_id());
             InterstitialAdListener adListener = new InterstitialAdListener() {
                 @Override
                 public void onInterstitialDisplayed(Ad ad) {
@@ -995,7 +1029,7 @@ public class SplashHelp extends AppCompatActivity {
 
                 @Override
                 public void onInterstitialDismissed(Ad ad) {
-                    NextIntent(contextx, intentx);
+                    NextIntent(contexts, intents);
                 }
 
                 @Override
@@ -1009,15 +1043,7 @@ public class SplashHelp extends AppCompatActivity {
 
                 @Override
                 public void onAdLoaded(Ad ad) {
-                    if (interstitialAd_FB_1 != null) {
-                        interstitialAd_FB_1.show();
-                    } else {
-                        if (MyHelpers.getUnityInterID() != null && !MyHelpers.getUnityInterID().isEmpty()) {
-                            FailsAdsUnityShow();
-                        } else {
-                            CustomOpenAds();
-                        }
-                    }
+                    interstitialAd_FB_1.show();
                 }
 
                 @Override
@@ -1041,7 +1067,7 @@ public class SplashHelp extends AppCompatActivity {
     public static void FailUnity_ShowFacebookAppLovinCustom() {
 
         if (MyHelpers.getfacebook_open_ad_id() != null && !MyHelpers.getfacebook_open_ad_id().isEmpty()) {
-            com.facebook.ads.InterstitialAd interstitialAd_FB_1 = new com.facebook.ads.InterstitialAd(contextx, MyHelpers.getfacebook_open_ad_id());
+            com.facebook.ads.InterstitialAd interstitialAd_FB_1 = new com.facebook.ads.InterstitialAd(contexts, MyHelpers.getfacebook_open_ad_id());
             InterstitialAdListener adListener = new InterstitialAdListener() {
                 @Override
                 public void onInterstitialDisplayed(Ad ad) {
@@ -1050,14 +1076,14 @@ public class SplashHelp extends AppCompatActivity {
 
                 @Override
                 public void onInterstitialDismissed(Ad ad) {
-                    NextIntent(contextx, intentx);
+                    NextIntent(contexts, intents);
                 }
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
                     if (MyHelpers.getAppLovinInter() != null && !MyHelpers.getAppLovinInter().isEmpty()) {
 
-                        MaxInterstitialAd interstitialAd = new MaxInterstitialAd(MyHelpers.getAppLovinInter(), (Activity) contextx);
+                        MaxInterstitialAd interstitialAd = new MaxInterstitialAd(MyHelpers.getAppLovinInter(), (Activity) contexts);
                         interstitialAd.setListener(new MaxAdListener() {
                             @Override
                             public void onAdLoaded(MaxAd ad) {
@@ -1079,7 +1105,7 @@ public class SplashHelp extends AppCompatActivity {
 
                             @Override
                             public void onAdHidden(MaxAd ad) {
-                                NextIntent(contextx, intentx);
+                                NextIntent(contexts, intents);
                                 /*AppLoving Inter PreLoad*/
                                 if (MyHelpers.getAppLovinInter() != null && !MyHelpers.getAppLovinInter().isEmpty()) {
                                     InterClass.AppLovingInterPreLoad();
@@ -1114,66 +1140,7 @@ public class SplashHelp extends AppCompatActivity {
 
                 @Override
                 public void onAdLoaded(Ad ad) {
-                    if (interstitialAd_FB_1 != null) {
-                        interstitialAd_FB_1.show();
-                    } else {
-                        if (MyHelpers.getAppLovinInter() != null && !MyHelpers.getAppLovinInter().isEmpty()) {
-
-                            MaxInterstitialAd interstitialAd = new MaxInterstitialAd(MyHelpers.getAppLovinInter(), (Activity) contextx);
-                            interstitialAd.setListener(new MaxAdListener() {
-                                @Override
-                                public void onAdLoaded(MaxAd ad) {
-                                    if (interstitialAd.isReady()) {
-                                        interstitialAd.showAd();
-                                    } else {
-                                        /*AppLoving Inter PreLoad*/
-                                        if (MyHelpers.getAppLovinInter() != null && !MyHelpers.getAppLovinInter().isEmpty()) {
-                                            InterClass.AppLovingInterPreLoad();
-                                        }
-                                        CustomOpenAds();
-                                    }
-                                }
-
-                                @Override
-                                public void onAdDisplayed(MaxAd ad) {
-
-                                }
-
-                                @Override
-                                public void onAdHidden(MaxAd ad) {
-                                    /*AppLoving Inter PreLoad*/
-                                    if (MyHelpers.getAppLovinInter() != null && !MyHelpers.getAppLovinInter().isEmpty()) {
-                                        InterClass.AppLovingInterPreLoad();
-                                    }
-                                    NextIntent(contextx, intentx);
-                                }
-
-                                @Override
-                                public void onAdClicked(MaxAd ad) {
-
-                                }
-
-                                @Override
-                                public void onAdLoadFailed(String adUnitId, MaxError error) {
-                                    /*AppLoving Inter PreLoad*/
-                                    if (MyHelpers.getAppLovinInter() != null && !MyHelpers.getAppLovinInter().isEmpty()) {
-                                        InterClass.AppLovingInterPreLoad();
-                                    }
-                                    //Fail Code
-                                    CustomOpenAds();
-
-                                }
-
-                                @Override
-                                public void onAdDisplayFailed(MaxAd ad, MaxError error) {
-                                    //
-                                }
-                            });
-                            interstitialAd.loadAd();
-                        } else {
-                            CustomOpenAds();
-                        }
-                    }
+                    interstitialAd_FB_1.show();
                 }
 
                 @Override
@@ -1189,7 +1156,7 @@ public class SplashHelp extends AppCompatActivity {
             interstitialAd_FB_1.loadAd(interstitialAd_FB_1.buildLoadAdConfig().withAdListener(adListener).build());
 
         } else if (MyHelpers.getAppLovinInter() != null && !MyHelpers.getAppLovinInter().isEmpty()) {
-            MaxInterstitialAd interstitialAd = new MaxInterstitialAd(MyHelpers.getAppLovinInter(), (Activity) contextx);
+            MaxInterstitialAd interstitialAd = new MaxInterstitialAd(MyHelpers.getAppLovinInter(), (Activity) contexts);
             interstitialAd.setListener(new MaxAdListener() {
                 @Override
                 public void onAdLoaded(MaxAd ad) {
@@ -1211,7 +1178,7 @@ public class SplashHelp extends AppCompatActivity {
 
                 @Override
                 public void onAdHidden(MaxAd ad) {
-                    NextIntent(contextx, intentx);
+                    NextIntent(contexts, intents);
                     /*AppLoving Inter PreLoad*/
                     if (MyHelpers.getAppLovinInter() != null && !MyHelpers.getAppLovinInter().isEmpty()) {
                         InterClass.AppLovingInterPreLoad();
@@ -1247,7 +1214,7 @@ public class SplashHelp extends AppCompatActivity {
         UnityAds.load(MyHelpers.getUnityInterID(), new IUnityAdsLoadListener() {
             @Override
             public void onUnityAdsAdLoaded(String placementId) {
-                UnityAds.show((Activity) contextx, MyHelpers.getUnityInterID(), new UnityAdsShowOptions(), new IUnityAdsShowListener() {
+                UnityAds.show((Activity) contexts, MyHelpers.getUnityInterID(), new UnityAdsShowOptions(), new IUnityAdsShowListener() {
                     @Override
                     public void onUnityAdsShowFailure(String placementId, UnityAds.UnityAdsShowError error, String message) {
                         /*Unity Mix Auto Load Inter*/
@@ -1270,7 +1237,7 @@ public class SplashHelp extends AppCompatActivity {
 
                     @Override
                     public void onUnityAdsShowComplete(String placementId, UnityAds.UnityAdsShowCompletionState state) {
-                        NextIntent(contextx, intentx);
+                        NextIntent(contexts, intents);
                         /*Unity Mix Auto Load Inter*/
                         if (MyHelpers.getUnityInterID() != null && !MyHelpers.getUnityInterID().isEmpty()) {
                             InterClass.UnityInterPreLoad();
@@ -1296,17 +1263,17 @@ public class SplashHelp extends AppCompatActivity {
      */
 
     public static void AllAdsPreLoad() {
-        InterClass.main_context = (Activity) contextx;
-        BannerClass.main_context = (Activity) contextx;
-        NativeClass.main_context = (Activity) contextx;
+        InterClass.main_context = (Activity) contexts;
+        BannerClass.main_context = contexts;
+        NativeClass.main_context = (Activity) contexts;
         MixAdOnBanner();
         MixAdOnNative();
         MixAdOnInter();
     }
 
     private static void MixAdOnBanner() {
-        /**
-         * Banner
+        /*
+          Banner
          */
 
         if (MyHelpers.getlive_status().equals("1")) {
@@ -1380,8 +1347,8 @@ public class SplashHelp extends AppCompatActivity {
     }
 
     private static void MixAdOnNative() {
-        /**
-         * Native
+        /*
+          Native
          */
 
         if (MyHelpers.getlive_status().equals("1")) {
@@ -1450,8 +1417,8 @@ public class SplashHelp extends AppCompatActivity {
     }
 
     private static void MixAdOnInter() {
-        /**
-         * Inter
+        /*
+          Inter
          */
         /*Google Inter*/
 
@@ -1524,21 +1491,29 @@ public class SplashHelp extends AppCompatActivity {
 
     /*Mix Open*/
     private static void MixOpenAds(String valueOf) {
-        if (valueOf.equals("g")) {
-            GoogleAppOpen();
-        } else if (valueOf.equals("f")) {
-            FaceBookAppOpen();
-        } else if (valueOf.equals("a")) {
-            AppLovingAppOpen();
-        } else if (valueOf.equals("u")) {
-            UnityAppOpen();
-        } else if (valueOf.equals("q")) {
-            NextIntent(contextx, intentx);
-            MyHelpers.BtnAutolink();
-        } else if (valueOf.equals("c")) {
-            CustomOpenAds();
-        } else {
-            NextIntent(contextx, intentx);
+        switch (valueOf) {
+            case "g":
+                GoogleAppOpen();
+                break;
+            case "f":
+                FaceBookAppOpen();
+                break;
+            case "a":
+                AppLovingAppOpen();
+                break;
+            case "u":
+                UnityAppOpen();
+                break;
+            case "q":
+                NextIntent(contexts, intents);
+                MyHelpers.BtnAutolink();
+                break;
+            case "c":
+                CustomOpenAds();
+                break;
+            default:
+                NextIntent(contexts, intents);
+                break;
         }
     }
 
@@ -1564,7 +1539,7 @@ public class SplashHelp extends AppCompatActivity {
                         JSONObject firstEvent = (JSONObject) response.get(i);
                         adsModals.add(new AdsModal(firstEvent.getString("app_name"), firstEvent.getString("enable_ads"), firstEvent.getString("ad_app_name"), firstEvent.getString("app_description"), firstEvent.getString("app_logo"), firstEvent.getString("app_banner")));
                     }
-                    customads_status = true;
+                    customs_status = true;
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1574,7 +1549,7 @@ public class SplashHelp extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                customads_status = true;
+                customs_status = true;
             }
         });
     }
@@ -1583,13 +1558,13 @@ public class SplashHelp extends AppCompatActivity {
      * Country Check
      */
     public static String getCountryCode() {
-        TelephonyManager tm = (TelephonyManager) contextx.getSystemService(contextx.getApplicationContext().TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) contexts.getSystemService(TELEPHONY_SERVICE);
         return tm.getNetworkCountryIso();
     }
 
     public static Boolean CheckCountry(String Country_name) {
         try {
-            List<String> COUNTRY = new ArrayList<String>(Arrays.asList(Country_name.split(",")));
+            List<String> COUNTRY = new ArrayList<>(Arrays.asList(Country_name.split(",")));
             String tm = getCountryCode();
             for (int i = 0; i < COUNTRY.size(); i++) {
                 if (COUNTRY.get(i).equals(tm)) {

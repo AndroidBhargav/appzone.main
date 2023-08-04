@@ -1,5 +1,6 @@
 package com.appzone.mylibrarys;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -35,9 +36,13 @@ import java.util.Objects;
 public class BannerClass {
 
     /*Google*/
+    @SuppressLint("StaticFieldLeak")
     public static AdLoader regular_google_banner_ad_loader;
+    @SuppressLint("StaticFieldLeak")
     public static AdLoader regular_google_banner_ad_loader_1;
+    @SuppressLint("StaticFieldLeak")
     public static AdLoader regular_google_banner_ad_loader_2;
+    @SuppressLint("StaticFieldLeak")
     public static AdLoader regular_google_banner_ad_loader_3;
     public static com.google.android.gms.ads.nativead.NativeAd regular_google_native_banner = null;
     public static com.google.android.gms.ads.nativead.NativeAd regular_google_native_banner_1 = null;
@@ -56,7 +61,8 @@ public class BannerClass {
     public static com.facebook.ads.AdView on_demand_facebook_banner_adView = null;
     public static com.facebook.ads.AdView main_on_demand_facebook_banner_adView = null;
 
-    /*AppLovin*/
+    /*AppLoving*/
+    @SuppressLint("StaticFieldLeak")
     public static MaxAdView regular_applovin_banner_adView = null;
 
     /*Unity*/
@@ -69,7 +75,9 @@ public class BannerClass {
     public static int fb_auto_banner_show_id = 0;
 
     /*Helper*/
+    @SuppressLint("StaticFieldLeak")
     public static RelativeLayout main_banner;
+    @SuppressLint("StaticFieldLeak")
     public static Context main_context;
 
     /**
@@ -100,14 +108,14 @@ public class BannerClass {
         main_context = context1;
 
         if (checkConnection(main_context)) {
-            /**
-             * Stop Ads
+            /*
+              Stop Ads
              */
             if (MyHelpers.getCounter_Banner() == 0) {
                 return;
             }
-            /**
-             * Skip Ads
+            /*
+              Skip Ads
              */
             if (MyHelpers.getCounter_Banner() != 5000) {
                 banner_skip_ads++;
@@ -124,8 +132,8 @@ public class BannerClass {
             }
 
 
-            /**
-             * Mix Ads
+            /*
+              Mix Ads
              */
             if (MyHelpers.getmix_ad_on_off().equals("1")) {
                 BannerMixAds();
@@ -171,7 +179,7 @@ public class BannerClass {
 
     public static void BannerLoader() {
 
-        View layout_ad_view = LayoutInflater.from(main_context).inflate(R.layout.ad_small_native_banner_loading_lay, null);
+        @SuppressLint("InflateParams") View layout_ad_view = LayoutInflater.from(main_context).inflate(R.layout.ad_small_native_banner_loading_lay, null);
         main_banner.removeAllViews();
         main_banner.addView(layout_ad_view);
 
@@ -182,9 +190,7 @@ public class BannerClass {
         if (MyHelpers.getGoogleBanner() != null && !MyHelpers.getGoogleBanner().isEmpty()) {
 
             BannerLoader();
-            AdLoader adLoader = new AdLoader.Builder(main_context, MyHelpers.getGoogleBanner()).forNativeAd(nativeAds -> {
-                on_demand_google_native_banner = nativeAds;
-            }).withAdListener(new AdListener() {
+            AdLoader adLoader = new AdLoader.Builder(main_context, MyHelpers.getGoogleBanner()).forNativeAd(nativeAds -> on_demand_google_native_banner = nativeAds).withAdListener(new AdListener() {
                 @Override
                 public void onAdFailedToLoad(@NonNull LoadAdError adError) {
                     on_demand_google_native_banner = null;
@@ -299,9 +305,7 @@ public class BannerClass {
 
         if (MyHelpers.getGoogleBanner() != null && !MyHelpers.getGoogleBanner().isEmpty()) {
 
-            AdLoader adLoader = new AdLoader.Builder(main_context, MyHelpers.getGoogleBanner()).forNativeAd(nativeAds -> {
-                main_on_demand_google_native_banner = nativeAds;
-            }).withAdListener(new AdListener() {
+            AdLoader adLoader = new AdLoader.Builder(main_context, MyHelpers.getGoogleBanner()).forNativeAd(nativeAds -> main_on_demand_google_native_banner = nativeAds).withAdListener(new AdListener() {
                 @Override
                 public void onAdFailedToLoad(@NonNull LoadAdError adError) {
                     main_on_demand_google_native_banner = null;
@@ -403,7 +407,7 @@ public class BannerClass {
         AllAdsPreLoadsBanner("g3");
     }
 
-    private static void Google_Facebook_AppLovin_Fails_Unity_Banner_Show() {
+    private static void Google_Facebook_AppLoving_Fails_Unity_Banner_Show() {
         if (regular_unity_banner_adView != null) {
             main_banner.removeAllViews();
             main_banner.addView(regular_unity_banner_adView);
@@ -414,20 +418,21 @@ public class BannerClass {
     }
 
     private static void AllGoogleBannerFails_OtherAdsShow(String checker) {
-        if (checker.equals("r")) {
-            RegularFacebookADSBannerShow(checker);
-        } else if (checker.equals("f")) {
-            Facebook_Google_Fails_Applovin_Unity_Banner_Show();
-        } else if (checker.equals("a")) {
-            RegularFacebookADSBannerShow(checker);
-        } else if (checker.equals("u")) {
-            RegularFacebookADSBannerShow(checker);
+        switch (checker) {
+            case "r":
+            case "a":
+            case "u":
+                RegularFacebookADSBannerShow(checker);
+                break;
+            case "f":
+                Facebook_Google_Fails_Applovin_Unity_Banner_Show();
+                break;
         }
     }
 
     public static void RegularGoogleBannerPopulateShow(com.google.android.gms.ads.nativead.NativeAd nativeAd) {
 
-        View layout_ad_view = LayoutInflater.from(main_context).inflate(R.layout.ad_google_native_small_banner, null);
+        @SuppressLint("InflateParams") View layout_ad_view = LayoutInflater.from(main_context).inflate(R.layout.ad_google_native_small_banner, null);
         com.google.android.gms.ads.nativead.NativeAdView native_ad_view = layout_ad_view.findViewById(R.id.ad_view_small_banner);
         native_ad_view.setHeadlineView(native_ad_view.findViewById(R.id.ad_headline_small_banner));
         native_ad_view.setBodyView(native_ad_view.findViewById(R.id.ad_body_small_banner));
@@ -526,20 +531,25 @@ public class BannerClass {
             main_banner.removeAllViews();
             main_banner.addView(regular_applovin_banner_adView);
         } else {
-            Google_Facebook_AppLovin_Fails_Unity_Banner_Show();
+            Google_Facebook_AppLoving_Fails_Unity_Banner_Show();
         }
         AllAdsPreLoadsBanner("a");
     }
 
     private static void AllFacebookBannerFails_OtherAdsShow(String checker) {
-        if (checker.equals("r")) {
-            Facebook_Google_Fails_Applovin_Unity_Banner_Show();
-        } else if (checker.equals("f")) {
-            RegularGoogleADSBannerShow("f");
-        } else if (checker.equals("a")) {
-            Google_Facebook_AppLovin_Fails_Unity_Banner_Show();
-        } else {
-            Unity_Google_Facebook_Fails_Applovin_Banner_Show();
+        switch (checker) {
+            case "r":
+                Facebook_Google_Fails_Applovin_Unity_Banner_Show();
+                break;
+            case "f":
+                RegularGoogleADSBannerShow("f");
+                break;
+            case "a":
+                Google_Facebook_AppLoving_Fails_Unity_Banner_Show();
+                break;
+            default:
+                Unity_Google_Facebook_Fails_Applovin_Banner_Show();
+                break;
         }
     }
 
@@ -580,8 +590,8 @@ public class BannerClass {
         if (SplashHelp.adsModals != null && !SplashHelp.adsModals.isEmpty()) {
 
             int ads_number = MyHelpers.getRandomNumber(0, SplashHelp.adsModals.size() - 1);
-            RelativeLayout banner_view = (RelativeLayout) ((Activity) main_context).getLayoutInflater().inflate(R.layout.custom_banner, (ViewGroup) null);
-            TextView btn_install = (TextView) banner_view.findViewById(R.id.btn_install_banner);
+            @SuppressLint("InflateParams") RelativeLayout banner_view = (RelativeLayout) ((Activity) main_context).getLayoutInflater().inflate(R.layout.custom_banner, null);
+            TextView btn_install = banner_view.findViewById(R.id.btn_install_banner);
             RelativeLayout full_click = banner_view.findViewById(R.id.full_click_banner);
             TextView app_name = banner_view.findViewById(R.id.app_name_banner);
             TextView app_shot = banner_view.findViewById(R.id.app_shot_banner);
@@ -589,24 +599,18 @@ public class BannerClass {
             Glide.with(main_context).load(SplashHelp.adsModals.get(ads_number).getApp_logo()).into(app_icon);
             app_name.setText(SplashHelp.adsModals.get(ads_number).getAd_app_name());
             app_shot.setText(SplashHelp.adsModals.get(ads_number).getApp_description());
-            btn_install.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
-                    } catch (android.content.ActivityNotFoundException anfe) {
-                        main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
-                    }
+            btn_install.setOnClickListener(v -> {
+                try {
+                    main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
+                } catch (android.content.ActivityNotFoundException ante) {
+                    main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
                 }
             });
-            full_click.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
-                    } catch (android.content.ActivityNotFoundException anfe) {
-                        main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
-                    }
+            full_click.setOnClickListener(v -> {
+                try {
+                    main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
+                } catch (android.content.ActivityNotFoundException ante) {
+                    main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
                 }
             });
             main_banner.removeAllViews();
@@ -690,9 +694,7 @@ public class BannerClass {
      */
     /*Google*/
     public static void GoogleBannerPreload() {
-        regular_google_banner_ad_loader = new AdLoader.Builder(main_context, MyHelpers.getGoogleBanner()).forNativeAd(nativeAds -> {
-            regular_google_native_banner = nativeAds;
-        }).withAdListener(new AdListener() {
+        regular_google_banner_ad_loader = new AdLoader.Builder(main_context, MyHelpers.getGoogleBanner()).forNativeAd(nativeAds -> regular_google_native_banner = nativeAds).withAdListener(new AdListener() {
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError adError) {
                 regular_google_native_banner = null;
@@ -724,9 +726,7 @@ public class BannerClass {
     }
 
     public static void GoogleBannerPreload1() {
-        regular_google_banner_ad_loader_1 = new AdLoader.Builder(main_context, MyHelpers.getGoogleBanner()).forNativeAd(nativeAds -> {
-            regular_google_native_banner_1 = nativeAds;
-        }).withAdListener(new AdListener() {
+        regular_google_banner_ad_loader_1 = new AdLoader.Builder(main_context, MyHelpers.getGoogleBanner()).forNativeAd(nativeAds -> regular_google_native_banner_1 = nativeAds).withAdListener(new AdListener() {
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError adError) {
                 regular_google_native_banner_1 = null;
@@ -759,9 +759,7 @@ public class BannerClass {
 
     public static void GoogleBannerPreload2() {
 
-        regular_google_banner_ad_loader_2 = new AdLoader.Builder(main_context, MyHelpers.getGoogleBanner1()).forNativeAd(nativeAds -> {
-            regular_google_native_banner_2 = nativeAds;
-        }).withAdListener(new AdListener() {
+        regular_google_banner_ad_loader_2 = new AdLoader.Builder(main_context, MyHelpers.getGoogleBanner1()).forNativeAd(nativeAds -> regular_google_native_banner_2 = nativeAds).withAdListener(new AdListener() {
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError adError) {
                 regular_google_native_banner_2 = null;
@@ -795,9 +793,7 @@ public class BannerClass {
     }
 
     public static void GoogleBannerPreload3() {
-        regular_google_banner_ad_loader_3 = new AdLoader.Builder(main_context, MyHelpers.getGoogleBanner2()).forNativeAd(nativeAds -> {
-            regular_google_native_banner_3 = nativeAds;
-        }).withAdListener(new AdListener() {
+        regular_google_banner_ad_loader_3 = new AdLoader.Builder(main_context, MyHelpers.getGoogleBanner2()).forNativeAd(nativeAds -> regular_google_native_banner_3 = nativeAds).withAdListener(new AdListener() {
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError adError) {
                 regular_google_native_banner_3 = null;
@@ -1031,26 +1027,37 @@ public class BannerClass {
     /*All Preload*/
     public static void AllAdsPreLoadsBanner(String refresh) {
 
-        if (refresh.equals("g")) {
-            regular_google_native_banner = null;
-        } else if (refresh.equals("g1")) {
-            regular_google_native_banner_1 = null;
-        } else if (refresh.equals("g2")) {
-            regular_google_native_banner_2 = null;
-        } else if (refresh.equals("g3")) {
-            regular_google_native_banner_3 = null;
-        } else if (refresh.equals("f")) {
-            regular_facebook_banner_adView = null;
-        } else if (refresh.equals("f1")) {
-            regular_facebook_banner_adView_1 = null;
-        } else if (refresh.equals("f2")) {
-            regular_facebook_banner_adView_2 = null;
-        } else if (refresh.equals("f3")) {
-            regular_facebook_banner_adView_3 = null;
-        } else if (refresh.equals("a")) {
-            regular_applovin_banner_adView = null;
-        } else if (refresh.equals("u")) {
-            regular_unity_banner_adView = null;
+        switch (refresh) {
+            case "g":
+                regular_google_native_banner = null;
+                break;
+            case "g1":
+                regular_google_native_banner_1 = null;
+                break;
+            case "g2":
+                regular_google_native_banner_2 = null;
+                break;
+            case "g3":
+                regular_google_native_banner_3 = null;
+                break;
+            case "f":
+                regular_facebook_banner_adView = null;
+                break;
+            case "f1":
+                regular_facebook_banner_adView_1 = null;
+                break;
+            case "f2":
+                regular_facebook_banner_adView_2 = null;
+                break;
+            case "f3":
+                regular_facebook_banner_adView_3 = null;
+                break;
+            case "a":
+                regular_applovin_banner_adView = null;
+                break;
+            case "u":
+                regular_unity_banner_adView = null;
+                break;
         }
 
         //G

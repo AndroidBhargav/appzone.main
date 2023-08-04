@@ -2,6 +2,7 @@ package com.appzone.mylibrarys;
 
 import static com.appzone.mylibrarys.MyHelpers.Q_A_NativeAuto;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -16,10 +17,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 
@@ -41,34 +42,46 @@ import com.google.android.gms.ads.nativead.NativeAdOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class NativeClass {
 
     /*Google*/
+
+    public static int google_native_count_number = 0;
     public static com.google.android.gms.ads.nativead.NativeAd google_native_ads = null;
     public static com.google.android.gms.ads.nativead.NativeAd google_native_ads1 = null;
     public static com.google.android.gms.ads.nativead.NativeAd google_native_ads2 = null;
     public static com.google.android.gms.ads.nativead.NativeAd google_native_ads3 = null;
 
     public static com.google.android.gms.ads.nativead.NativeAd main_on_demand_google_native_ads = null;
+    public static com.google.android.gms.ads.nativead.NativeAd main_on_demand_google_native_ads_1 = null;
+    public static com.google.android.gms.ads.nativead.NativeAd main_on_demand_google_native_ads_2 = null;
     public static com.google.android.gms.ads.nativead.NativeAd on_demand_google_native_ads = null;
 
     /*Facebook*/
+
+    public static int fb_native_count_number = 0;
     public static com.facebook.ads.NativeAd facebook_native_ads = null;
     public static com.facebook.ads.NativeAd facebook_native_ads1 = null;
     public static com.facebook.ads.NativeAd facebook_native_ads2 = null;
     public static com.facebook.ads.NativeAd facebook_native_ads3 = null;
 
     public static com.facebook.ads.NativeAd main_on_demand_facebook_native_ads = null;
+    public static com.facebook.ads.NativeAd main_on_demand_facebook_native_ads_1 = null;
+    public static com.facebook.ads.NativeAd main_on_demand_facebook_native_ads_2 = null;
     public static com.facebook.ads.NativeAd on_demand_facebook_native_ads = null;
 
     /*AppLoving*/
     public static MaxNativeAdLoader appLoving_native_ads_loader;
+    @SuppressLint("StaticFieldLeak")
     public static MaxNativeAdView max_nativeAdView;
     public static MaxAd appLoving_native_ads = null;
 
     /*Helper*/
+    @SuppressLint("StaticFieldLeak")
     public static RelativeLayout main_native;
+    @SuppressLint("StaticFieldLeak")
     public static Activity main_context;
 
     /*Mix*/
@@ -143,9 +156,33 @@ public class NativeClass {
 
         if (MyHelpers.getExtraBtn_3().equals("1")) {
             if (MyHelpers.getGoogleEnable().equals("1") && MyHelpers.getlive_status().equals("1")) {
-                GoogleADSShowONDemandNative();
+
+                if (google_native_count_number > 2) {
+                    google_native_count_number = 0;
+                }
+
+                if (google_native_count_number == 0) {
+                    GoogleADSShowONDemandNative();
+                } else if (google_native_count_number == 1) {
+                    GoogleADSShowONDemandNative_1();
+                } else if (google_native_count_number == 2) {
+                    GoogleADSShowONDemandNative_2();
+                }
+
             } else if (MyHelpers.getFacebookEnable().equals("1") && MyHelpers.getlive_status().equals("1")) {
-                FacebookADSShowONDemandNative();
+
+                if (fb_native_count_number > 2) {
+                    fb_native_count_number = 0;
+                }
+
+                if (fb_native_count_number == 0) {
+                    FacebookADSShowONDemandNative();
+                } else if (fb_native_count_number == 1) {
+                    FacebookADSShowONDemandNative_1();
+                } else if (fb_native_count_number == 2) {
+                    FacebookADSShowONDemandNative_2();
+                }
+
             }
         } else {
             if (MyHelpers.getGoogleEnable().equals("1") && MyHelpers.getlive_status().equals("1")) {
@@ -166,7 +203,7 @@ public class NativeClass {
 
     public static void NativeLoader() {
 
-        View layout_ad_view = LayoutInflater.from(main_context).inflate(R.layout.ad_big_native_loading_lay, null);
+        @SuppressLint("InflateParams") View layout_ad_view = LayoutInflater.from(main_context).inflate(R.layout.ad_big_native_loading_lay, null);
         main_native.removeAllViews();
         main_native.addView(layout_ad_view);
 
@@ -178,20 +215,18 @@ public class NativeClass {
 
             NativeLoader();
             AdLoader.Builder builder = new AdLoader.Builder(main_context, MyHelpers.getGoogleNative());
-            builder.forNativeAd(new com.google.android.gms.ads.nativead.NativeAd.OnNativeAdLoadedListener() {
-                public void onNativeAdLoaded(com.google.android.gms.ads.nativead.NativeAd nativeAd) {
-                    main_on_demand_google_native_ads = nativeAd;
-                    if (main_on_demand_google_native_ads != null) {
-                        GoogleNativePopulateShow(main_on_demand_google_native_ads);
-                    }
-                }
+            builder.forNativeAd(nativeAd -> {
+                main_on_demand_google_native_ads = nativeAd;
+                google_native_count_number++;
+                GoogleNativePopulateShow(main_on_demand_google_native_ads);
             });
 
             builder.withNativeAdOptions(new NativeAdOptions.Builder().setVideoOptions(new VideoOptions.Builder().setStartMuted(false).build()).build());
             builder.withAdListener(new AdListener() {
-                public void onAdFailedToLoad(LoadAdError loadAdError) {
+                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                     super.onAdFailedToLoad(loadAdError);
                     main_on_demand_google_native_ads = null;
+                    google_native_count_number++;
                     GoogleAdsShowOnDemandFail_showFB();
                 }
 
@@ -201,6 +236,71 @@ public class NativeClass {
             }).build().loadAd(new AdRequest.Builder().build());
 
         } else {
+            NativeLoader();
+            google_native_count_number++;
+            GoogleAdsShowOnDemandFail_showFB();
+        }
+    }
+    private static void GoogleADSShowONDemandNative_1() {
+
+        if (MyHelpers.getGoogleNative1() != null && !MyHelpers.getGoogleNative1().isEmpty()) {
+
+            NativeLoader();
+            AdLoader.Builder builder = new AdLoader.Builder(main_context, MyHelpers.getGoogleNative1());
+            builder.forNativeAd(nativeAd -> {
+                main_on_demand_google_native_ads_1 = nativeAd;
+                google_native_count_number++;
+                GoogleNativePopulateShow(main_on_demand_google_native_ads_1);
+            });
+
+            builder.withNativeAdOptions(new NativeAdOptions.Builder().setVideoOptions(new VideoOptions.Builder().setStartMuted(false).build()).build());
+            builder.withAdListener(new AdListener() {
+                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                    super.onAdFailedToLoad(loadAdError);
+                    main_on_demand_google_native_ads_1 = null;
+                    google_native_count_number++;
+                    GoogleAdsShowOnDemandFail_showFB();
+                }
+
+                public void onAdClicked() {
+                    super.onAdClicked();
+                }
+            }).build().loadAd(new AdRequest.Builder().build());
+
+        } else {
+            NativeLoader();
+            google_native_count_number++;
+            GoogleAdsShowOnDemandFail_showFB();
+        }
+    }
+    private static void GoogleADSShowONDemandNative_2() {
+
+        if (MyHelpers.getGoogleNative2() != null && !MyHelpers.getGoogleNative2().isEmpty()) {
+
+            NativeLoader();
+            AdLoader.Builder builder = new AdLoader.Builder(main_context, MyHelpers.getGoogleNative2());
+            builder.forNativeAd(nativeAd -> {
+                main_on_demand_google_native_ads_2 = nativeAd;
+                google_native_count_number++;
+                GoogleNativePopulateShow(main_on_demand_google_native_ads_2);
+            });
+
+            builder.withNativeAdOptions(new NativeAdOptions.Builder().setVideoOptions(new VideoOptions.Builder().setStartMuted(false).build()).build());
+            builder.withAdListener(new AdListener() {
+                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                    super.onAdFailedToLoad(loadAdError);
+                    main_on_demand_google_native_ads_2 = null;
+                    google_native_count_number++;
+                    GoogleAdsShowOnDemandFail_showFB();
+                }
+                public void onAdClicked() {
+                    super.onAdClicked();
+                }
+            }).build().loadAd(new AdRequest.Builder().build());
+
+        } else {
+            NativeLoader();
+            google_native_count_number++;
             GoogleAdsShowOnDemandFail_showFB();
         }
     }
@@ -261,6 +361,7 @@ public class NativeClass {
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
                     main_on_demand_facebook_native_ads = null;
+                    fb_native_count_number++;
                     FacebookAdsShowOnDemandFail_showG();
                 }
 
@@ -278,33 +379,122 @@ public class NativeClass {
 
                 @Override
                 public void onLoggingImpression(Ad ad) {
-
+                    fb_native_count_number++;
                 }
             };
             main_on_demand_facebook_native_ads.loadAd(main_on_demand_facebook_native_ads.buildLoadAdConfig().withAdListener(nativeAdListener).build());
-        }else {
+        } else {
+            NativeLoader();
+            fb_native_count_number++;
             FacebookAdsShowOnDemandFail_showG();
         }
 
     }
+
+    private static void FacebookADSShowONDemandNative_1() {
+
+        if (MyHelpers.getFacebookNative1() != null && !MyHelpers.getFacebookNative1().isEmpty()) {
+
+            NativeLoader();
+            main_on_demand_facebook_native_ads_1 = new com.facebook.ads.NativeAd(main_context, MyHelpers.getFacebookNative1());
+            NativeAdListener nativeAdListener = new NativeAdListener() {
+                @Override
+                public void onMediaDownloaded(Ad ad) {
+
+                }
+
+                @Override
+                public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                    main_on_demand_facebook_native_ads_1 = null;
+                    fb_native_count_number++;
+                    FacebookAdsShowOnDemandFail_showG();
+                }
+
+                @Override
+                public void onAdLoaded(Ad ad) {
+                    if (main_on_demand_facebook_native_ads_1 != null && main_on_demand_facebook_native_ads_1.isAdLoaded()) {
+                        FacebookNativePopulateShow(main_on_demand_facebook_native_ads_1);
+                    }
+                }
+
+                @Override
+                public void onAdClicked(Ad ad) {
+
+                }
+
+                @Override
+                public void onLoggingImpression(Ad ad) {
+                    fb_native_count_number++;
+                }
+            };
+            main_on_demand_facebook_native_ads_1.loadAd(main_on_demand_facebook_native_ads_1.buildLoadAdConfig().withAdListener(nativeAdListener).build());
+        } else {
+            NativeLoader();
+            fb_native_count_number++;
+            FacebookAdsShowOnDemandFail_showG();
+        }
+
+    }
+
+    private static void FacebookADSShowONDemandNative_2() {
+
+        if (MyHelpers.getFacebookNative2() != null && !MyHelpers.getFacebookNative2().isEmpty()) {
+
+            NativeLoader();
+            main_on_demand_facebook_native_ads_2 = new com.facebook.ads.NativeAd(main_context, MyHelpers.getFacebookNative2());
+            NativeAdListener nativeAdListener = new NativeAdListener() {
+                @Override
+                public void onMediaDownloaded(Ad ad) {
+
+                }
+
+                @Override
+                public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                    main_on_demand_facebook_native_ads_2 = null;
+                    fb_native_count_number++;
+                    FacebookAdsShowOnDemandFail_showG();
+                }
+
+                @Override
+                public void onAdLoaded(Ad ad) {
+                    if (main_on_demand_facebook_native_ads_2 != null && main_on_demand_facebook_native_ads_2.isAdLoaded()) {
+                        FacebookNativePopulateShow(main_on_demand_facebook_native_ads_2);
+                    }
+                }
+
+                @Override
+                public void onAdClicked(Ad ad) {
+
+                }
+
+                @Override
+                public void onLoggingImpression(Ad ad) {
+                    fb_native_count_number++;
+                }
+            };
+            main_on_demand_facebook_native_ads_2.loadAd(main_on_demand_facebook_native_ads_2.buildLoadAdConfig().withAdListener(nativeAdListener).build());
+        } else {
+            NativeLoader();
+            fb_native_count_number++;
+            FacebookAdsShowOnDemandFail_showG();
+        }
+
+    }
+
 
     private static void FacebookAdsShowOnDemandFail_showG() {
 
         if (MyHelpers.getGoogleNative() != null && !MyHelpers.getGoogleNative().isEmpty()) {
 
             AdLoader.Builder builder = new AdLoader.Builder(main_context, MyHelpers.getGoogleNative());
-            builder.forNativeAd(new com.google.android.gms.ads.nativead.NativeAd.OnNativeAdLoadedListener() {
-                public void onNativeAdLoaded(com.google.android.gms.ads.nativead.NativeAd nativeAd) {
-                    on_demand_google_native_ads = nativeAd;
-                    if (on_demand_google_native_ads != null) {
-                        GoogleNativePopulateShow(on_demand_google_native_ads);
-                    }
-                }
+            builder.forNativeAd(nativeAd -> {
+                on_demand_google_native_ads = nativeAd;
+                GoogleNativePopulateShow(on_demand_google_native_ads);
             });
 
             builder.withNativeAdOptions(new NativeAdOptions.Builder().setVideoOptions(new VideoOptions.Builder().setStartMuted(false).build()).build());
             builder.withAdListener(new AdListener() {
-                public void onAdFailedToLoad(LoadAdError loadAdError) {
+                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                     super.onAdFailedToLoad(loadAdError);
                     on_demand_google_native_ads = null;
                     Q_A_NativeAuto(main_native, main_context);
@@ -315,7 +505,7 @@ public class NativeClass {
                 }
             }).build().loadAd(new AdRequest.Builder().build());
 
-        }else {
+        } else {
             Q_A_NativeAuto(main_native, main_context);
         }
     }
@@ -397,53 +587,55 @@ public class NativeClass {
     }
 
     private static void AllGoogle_Fails_Other_Ads_Show(String checker) {
-        if (checker.equals("r")) {
-            FacebookADSNativeShow(checker);
-        } else if (checker.equals("f")) {
-            Google_Facebook_Fails_AppLoving_Show();
-        } else if (checker.equals("a")) {
-            FacebookADSNativeShow(checker);
+        switch (checker) {
+            case "r":
+            case "a":
+                FacebookADSNativeShow(checker);
+                break;
+            case "f":
+                Google_Facebook_Fails_AppLoving_Show();
+                break;
         }
     }
 
     public static void GoogleNativePopulateShow(com.google.android.gms.ads.nativead.NativeAd main_google_native_ads) {
 
-        com.google.android.gms.ads.nativead.NativeAdView nativeAdView = (com.google.android.gms.ads.nativead.NativeAdView) main_context.getLayoutInflater().inflate(R.layout.ad_google_big_native, (ViewGroup) null);
-        nativeAdView.setMediaView((com.google.android.gms.ads.nativead.MediaView) nativeAdView.findViewById(R.id.ad_media));
+        @SuppressLint("InflateParams") com.google.android.gms.ads.nativead.NativeAdView nativeAdView = (com.google.android.gms.ads.nativead.NativeAdView) main_context.getLayoutInflater().inflate(R.layout.ad_google_big_native, null);
+        nativeAdView.setMediaView(nativeAdView.findViewById(R.id.ad_media));
         ((com.google.android.gms.ads.nativead.MediaView) nativeAdView.findViewById(R.id.ad_media)).setImageScaleType(ImageView.ScaleType.CENTER_INSIDE);
         nativeAdView.setHeadlineView(nativeAdView.findViewById(R.id.ad_headline));
         nativeAdView.setBodyView(nativeAdView.findViewById(R.id.ad_body));
         nativeAdView.setCallToActionView(nativeAdView.findViewById(R.id.ad_call_to_action));
         nativeAdView.setIconView(nativeAdView.findViewById(R.id.ad_app_icon));
-        nativeAdView.getMediaView().setMediaContent(main_google_native_ads.getMediaContent());
+        Objects.requireNonNull(nativeAdView.getMediaView()).setMediaContent(main_google_native_ads.getMediaContent());
         nativeAdView.findViewById(R.id.ad_call_to_action).setBackground(ContextCompat.getDrawable(main_context, R.drawable.app_btn));
         try {
-            ((TextView) nativeAdView.getHeadlineView()).setText(main_google_native_ads.getHeadline());
+            ((TextView) Objects.requireNonNull(nativeAdView.getHeadlineView())).setText(main_google_native_ads.getHeadline());
             if (main_google_native_ads.getBody() == null) {
-                nativeAdView.getBodyView().setVisibility(View.INVISIBLE);
+                Objects.requireNonNull(nativeAdView.getBodyView()).setVisibility(View.INVISIBLE);
             } else {
-                nativeAdView.getBodyView().setVisibility(View.VISIBLE);
+                Objects.requireNonNull(nativeAdView.getBodyView()).setVisibility(View.VISIBLE);
                 ((TextView) nativeAdView.getBodyView()).setText(main_google_native_ads.getBody());
             }
             if (main_google_native_ads.getCallToAction() == null) {
-                nativeAdView.getCallToActionView().setVisibility(View.INVISIBLE);
+                Objects.requireNonNull(nativeAdView.getCallToActionView()).setVisibility(View.INVISIBLE);
             } else {
-                nativeAdView.getCallToActionView().setVisibility(View.VISIBLE);
+                Objects.requireNonNull(nativeAdView.getCallToActionView()).setVisibility(View.VISIBLE);
                 if (MyHelpers.getGooglebutton_name() != null && !MyHelpers.getGooglebutton_name().isEmpty()) {
                     ((Button) nativeAdView.getCallToActionView()).setText(MyHelpers.getGooglebutton_name());
                 } else {
                     ((Button) nativeAdView.getCallToActionView()).setText(main_google_native_ads.getCallToAction());
                 }
-                ((Button) nativeAdView.getCallToActionView()).setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(MyHelpers.getGooglebutton_color())));
+                nativeAdView.getCallToActionView().setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(MyHelpers.getGooglebutton_color())));
             }
             if (main_google_native_ads.getIcon() == null) {
-                nativeAdView.getIconView().setVisibility(View.GONE);
+                Objects.requireNonNull(nativeAdView.getIconView()).setVisibility(View.GONE);
             } else {
-                ((ImageView) nativeAdView.getIconView()).setImageDrawable(main_google_native_ads.getIcon().getDrawable());
+                ((ImageView) Objects.requireNonNull(nativeAdView.getIconView())).setImageDrawable(main_google_native_ads.getIcon().getDrawable());
                 nativeAdView.getIconView().setVisibility(View.VISIBLE);
             }
             nativeAdView.setNativeAd(main_google_native_ads);
-            VideoController videoController = main_google_native_ads.getMediaContent().getVideoController();
+            VideoController videoController = Objects.requireNonNull(main_google_native_ads.getMediaContent()).getVideoController();
             if (videoController.hasVideoContent()) {
                 videoController.setVideoLifecycleCallbacks(new VideoController.VideoLifecycleCallbacks() {
                     public void onVideoEnd() {
@@ -451,7 +643,7 @@ public class NativeClass {
                     }
                 });
             }
-        } catch (Exception unused) {
+        } catch (Exception ignored) {
         }
         main_native.removeAllViews();
         main_native.addView(nativeAdView);
@@ -591,7 +783,7 @@ public class NativeClass {
 
         if (SplashHelp.adsModals != null && !SplashHelp.adsModals.isEmpty()) {
             int ads_number = MyHelpers.getRandomNumber(0, SplashHelp.adsModals.size() - 1);
-            RelativeLayout native_view = (RelativeLayout) main_context.getLayoutInflater().inflate(R.layout.custom_native, (ViewGroup) null);
+            @SuppressLint("InflateParams") RelativeLayout native_view = (RelativeLayout) main_context.getLayoutInflater().inflate(R.layout.custom_native, null);
             AppCompatButton btn_install = native_view.findViewById(R.id.btn_install);
             RelativeLayout full_click = native_view.findViewById(R.id.full_click);
             TextView app_name = native_view.findViewById(R.id.app_name);
@@ -602,24 +794,18 @@ public class NativeClass {
             Glide.with(main_context).load(SplashHelp.adsModals.get(ads_number).getApp_banner()).into(ads_banner);
             app_name.setText(SplashHelp.adsModals.get(ads_number).getAd_app_name());
             app_shot.setText(SplashHelp.adsModals.get(ads_number).getApp_description());
-            btn_install.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
-                    } catch (android.content.ActivityNotFoundException anfe) {
-                        main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
-                    }
+            btn_install.setOnClickListener(v -> {
+                try {
+                    main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
+                } catch (android.content.ActivityNotFoundException ante) {
+                    main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
                 }
             });
-            full_click.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
-                    } catch (android.content.ActivityNotFoundException anfe) {
-                        main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
-                    }
+            full_click.setOnClickListener(v -> {
+                try {
+                    main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
+                } catch (android.content.ActivityNotFoundException ante) {
+                    main_context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + SplashHelp.adsModals.get(ads_number).getApp_name())));
                 }
             });
             main_native.removeAllViews();
@@ -701,14 +887,10 @@ public class NativeClass {
     /*Google*/
     public static void GoogleNativePreload() {
         AdLoader.Builder builder = new AdLoader.Builder(main_context, MyHelpers.getGoogleNative());
-        builder.forNativeAd(new com.google.android.gms.ads.nativead.NativeAd.OnNativeAdLoadedListener() {
-            public void onNativeAdLoaded(com.google.android.gms.ads.nativead.NativeAd nativeAd) {
-                google_native_ads = nativeAd;
-            }
-        });
+        builder.forNativeAd(nativeAd -> google_native_ads = nativeAd);
         builder.withNativeAdOptions(new NativeAdOptions.Builder().setVideoOptions(new VideoOptions.Builder().setStartMuted(false).build()).build());
         builder.withAdListener(new AdListener() {
-            public void onAdFailedToLoad(LoadAdError loadAdError) {
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                 super.onAdFailedToLoad(loadAdError);
                 google_native_ads = null;
             }
@@ -721,14 +903,10 @@ public class NativeClass {
 
     public static void GoogleNativePreload1() {
         AdLoader.Builder builder = new AdLoader.Builder(main_context, MyHelpers.getGoogleNative());
-        builder.forNativeAd(new com.google.android.gms.ads.nativead.NativeAd.OnNativeAdLoadedListener() {
-            public void onNativeAdLoaded(com.google.android.gms.ads.nativead.NativeAd nativeAd) {
-                google_native_ads1 = nativeAd;
-            }
-        });
+        builder.forNativeAd(nativeAd -> google_native_ads1 = nativeAd);
         builder.withNativeAdOptions(new NativeAdOptions.Builder().setVideoOptions(new VideoOptions.Builder().setStartMuted(false).build()).build());
         builder.withAdListener(new AdListener() {
-            public void onAdFailedToLoad(LoadAdError loadAdError) {
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                 super.onAdFailedToLoad(loadAdError);
                 google_native_ads1 = null;
             }
@@ -742,14 +920,10 @@ public class NativeClass {
 
     public static void GoogleNativePreload2() {
         AdLoader.Builder builder = new AdLoader.Builder(main_context, MyHelpers.getGoogleNative1());
-        builder.forNativeAd(new com.google.android.gms.ads.nativead.NativeAd.OnNativeAdLoadedListener() {
-            public void onNativeAdLoaded(com.google.android.gms.ads.nativead.NativeAd nativeAd) {
-                google_native_ads2 = nativeAd;
-            }
-        });
+        builder.forNativeAd(nativeAd -> google_native_ads2 = nativeAd);
         builder.withNativeAdOptions(new NativeAdOptions.Builder().setVideoOptions(new VideoOptions.Builder().setStartMuted(false).build()).build());
         builder.withAdListener(new AdListener() {
-            public void onAdFailedToLoad(LoadAdError loadAdError) {
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                 super.onAdFailedToLoad(loadAdError);
                 google_native_ads2 = null;
             }
@@ -763,14 +937,10 @@ public class NativeClass {
 
     public static void GoogleNativePreload3() {
         AdLoader.Builder builder = new AdLoader.Builder(main_context, MyHelpers.getGoogleNative2());
-        builder.forNativeAd(new com.google.android.gms.ads.nativead.NativeAd.OnNativeAdLoadedListener() {
-            public void onNativeAdLoaded(com.google.android.gms.ads.nativead.NativeAd nativeAd) {
-                google_native_ads3 = nativeAd;
-            }
-        });
+        builder.forNativeAd(nativeAd -> google_native_ads3 = nativeAd);
         builder.withNativeAdOptions(new NativeAdOptions.Builder().setVideoOptions(new VideoOptions.Builder().setStartMuted(false).build()).build());
         builder.withAdListener(new AdListener() {
-            public void onAdFailedToLoad(LoadAdError loadAdError) {
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                 super.onAdFailedToLoad(loadAdError);
                 google_native_ads3 = null;
             }
@@ -932,24 +1102,34 @@ public class NativeClass {
 
     /*All Preload*/
     public static void AllAdsPreLoadsNative(String refresh) {
-        if (refresh.equals("g")) {
-            google_native_ads = null;
-        } else if (refresh.equals("g1")) {
-            google_native_ads1 = null;
-        } else if (refresh.equals("g2")) {
-            google_native_ads2 = null;
-        } else if (refresh.equals("g3")) {
-            google_native_ads3 = null;
-        } else if (refresh.equals("f")) {
-            facebook_native_ads = null;
-        } else if (refresh.equals("f1")) {
-            facebook_native_ads1 = null;
-        } else if (refresh.equals("f2")) {
-            facebook_native_ads2 = null;
-        } else if (refresh.equals("f3")) {
-            facebook_native_ads3 = null;
-        } else if (refresh.equals("a")) {
-            appLoving_native_ads = null;
+        switch (refresh) {
+            case "g":
+                google_native_ads = null;
+                break;
+            case "g1":
+                google_native_ads1 = null;
+                break;
+            case "g2":
+                google_native_ads2 = null;
+                break;
+            case "g3":
+                google_native_ads3 = null;
+                break;
+            case "f":
+                facebook_native_ads = null;
+                break;
+            case "f1":
+                facebook_native_ads1 = null;
+                break;
+            case "f2":
+                facebook_native_ads2 = null;
+                break;
+            case "f3":
+                facebook_native_ads3 = null;
+                break;
+            case "a":
+                appLoving_native_ads = null;
+                break;
         }
 
         //G

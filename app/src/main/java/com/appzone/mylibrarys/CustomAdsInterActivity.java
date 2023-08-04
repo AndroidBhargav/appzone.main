@@ -16,13 +16,9 @@ import com.bumptech.glide.Glide;
 
 public class CustomAdsInterActivity extends AppCompatActivity {
 
-    private ImageView appIcon;
-    private TextView appName;
-    private TextView appShot;
     private ImageView close;
     private AppCompatButton btnInstall;
     private AppCompatButton btnCancel;
-    private ImageView adBanner;
     private RelativeLayout mainView;
 
     String ads_number_string = "";
@@ -38,41 +34,21 @@ public class CustomAdsInterActivity extends AppCompatActivity {
 
         initView();
 
-        btnInstall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                InstallApps();
-            }
-        });
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        mainView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                InstallApps();
-            }
-        });
+        btnInstall.setOnClickListener(v -> InstallApps());
+        close.setOnClickListener(v -> finish());
+        btnCancel.setOnClickListener(v -> finish());
+        mainView.setOnClickListener(v -> InstallApps());
     }
 
     private void initView() {
-        appIcon = (ImageView) findViewById(R.id.app_icon);
-        adBanner = (ImageView) findViewById(R.id.ad_banner);
-        appName = (TextView) findViewById(R.id.app_name);
-        appShot = (TextView) findViewById(R.id.app_shot);
-        close = (ImageView) findViewById(R.id.close);
-        btnInstall = (AppCompatButton) findViewById(R.id.btn_install);
-        btnCancel = (AppCompatButton) findViewById(R.id.btn_cancel);
-        mainView = (RelativeLayout) findViewById(R.id.main_view);
+        ImageView appIcon = findViewById(R.id.app_icon);
+        ImageView adBanner = findViewById(R.id.ad_banner);
+        TextView appName = findViewById(R.id.app_name);
+        TextView appShot = findViewById(R.id.app_shot);
+        close = findViewById(R.id.close);
+        btnInstall = findViewById(R.id.btn_install);
+        btnCancel = findViewById(R.id.btn_cancel);
+        mainView = findViewById(R.id.main_view);
 
         if (SplashHelp.adsModals != null && !SplashHelp.adsModals.isEmpty()) {
             ads_number_string = String.valueOf(MyHelpers.getRandomNumber(0, SplashHelp.adsModals.size() - 1));

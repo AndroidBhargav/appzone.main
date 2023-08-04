@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about_update">About Update</string>
+    <string name="install_our_new_app_now_and_enjoy">➺ Install our new app now and enjoy</string>
+    <string name="we_improves_speed_and_performance_etc">➺ We improves speed and performance, etc.</string>
+    <string name="install_now">Install Now</string>
+    <string name="todo">TODO</string>
+    <string name="ad">Ad</string>
+    <string name="sponsored">Sponsored</string>
+    <string name="install">Install</string>
+    <string name="close">Close</string>
+    <string name="please_wait_ads_loading">Please Wait Ads Loading...</string>
+</resources>
