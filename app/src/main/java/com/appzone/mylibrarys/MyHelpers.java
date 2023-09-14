@@ -6,20 +6,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.res.ResourcesCompat;
 
-import com.applovin.sdk.AppLovinSdk;
 import com.bumptech.glide.Glide;
 import com.facebook.ads.AudienceNetworkAds;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -29,16 +34,10 @@ public class MyHelpers extends Application {
     public static SharedPreferences.Editor editor;
     public static MyHelpers app;
     public static MyHelpers instance;
-    public static int Entry_UpdateApps;
 
-    /*Google*/
-    public static int Google_inter_number;
-    public static int Google_native_number;
-    public static int Google_banner_number;
-
-    public static int fb_inter_number;
-    public static int fb_native_number;
-    public static int fb_banner_number;
+    public static ArrayList<QurekaModel> native_ads = new ArrayList<>();
+    public static ArrayList<QurekaModel> inter_ads = new ArrayList<>();
+    public static ArrayList<Integer> round_ads = new ArrayList<>();
 
 
     public static synchronized MyHelpers getInstanceHelp() {
@@ -57,20 +56,55 @@ public class MyHelpers extends Application {
     public void onCreate() {
         instance = this;
         /*Google*/
-        MobileAds.initialize(this, initializationStatus -> {
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+            }
         });
         /*Facebook*/
         AudienceNetworkAds.initialize(this);
-        // AdSettings.setTestMode(true);
-
-        /*App Loving*/
-        AppLovinSdk.getInstance(this).setMediationProvider("max");
-        AppLovinSdk.initializeSdk(this, configuration -> {
-        });
 
         sharedPreferences = getSharedPreferences("baba", MODE_PRIVATE);
         editor = sharedPreferences.edit();
         super.onCreate();
+
+        AllArrayList();
+    }
+
+    private void AllArrayList() {
+
+        native_ads.add(new QurekaModel(R.drawable.q_native_1, "SSC, Bank Po kaliyar karna hai?", "Not App Install, Click and play game now..."));
+        native_ads.add(new QurekaModel(R.drawable.q_native_2, "50,000 coin k liye....", "Not App Install, Click and play game now..."));
+        native_ads.add(new QurekaModel(R.drawable.q_native_3, "Play quiz 50,000 coin earn.", "Not App Install, Click and play game now..."));
+        native_ads.add(new QurekaModel(R.drawable.q_native_4, "50,000 coin k liye 10+2 quiz live hai..", "Not App Install, Click and play game now..."));
+        native_ads.add(new QurekaModel(R.drawable.q_native_5, "Play quiz 10+2 AND Earn up to 50,000 coin ", "Not App Install, Click and play game now..."));
+        native_ads.add(new QurekaModel(R.drawable.q_native_6, "PLAY BANK PO 50,000 COINS", "Not App Install, Click and play game now..."));
+        native_ads.add(new QurekaModel(R.drawable.q_native_7, "10+2 EXAM QUIZ FOR 50,000 COIN IS LIVE", "Not App Install, Click and play game now..."));
+        native_ads.add(new QurekaModel(R.drawable.q_native_8, "HISTORY QUIZ FOR 15,000 COINS", "Not App Install, Click and play game now..."));
+        native_ads.add(new QurekaModel(R.drawable.q_native_9, "PLAY GK QUIZ Earn upto 50,000 coins", "Not App Install, Click and play game now..."));
+        native_ads.add(new QurekaModel(R.drawable.q_native_10, "PLAY QUIZZES Earn upto 50,000 coins daily", "Not App Install, Click and play game now..."));
+
+
+        inter_ads.add(new QurekaModel(R.drawable.q_inter_1, "MEGA QUIZ FOR 5,00,000 COIN OPEN", "Not App Install, Click and play game now..."));
+        inter_ads.add(new QurekaModel(R.drawable.q_inter_2, "PLAY TECH QUIZ & EARN UP TO 15,000 COIN", "Not App Install, Click and play game now..."));
+        inter_ads.add(new QurekaModel(R.drawable.q_inter_3, "PLAY GK QUIZ AND Earn up to 50,000 coins", "Not App Install, Click and play game now..."));
+        inter_ads.add(new QurekaModel(R.drawable.q_inter_4, "Play Quizzes In Categories Earn up to 50,000 coins", "Not App Install, Click and play game now..."));
+        inter_ads.add(new QurekaModel(R.drawable.q_inter_5, "Play IPL QUIZ NOW & Earn up to 50,000 coins", "Not App Install, Click and play game now..."));
+        inter_ads.add(new QurekaModel(R.drawable.q_inter_6, "Play Cricket Quiz and win up tp 50,000 coins", "Not App Install, Click and play game now..."));
+        inter_ads.add(new QurekaModel(R.drawable.q_inter_7, "History quiz for 15,000 COIN LIVE NOW", "Not App Install, Click and play game now..."));
+
+        round_ads.add(R.drawable.q_round_1);
+        round_ads.add(R.drawable.q_round_2);
+        round_ads.add(R.drawable.q_round_3);
+        round_ads.add(R.drawable.q_round_4);
+        round_ads.add(R.drawable.q_round_5);
+        round_ads.add(R.drawable.q_round_6);
+
+    }
+
+    public static boolean isOnline(Context context) {
+        NetworkInfo activeNetworkInfo = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 
     public static void setBackAdsOnOff(String BackAdsOnOff) {
@@ -92,7 +126,6 @@ public class MyHelpers extends Application {
         return sharedPreferences.getString("GoogleEnable", null);
     }
 
-
     public static void setGoogle_OpenADS(String Google_OpenADS) {
         editor.putString("Google_OpenADS", Google_OpenADS).commit();
     }
@@ -107,14 +140,6 @@ public class MyHelpers extends Application {
 
     public static String getGooglebutton_color() {
         return sharedPreferences.getString("Googlebutton_color", null);
-    }
-
-    public static void setGooglebutton_name(String Googlebutton_name) {
-        editor.putString("Googlebutton_name", Googlebutton_name).commit();
-    }
-
-    public static String getGooglebutton_name() {
-        return sharedPreferences.getString("Googlebutton_name", null);
     }
 
     public static void SetGoogleInter(String GoogleInter) {
@@ -141,31 +166,6 @@ public class MyHelpers extends Application {
         return sharedPreferences.getString("GoogleInter2", null);
     }
 
-    public static void SetGoogleBanner(String GoogleBanner) {
-        editor.putString("GoogleBanner", GoogleBanner).commit();
-    }
-
-    public static String getGoogleBanner() {
-        return sharedPreferences.getString("GoogleBanner", null);
-    }
-
-    public static void SetGoogleBanner1(String GoogleBanner1) {
-        editor.putString("GoogleBanner1", GoogleBanner1).commit();
-    }
-
-    public static String getGoogleBanner1() {
-        return sharedPreferences.getString("GoogleBanner1", null);
-    }
-
-    public static void SetGoogleBanner2(String GoogleBanner2) {
-        editor.putString("GoogleBanner2", GoogleBanner2).commit();
-    }
-
-    public static String getGoogleBanner2() {
-        return sharedPreferences.getString("GoogleBanner2", null);
-    }
-
-
     public static void SetGoogleNative(String GoogleNative) {
         editor.putString("GoogleNative", GoogleNative).commit();
     }
@@ -187,7 +187,6 @@ public class MyHelpers extends Application {
     }
 
     public static String getGoogleNative2() {
-
         return sharedPreferences.getString("GoogleNative2", null);
     }
 
@@ -202,29 +201,12 @@ public class MyHelpers extends Application {
         return sharedPreferences.getString("FacebookEnable", null);
     }
 
-
-    public static void setFacebookBanner(String FacebookBanner) {
-        editor.putString("FacebookBanner", FacebookBanner).commit();
+    public static void setfacebook_open_ad_id(String facebook_open_ad_id) {
+        editor.putString("facebook_open_ad_id", facebook_open_ad_id).commit();
     }
 
-    public static String getFacebookBanner() {
-        return sharedPreferences.getString("FacebookBanner", null);
-    }
-
-    public static void setFacebookBanner1(String FacebookBanner1) {
-        editor.putString("FacebookBanner1", FacebookBanner1).commit();
-    }
-
-    public static String getFacebookBanner1() {
-        return sharedPreferences.getString("FacebookBanner1", null);
-    }
-
-    public static void setFacebookBanner2(String FacebookBanner2) {
-        editor.putString("FacebookBanner2", FacebookBanner2).commit();
-    }
-
-    public static String getFacebookBanner2() {
-        return sharedPreferences.getString("FacebookBanner2", null);
+    public static String getfacebook_open_ad_id() {
+        return sharedPreferences.getString("facebook_open_ad_id", null);
     }
 
     public static void SetFacebookInter(String FacebookInter) {
@@ -276,114 +258,23 @@ public class MyHelpers extends Application {
     }
 
     /**
-     * AppLoving
-     */
-    public static void setAppLovingEnable(String AppLovinEnable) {
-        editor.putString("AppLovinEnable", AppLovinEnable).commit();
-    }
-
-    public static String getAppLovinEnable() {
-        return sharedPreferences.getString("AppLovinEnable", null);
-    }
-
-    public static void setAppLovinBanner(String AppLovinBanner) {
-        editor.putString("AppLovinBanner", AppLovinBanner).commit();
-    }
-
-    public static String getAppLovinBanner() {
-        return sharedPreferences.getString("AppLovinBanner", null);
-    }
-
-    public static void setAppLovinNative(String AppLovinNative) {
-        editor.putString("AppLovinNative", AppLovinNative).commit();
-    }
-
-    public static String getAppLovinNative() {
-        return sharedPreferences.getString("AppLovinNative", null);
-    }
-
-    public static void setAppLovinInter(String AppLovinInter) {
-        editor.putString("AppLovinInter", AppLovinInter).commit();
-    }
-
-    public static String getAppLovinInter() {
-        return sharedPreferences.getString("AppLovinInter", null);
-    }
-
-
-    /**
-     * Unity
-     */
-    public static void setUnityEnable(String UnityEnable) {
-        editor.putString("UnityEnable", UnityEnable).commit();
-    }
-
-    public static String getUnityEnable() {
-        return sharedPreferences.getString("UnityEnable", null);
-    }
-
-    public static void setUnityAppID(String UnityAppID) {
-        editor.putString("UnityAppID", UnityAppID).commit();
-    }
-
-    public static String getUnityAppID() {
-        return sharedPreferences.getString("UnityAppID", null);
-    }
-
-    public static void setUnityBannerID(String UnityBannerID) {
-        editor.putString("UnityBannerID", UnityBannerID).commit();
-    }
-
-    public static String getUnityBannerID() {
-        return sharedPreferences.getString("UnityBannerID", null);
-    }
-
-    public static void setUnityInterID(String UnityInterID) {
-        editor.putString("UnityInterID", UnityInterID).commit();
-    }
-
-    public static String getUnityInterID() {
-        return sharedPreferences.getString("UnityInterID", null);
-    }
-
-    /**
-     * Custom ads
-     */
-    public static void setCustomEnable(String CustomEnable) {
-        editor.putString("CustomEnable", CustomEnable).commit();
-    }
-
-    public static String getCustomEnable() {
-        return sharedPreferences.getString("CustomEnable", null);
-    }
-
-
-    /**
      * Qureka link
      */
-    public static void setauto_link_on_off(String auto_link_on_off) {
-        editor.putString("auto_link_on_off", auto_link_on_off).commit();
+
+    public static void setQurekaInterSkipTime(String QurekaInterSkipTime) {
+        editor.putString("QurekaInterSkipTime", QurekaInterSkipTime).commit();
     }
 
-    public static String getauto_link_on_off() {
-        return sharedPreferences.getString("auto_link_on_off", null);
+    public static String getQurekaInterSkipTime() {
+        return sharedPreferences.getString("QurekaInterSkipTime", "0");
     }
 
-    public static void setauto_link_array(String auto_link_array) {
-        editor.putString("auto_link_array", auto_link_array).commit();
+    public static void setQurekaCloseBTNAutoOpenLink(String QurekaCloseBTNAutoOpenLink) {
+        editor.putString("QurekaCloseBTNAutoOpenLink", QurekaCloseBTNAutoOpenLink).commit();
     }
 
-    public static String getauto_link_array() {
-        return sharedPreferences.getString("auto_link_array", null);
-    }
-
-
-    public static void setauto_link_timer(String auto_link_timer) {
-        editor.putString("auto_link_timer", auto_link_timer).commit();
-    }
-
-    public static String getauto_link_timer() {
-        return sharedPreferences.getString("auto_link_timer", null);
+    public static String getQurekaCloseBTNAutoOpenLink() {
+        return sharedPreferences.getString("QurekaCloseBTNAutoOpenLink", null);
     }
 
     public static void set_q_link_btn_on_off(String _q_link_btn_on_off) {
@@ -414,14 +305,6 @@ public class MyHelpers extends Application {
         return sharedPreferences.getInt("Counter", 5000);
     }
 
-    public static void setCounter_Banner(Integer CounterBanner) {
-        editor.putInt("CounterBanner", CounterBanner).commit();
-    }
-
-    public static Integer getCounter_Banner() {
-        return sharedPreferences.getInt("CounterBanner", 5000);
-    }
-
     public static void setCounter_Native(Integer CounterNative) {
         editor.putInt("CounterNative", CounterNative).commit();
     }
@@ -430,43 +313,12 @@ public class MyHelpers extends Application {
         return sharedPreferences.getInt("CounterNative", 5000);
     }
 
-
     public static void setBackCounter(Integer BackCounter) {
         editor.putInt("BackCounter", BackCounter).commit();
     }
 
     public static Integer getBackCounter() {
         return sharedPreferences.getInt("BackCounter", 5000);
-    }
-
-    /**
-     * Skip Country
-     */
-    public static void setSkip_country_on_off(String skip_country_on_off) {
-        editor.putString("skip_country_on_off", skip_country_on_off).commit();
-    }
-
-    public static String getSkip_country_on_off() {
-        return sharedPreferences.getString("skip_country_on_off", null);
-    }
-
-    public static void setSkip_country_list(String skip_country_list) {
-        editor.putString("skip_country_list", skip_country_list).commit();
-    }
-
-    public static String getSkip_country_list() {
-        return sharedPreferences.getString("skip_country_list", null);
-    }
-
-    /**
-     * App Live Status
-     */
-    public static void setlive_status(String live_status) {
-        editor.putString("live_status", live_status).commit();
-    }
-
-    public static String getlive_status() {
-        return sharedPreferences.getString("live_status", null);
     }
 
     /**
@@ -480,20 +332,12 @@ public class MyHelpers extends Application {
         return sharedPreferences.getString("mix_ad_on_off", null);
     }
 
-    public static void setmix_ad_name(String mix_ad_name) {
-        editor.putString("mix_ad_name", mix_ad_name).commit();
+    public static void setmix_ad_open(String setmix_ad_open) {
+        editor.putString("setmix_ad_open", setmix_ad_open).commit();
     }
 
-    public static String getmix_ad_name() {
-        return sharedPreferences.getString("mix_ad_name", null);
-    }
-
-    public static void setmix_ad_banner(String mix_ad_banner) {
-        editor.putString("mix_ad_banner", mix_ad_banner).commit();
-    }
-
-    public static String getmix_ad_banner() {
-        return sharedPreferences.getString("mix_ad_banner", null);
+    public static String getmix_ad_open() {
+        return sharedPreferences.getString("setmix_ad_open", null);
     }
 
     public static void setmix_ad_native(String mix_ad_native) {
@@ -527,23 +371,6 @@ public class MyHelpers extends Application {
     public static Integer getmix_ad_counter_native() {
         return sharedPreferences.getInt("mix_ad_counter_native", 5000);
     }
-
-    public static void setmix_ad_counter_banner(Integer mix_ad_counter_banner) {
-        editor.putInt("mix_ad_counter_banner", mix_ad_counter_banner).commit();
-    }
-
-    public static Integer getmix_ad_counter_banner() {
-        return sharedPreferences.getInt("mix_ad_counter_banner", 5000);
-    }
-
-    public static void setfacebook_open_ad_id(String facebook_open_ad_id) {
-        editor.putString("facebook_open_ad_id", facebook_open_ad_id).commit();
-    }
-
-    public static String getfacebook_open_ad_id() {
-        return sharedPreferences.getString("facebook_open_ad_id", null);
-    }
-
 
     public static void setExtraBtn_1(String ExtraBtn_1) {
         editor.putString("ExtraBtn_1", ExtraBtn_1).commit();
@@ -609,65 +436,40 @@ public class MyHelpers extends Application {
         return sharedPreferences.getString("ExtraText_4", null);
     }
 
-    public static void setUpdateApps(String UpdateApps) {
-        editor.putString("UpdateApps", UpdateApps).commit();
+    /**
+     * Facebook Sdk
+     */
+
+    public static void setFacebookSDK(String FacebookSDK) {
+        editor.putString("FacebookSDK", FacebookSDK).commit();
     }
 
-    public static String getUpdateApps() {
-        return sharedPreferences.getString("UpdateApps", null);
+    public static String getFacebookSDK() {
+        return sharedPreferences.getString("FacebookSDK", null);
     }
 
-
-    public static void setAppversioncode(String Appversioncode) {
-        editor.putString("Appversioncode", Appversioncode).commit();
+    public static void setACCESS_TOKEN(String ACCESS_TOKEN) {
+        editor.putString("ACCESS_TOKEN", ACCESS_TOKEN).commit();
     }
 
-    public static String getAppversioncode() {
-        return sharedPreferences.getString("Appversioncode", null);
+    public static String getACCESS_TOKEN() {
+        return sharedPreferences.getString("ACCESS_TOKEN", null);
     }
 
-
-    public static void setOtherAppsShow(String OtherAppsShow) {
-        editor.putString("OtherAppsShow", OtherAppsShow).commit();
+    public static void setAPP_SECRET(String APP_SECRET) {
+        editor.putString("APP_SECRET", APP_SECRET).commit();
     }
 
-    public static String getOtherAppsShow() {
-        return sharedPreferences.getString("OtherAppsShow", null);
+    public static String getAPP_SECRET() {
+        return sharedPreferences.getString("APP_SECRET", null);
     }
 
-    public static void setOtherAppsShowLink(String OtherAppsShowLink) {
-        editor.putString("OtherAppsShowLink", OtherAppsShowLink).commit();
+    public static void setACCOUNT_ID(String ACCOUNT_ID) {
+        editor.putString("ACCOUNT_ID", ACCOUNT_ID).commit();
     }
 
-    public static String getOtherAppsShowLink() {
-        return sharedPreferences.getString("OtherAppsShowLink", null);
-    }
-
-
-    public static void LinkopingChromeCustomTabUrl(Context context, String Link) {
-
-        try {
-
-            if (isAppInstalled("com.android.chrome", context)) {
-                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                builder.setToolbarColor(ResourcesCompat.getColor(context.getResources(), R.color.purple_700, null));
-                CustomTabsIntent customTabsIntent = builder.build();
-                customTabsIntent.intent.setPackage("com.android.chrome");
-                customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                customTabsIntent.launchUrl(context, Uri.parse(Link));
-
-
-            } else {
-                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                builder.setToolbarColor(ResourcesCompat.getColor(context.getResources(), R.color.purple_700, null));
-                CustomTabsIntent customTabsIntent = builder.build();
-                customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                customTabsIntent.launchUrl(context, Uri.parse(Link));
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-
-        }
+    public static String getACCOUNT_ID() {
+        return sharedPreferences.getString("ACCOUNT_ID", null);
     }
 
     public static boolean isAppInstalled(String packageName, Context context) {
@@ -685,15 +487,6 @@ public class MyHelpers extends Application {
 
     public static int getRandomNumber(int min, int max) {
         return (new Random()).nextInt((max - min) + 1) + min;
-    }
-
-
-    public static void Autolink() {
-        String[] Auto_Link = MyHelpers.getauto_link_array().split(",");
-        new Handler().postDelayed(() -> {
-            Autolink();
-            LinkOpenChromeCustomTabUrl(instance, Auto_Link[getRandomNumber(0, Auto_Link.length - 1)]);
-        }, Integer.parseInt(MyHelpers.getauto_link_timer()));
     }
 
     public static void LinkOpenChromeCustomTabUrl(Context context, String Link) {
@@ -726,28 +519,5 @@ public class MyHelpers extends Application {
             return;
         }
         LinkOpenChromeCustomTabUrl(instance, Auto_Link[getRandomNumber(0, Auto_Link.length - 1)]);
-    }
-
-    public static void Q_A_NativeAuto(RelativeLayout main_native, Context context) {
-        String[] AutoNativeLink = MyHelpers.getExtraText_4().split(",");
-        if (AutoNativeLink.length == 1) {
-
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            RelativeLayout adView = (RelativeLayout) inflater.inflate(R.layout.q_a_native_lay, main_native, false);
-            ImageView img = adView.findViewById(R.id.img);
-            Glide.with(context).load(AutoNativeLink[0]).into(img);
-            img.setOnClickListener(v -> BtnAutolink());
-            main_native.removeAllViews();
-            main_native.addView(adView);
-            return;
-        }
-
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        RelativeLayout adView = (RelativeLayout) inflater.inflate(R.layout.q_a_native_lay, main_native, false);
-        ImageView img = adView.findViewById(R.id.img);
-        Glide.with(context).load(AutoNativeLink[getRandomNumber(0, AutoNativeLink.length - 1)]).into(img);
-        img.setOnClickListener(v -> BtnAutolink());
-        main_native.removeAllViews();
-        main_native.addView(adView);
     }
 }

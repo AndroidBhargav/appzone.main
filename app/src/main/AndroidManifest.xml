@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.appzone.mylibrarys">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,17 +10,15 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <application android:name="com.appzone.mylibrarys.MyHelpers">
-        <activity android:name="com.appzone.mylibrarys.UpdateAppActivity" />
         <activity android:name="com.appzone.mylibrarys.SplashHelp" />
-        <activity android:name="com.appzone.mylibrarys.CustomAdsInterActivity" />
+        <activity
+            android:name=".InternetErrorActivity"
+            android:exported="false" />
+        <activity android:name="com.appzone.mylibrarys.QurekaInterActivity" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713" />
-
-        <meta-data
-            android:name="applovin.sdk.key"
-            android:value="k5Sz10KaUibR939alqA1zPlTrXqQRlCyC6L_yIcr9Hhbl1y004whkL4rJ4ZSbdwH1Lu748pawbdo5N_p2fXJFf" />
 
     </application>
 

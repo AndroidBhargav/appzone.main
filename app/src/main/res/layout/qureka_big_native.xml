@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/qureka_big_native"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:id="@+id/full_click"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_marginStart="10dp"
@@ -17,38 +17,39 @@
         tools:ignore="UselessParent">
 
         <ImageView
-            android:id="@+id/ads_banner"
+            android:id="@+id/q_image"
             android:layout_width="match_parent"
             android:layout_height="114dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/updateapp"
-            android:contentDescription="@string/todo" />
+            android:scaleType="fitXY" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:paddingHorizontal="10dp"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/q_image"
             android:orientation="vertical"
-            android:layout_below="@+id/ads_banner"
-            android:layout_height="match_parent">
+            android:paddingHorizontal="10dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/lin_as_header"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
+                android:layout_above="@+id/q_btn"
                 android:layout_marginVertical="10dp">
 
                 <ImageView
-                    android:id="@+id/app_icon"
+                    android:id="@+id/round"
                     android:layout_width="55dp"
                     android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="center"
                     android:adjustViewBounds="true"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/common_google_signin_btn_icon_dark"
-                    android:contentDescription="@string/todo" />
+                    android:scaleType="fitXY" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_toEndOf="@+id/round"
                     android:gravity="center_vertical"
                     android:orientation="vertical"
                     android:paddingHorizontal="10dp">
@@ -86,31 +87,34 @@
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/app_name"
+                        android:id="@+id/txt_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="3dp"
                         android:includeFontPadding="false"
                         android:maxLines="1"
                         android:singleLine="true"
+                        android:text="MEGA QUIZ COIN"
                         android:textColor="@android:color/black"
                         android:textSize="14sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/app_shot"
+                        android:id="@+id/txt_dis"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
                         android:singleLine="true"
+                        android:text="Not App Install, Click and play game now.."
                         android:textColor="@android:color/black"
                         android:textSize="12sp" />
 
                 </LinearLayout>
-            </LinearLayout>
+            </RelativeLayout>
+
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_install"
+                android:id="@+id/q_btn"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/app_btn"
@@ -118,13 +122,14 @@
                 android:gravity="center"
                 android:includeFontPadding="false"
                 android:singleLine="true"
-                android:text="@string/install"
+                android:text="Play Now"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 tools:ignore="VisualLintButtonSize" />
 
         </LinearLayout>
+
 
     </RelativeLayout>
 

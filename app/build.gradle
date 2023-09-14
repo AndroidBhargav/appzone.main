@@ -36,12 +36,12 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     /*Extra Library*/
-    implementation 'com.google.code.gson:gson:2.10'
-    implementation 'com.loopj.android:android-async-http:1.4.9'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.loopj.android:android-async-http:1.4.11'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
     /*glide*/
-    implementation 'com.github.bumptech.glide:glide:4.15.1'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     /*Lifecycle Library*/
@@ -56,16 +56,15 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:22.0.0'
 
     /*Fb library*/
-    implementation 'androidx.annotation:annotation:1.6.0'
-    implementation 'com.facebook.android:audience-network-sdk:6.14.0'
+    implementation 'androidx.annotation:annotation:1.7.0'
+    implementation 'com.facebook.android:audience-network-sdk:6.15.0'
     implementation 'com.facebook.infer.annotation:infer-annotation:0.18.0'
-
-    /*App Loving*/
-    implementation 'com.applovin:applovin-sdk:11.8.2'
-
-    /*Unity*/
-    implementation 'com.unity3d.ads:unity-ads:4.1.0'
 
     /*Version 12 Supported library*/
     implementation 'androidx.work:work-runtime-ktx:2.8.1'
+
+    //Facebook SDK
+    implementation 'com.madgag:sc-light-jdk15on:1.47.0.2'
+    implementation 'com.facebook.business.sdk:facebook-java-business-sdk:[8.0.3,)'
+    implementation 'com.google.guava:guava:27.0.1-android'
 }

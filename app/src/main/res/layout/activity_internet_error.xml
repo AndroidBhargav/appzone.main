@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="390dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/no_internet_bg" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="208dp"
+        android:layout_marginTop="65dp"
+        android:src="@drawable/titidu" />
+
+    <TextView
+        android:id="@+id/main_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/sub_title"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:text="@string/internet_title"
+        android:textColor="#1C1C1C"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/sub_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mina_btn"
+        android:layout_centerInParent="true"
+        android:paddingHorizontal="13dp"
+        android:layout_marginBottom="26dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:text="@string/internet_message"
+        android:textColor="#7C7C7C"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/mina_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="26dp"
+        android:layout_marginBottom="78dp"
+        android:background="@drawable/exit_btn"
+        android:gravity="center"
+        android:onClick="check_internet"
+        android:paddingHorizontal="65dp"
+        android:text="@string/try_again"
+        android:textAllCaps="false"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:translationZ="6.50dp" />
+
+</RelativeLayout>
