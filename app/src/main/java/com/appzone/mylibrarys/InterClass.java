@@ -183,6 +183,8 @@ public class InterClass {
         } else if (MyHelpers.get_q_link_btn_on_off().equals("1")) {
             showLoading(main_context, false);
             QurekaInter();
+        } else {
+            NextIntent();
         }
     }
 
@@ -738,6 +740,8 @@ public class InterClass {
         } else if (value.equals("q")) {
             showLoading(main_context, false);
             QurekaInter();
+        } else {
+            NextIntent();
         }
     }
 
