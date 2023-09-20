@@ -52,7 +52,7 @@ public class SplashHelp extends AppCompatActivity {
     /**
      * Api Call
      */
-    public static void splash_next(Context context, Intent intent, String basic_) {
+    public static void splash_next(Context context, Intent intent, String basic_, String pakName) {
 
         contexts = context;
         intents = intent;
@@ -237,10 +237,7 @@ public class SplashHelp extends AppCompatActivity {
                       App Live Status
                      */
 
-                    String[] basic_array = basic_.split("/");
-                    string_basis = basic_array[3];
-
-                    if (string_basis.equals("test")) {
+                    if (pakName.equals("test")) {
                         AdSettings.setTestMode(true);
                     }
 
